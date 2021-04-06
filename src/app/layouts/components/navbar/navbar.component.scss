@@ -1,0 +1,20 @@
+#app-navbar {
+  ::ng-deep .ant-badge-count {
+    min-width: 14px;
+    height: 14px;
+    width: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ::ng-deep nz-badge-sup {
+    @apply top-0.5 left-0.5 text-titiny;
+  }
+}
+
+::ng-deep .profile {
+  .ant-popover-content > .ant-popover-arrow {
+    @apply right-12;
+  }
+}

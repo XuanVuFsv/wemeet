@@ -1,0 +1,94 @@
+<div class="m-10">
+  <div>
+    <nz-select
+      nzShowSearch
+      nzAllowClear
+      nzPlaceHolder="Select a person"
+      [(ngModel)]="selectedValue"
+      nzSize="large"
+      id="select"
+    >
+      <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+      <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+      <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+    </nz-select>
+
+    <nz-select
+      [nzMaxTagCount]="3"
+      [nzMaxTagPlaceholder]="tagPlaceHolder"
+      nzMode="multiple"
+      nzPlaceHolder="Please select"
+      [(ngModel)]="listOfSelectedValue"
+      nzSize="large"
+      id="select"
+      [style.width.px]="400"
+      class="ml-5"
+    >
+      <nz-option *ngFor="let item of listOfOption" [nzLabel]="item" [nzValue]="item"></nz-option>
+    </nz-select>
+    <ng-template #tagPlaceHolder let-selectedList>
+      and {{ selectedList.length }} more selected
+    </ng-template>
+  </div>
+  <div class="my-5">
+    <nz-select
+      [(ngModel)]="selectedValue"
+      nzAllowClear
+      nzPlaceHolder="Choose"
+      nzSize="large"
+      nzShowSearch
+      id="select"
+      class="mr-5"
+    >
+      <nz-option-group nzLabel="Manager">
+        <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
+        <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+      </nz-option-group>
+      <nz-option-group nzLabel="Engineer">
+        <nz-option nzValue="tom" nzLabel="Tom"></nz-option>
+      </nz-option-group>
+      <nz-option nzDisabled nzCustomContent>
+        <div class="flex items-center">
+          <i nz-icon nzType="loading" class="loading-icon mr-2"></i> Loading Data...
+        </div>
+      </nz-option>
+    </nz-select>
+
+    <nz-select
+      nzShowSearch
+      nzServerSearch
+      nzPlaceHolder="input search text"
+      [(ngModel)]="selectedValue"
+      [nzShowArrow]="false"
+      [nzFilterOption]="nzFilterOption"
+      (nzOnSearch)="search($event)"
+      nzSize="large"
+      id="select"
+      class="mr-5"
+    >
+      <nz-option *ngFor="let o of listOfOption2" [nzLabel]="o.text" [nzValue]="o.value">
+      </nz-option>
+    </nz-select>
+
+    <nz-select
+      nzShowSearch
+      nzAllowClear
+      [nzDropdownRender]="renderTemplate"
+      nzPlaceHolder="custom dropdown render"
+      nzSize="large"
+      id="select"
+      [style.width.px]="300"
+    >
+      <nz-option *ngFor="let item of listOfItem" [nzLabel]="item" [nzValue]="item"></nz-option>
+    </nz-select>
+    <ng-template #renderTemplate>
+      <nz-divider></nz-divider>
+      <div class="container">
+        <input type="text" nz-input #inputElement />
+        <a class="add-item" (click)="addItem(inputElement)"
+          ><i nz-icon nzType="plus"></i> Add item</a
+        >
+      </div>
+    </ng-template>
+  </div>
+</div>

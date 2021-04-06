@@ -1,0 +1,27 @@
+@import 'antd/select';
+
+#app-edit-film {
+  .h-16-9 {
+    height: calc(((100vw - 240px) / 12 * 7) / 16 * 9);
+  }
+
+  nz-select {
+    width: 100%;
+  }
+
+  nz-select.episode {
+    width: 100%;
+  }
+
+  nz-select.season {
+    width: 60%;
+  }
+}
+
+.app-edit-film__info-film div:not(:first-child) {
+  &::before {
+    content: '';
+    @apply w-0.5 h-0.5 bg-purpleGray-200 absolute top-1/2;
+    left: -1px;
+  }
+}

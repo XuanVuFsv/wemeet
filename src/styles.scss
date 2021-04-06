@@ -1,0 +1,57 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import '~ng-zorro-antd/style/index.min.css';
+@import '~ng-zorro-antd/select/style/index.min.css';
+@import '~ng-zorro-antd/badge/style/index.min.css';
+@import '~ng-zorro-antd/collapse/style/index.min.css';
+@import '~ng-zorro-antd/avatar/style/index.min.css';
+@import '~ng-zorro-antd/popover/style/index.min.css';
+@import '~ng-zorro-antd/tooltip/style/index.min.css';
+@import 'custom';
+@import 'font-open-sans';
+
+// @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+ul {
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  display: block;
+  background-color: rgb(238, 238, 238);
+}
+
+// ::-webkit-scrollbar-corner {
+//   background: rgb(0 0 0 / 0%);
+// }
+
+::-webkit-scrollbar-thumb {
+  @apply bg-purple-300 rounded shadow-none;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  @apply rounded bg-gray-100;
+}
+
+.transformXY-50 {
+  transform: translate(-50%, -50%);
+}

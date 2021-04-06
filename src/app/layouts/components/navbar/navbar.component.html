@@ -1,0 +1,67 @@
+<section id="app-navbar" class="h-16 bg-white border-b border-gray-100">
+  <div class="h-full flex items-center justify-between px-4">
+    <div class="w-48">
+      <img class="w-40" [src]="logo" />
+    </div>
+    <div class="flex-grow flex items-center justify-center">
+      <div
+        class="flex items-center cursor-pointer hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+      >
+        <i nz-icon nzType="user" nzTheme="outline" class="mr-2"></i>
+        <div class="text-sm">nhân viên</div>
+      </div>
+      <div
+        class="flex items-center cursor-pointer hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+      >
+        <i nz-icon nzType="pie-chart" nzTheme="outline" class="mr-2"></i>
+        <div class="text-sm">thống kê</div>
+      </div>
+      <div
+        class="flex items-center cursor-pointer hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+      >
+        <i nz-icon nzType="team" nzTheme="outline" class="mr-2"></i>
+        <div class="text-sm">team</div>
+      </div>
+    </div>
+    <div class="w-64 flex items-center justify-end">
+      <nz-badge
+        class="mr-5 cursor-pointer"
+        [nzCount]="2"
+        nz-tooltip
+        nzTooltipPlacement="bottom"
+        nzTooltipTitle="cuộc họp"
+        [nzTooltipMouseEnterDelay]="0.5"
+      >
+        <i nz-icon nzType="calendar" nzTheme="outline" class="text-xl"></i>
+      </nz-badge>
+      <nz-badge
+        class="mr-5 cursor-pointer"
+        [nzCount]="5"
+        nz-tooltip
+        nzTooltipPlacement="bottom"
+        nzTooltipTitle="thông báo"
+        [nzTooltipMouseEnterDelay]="0.5"
+      >
+        <i nz-icon nzType="bell" nzTheme="outline" class="text-xl"></i>
+      </nz-badge>
+      <div
+        nz-popover
+        class="flex items-center cursor-pointer"
+        nzPopoverTrigger="click"
+        [nzPopoverContent]="profileContentTemplate"
+        nzPopoverPlacement="bottomRight"
+        nzPopoverOverlayClassName="profile"
+      >
+        <nz-avatar class="mr-2 bg-blue-100 text-blue-500" nzText="D"></nz-avatar>
+        <div class="flex-grow mr-2">
+          <div class="text-gray-700 text-sm font-semibold">Đức Duy</div>
+          <div class="text-gray-400 text-xs">Admin</div>
+        </div>
+        <i nz-icon nzType="down" class="text-tiny mr-2" nzTheme="outline"></i>
+      </div>
+      <ng-template #profileContentTemplate>
+        <div class="profile-popover w-56 h-64">Setting</div>
+      </ng-template>
+    </div>
+  </div>
+</section>
