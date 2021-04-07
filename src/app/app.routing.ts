@@ -7,33 +7,30 @@ const routes: Routes = [
     loadChildren: () => import('@modules/antd/antd.module').then(m => m.AntdModule)
   },
   {
-    path: 'system-overview',
+    path: 'login',
+    loadChildren: () => import('@modules/login/login.module').then(m => m.LoginModule),
+    data: { title: 'Đăng nhập' }
+  },
+  {
+    path: 'user-management',
     loadChildren: () =>
-      import('@modules/system-overview/system-overview.module').then(m => m.SystemOverviewModule)
+      import('@modules/user-management/user-management.module').then(m => m.UserManagementModule),
+    data: { title: 'Quản lý nhân viên' }
   },
   {
-    path: 'admin',
-    loadChildren: () => import('@modules/admin/admin.module').then(m => m.AdminModule)
+    path: 'report',
+    loadChildren: () => import('@modules/report/report.module').then(m => m.ReportModule),
+    data: { title: 'Báo cáo' }
   },
   {
-    path: 'user',
-    loadChildren: () => import('@modules/user/user.module').then(m => m.UserModule)
+    path: 'team',
+    loadChildren: () => import('@modules/team/team.module').then(m => m.TeamModule),
+    data: { title: 'Team' }
   },
   {
-    path: 'film',
-    loadChildren: () => import('@modules/film/film.module').then(m => m.FilmModule)
-  },
-  {
-    path: 'episode',
-    loadChildren: () => import('@modules/episode/episode.module').then(m => m.EpisodeModule)
-  },
-  {
-    path: 'actor',
-    loadChildren: () => import('@modules/actor/actor.module').then(m => m.ActorModule)
-  },
-  {
-    path: 'edit-film',
-    loadChildren: () => import('@modules/edit-film/edit-film.module').then(m => m.EditFilmModule)
+    path: '',
+    loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
+    data: { title: 'Trang chủ' }
   }
 ];
 

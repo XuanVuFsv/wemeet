@@ -4,14 +4,17 @@ import { LayoutEnum } from '@core/enum/layout.enum';
 import { Observable } from 'rxjs';
 import {
   ActivatedRoute,
+  ActivatedRouteSnapshot,
   NavigationCancel,
   NavigationEnd,
   NavigationError,
+  ResolveEnd,
   Router
 } from '@angular/router';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { getCurrentRouteConfig } from '@shared/utilities/routes';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Title } from '@angular/platform-browser';
 
 @UntilDestroy()
 @Component({
@@ -28,10 +31,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(
     private layoutService: LayoutService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private readonly title: Title
   ) {}
 
   ngOnInit(): void {
+    this.setupTitleListener();
     this.layoutService.setLoading(true);
   }
 
@@ -71,4 +76,21 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   }
     // });
   }
+
+  private setupTitleListener(): void {
+    this.router.events.pipe(filter(ev => ev instanceof ResolveEnd)).subscribe((ev: ResolveEnd) => {
+      const { data } = getDeepestChildSnapshot(ev.state.root);
+      if (data && data.title) {
+        this.title.setTitle(data.title);
+      }
+    });
+  }
+}
+
+function getDeepestChildSnapshot(snapshot: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
+  let deepestChild = snapshot.firstChild;
+  while (deepestChild?.firstChild !== null) {
+    deepestChild = deepestChild.firstChild;
+  }
+  return deepestChild || snapshot;
 }

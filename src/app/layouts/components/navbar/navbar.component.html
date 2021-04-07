@@ -1,27 +1,30 @@
-<section id="app-navbar" class="h-16 bg-white border-b border-gray-100">
+<section id="app-navbar" class="h-16 bg-white border-b border-gray-100 fixed w-full">
   <div class="h-full flex items-center justify-between px-4">
     <div class="w-48">
-      <img class="w-40" [src]="logo" />
+      <img [routerLink]="['/']" class="w-40 cursor-pointer outline-none" [src]="logo" />
     </div>
     <div class="flex-grow flex items-center justify-center">
-      <div
-        class="flex items-center cursor-pointer hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+      <a
+        class="flex items-center cursor-pointer outline-none hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+        [routerLink]="['/user-management']"
       >
         <i nz-icon nzType="user" nzTheme="outline" class="mr-2"></i>
         <div class="text-sm">nhân viên</div>
-      </div>
-      <div
-        class="flex items-center cursor-pointer hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+      </a>
+      <a
+        class="flex items-center cursor-pointer outline-none hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+        [routerLink]="['/report']"
       >
         <i nz-icon nzType="pie-chart" nzTheme="outline" class="mr-2"></i>
         <div class="text-sm">thống kê</div>
-      </div>
-      <div
-        class="flex items-center cursor-pointer hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+      </a>
+      <a
+        class="flex items-center cursor-pointer outline-none hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+        [routerLink]="['/team']"
       >
         <i nz-icon nzType="team" nzTheme="outline" class="mr-2"></i>
         <div class="text-sm">team</div>
-      </div>
+      </a>
     </div>
     <div class="w-64 flex items-center justify-end">
       <nz-badge
