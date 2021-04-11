@@ -4,13 +4,18 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/ja';
 import { IconsProviderModule } from './icons-provider.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { environment } from '@env';
 
 // ant design
 import { vi_VN, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { HttpClientModule } from '@angular/common/http';
 import { DataModule } from '@app/data/data.module';
-import { environment } from '@env';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { MessageService } from './services/message.service';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 // Contains all shared modules
 const MODULES: any[] = [
@@ -21,6 +26,10 @@ const MODULES: any[] = [
   HttpClientModule,
   NzSelectModule,
   NzToolTipModule,
+  NzInputModule,
+  NzFormModule,
+  NzButtonModule,
+  NzNotificationModule,
   DataModule.forRoot({ url: environment.apiUrl })
 ];
 
@@ -34,7 +43,7 @@ const PIPES: any[] = [];
 const DIRECTIVES: any[] = [];
 
 // Contains all shared services
-const SERVICES: any[] = [];
+const SERVICES: any[] = [MessageService];
 
 registerLocaleData(vi);
 

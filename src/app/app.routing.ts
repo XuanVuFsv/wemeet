@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('@modules/antd/antd.module').then(m => m.AntdModule)
   },
   {
+    path: 'todo',
+    loadChildren: () => import('@modules/todo/todo.module').then(m => m.TodoModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('@modules/login/login.module').then(m => m.LoginModule),
     data: { title: 'Đăng nhập' }

@@ -1,3 +1,5 @@
+<app-loading [color]="'#BFDBFE'" *ngIf="loading$ | async"></app-loading>
+<ngx-loading-bar [includeSpinner]="false" [height]="'2px'" [color]="'#BFDBFE'"></ngx-loading-bar>
 <ng-container *ngIf="layout$ | async as layoutEnum">
   <app-main-layout *ngIf="layoutEnum === LayoutEnum.MAIN"></app-main-layout>
   <app-auth-layout *ngIf="layoutEnum === LayoutEnum.AUTH"></app-auth-layout>

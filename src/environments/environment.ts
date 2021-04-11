@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: '',
+  apiUrl: 'http://phimdee.cf/todo/index.php',
   storageImage: 'https://storage-image.ducduy.repl.co/film/'
 };
 

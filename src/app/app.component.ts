@@ -8,6 +8,7 @@ import {
   NavigationCancel,
   NavigationEnd,
   NavigationError,
+  NavigationStart,
   ResolveEnd,
   Router
 } from '@angular/router';
@@ -15,6 +16,7 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 import { getCurrentRouteConfig } from '@shared/utilities/routes';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Title } from '@angular/platform-browser';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @UntilDestroy()
 @Component({
@@ -32,8 +34,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     private layoutService: LayoutService,
     private route: ActivatedRoute,
     private router: Router,
-    private readonly title: Title
-  ) {}
+    private readonly title: Title,
+    private loadingBarService: LoadingBarService
+  ) {
+    this.router.events
+      .pipe(
+        filter(evt => evt instanceof NavigationStart),
+        debounceTime(250),
+        untilDestroyed(this)
+      )
+      .subscribe(() => {
+        this.startLoadingBar();
+      });
+  }
 
   ngOnInit(): void {
     this.setupTitleListener();
@@ -65,7 +78,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       .subscribe(data => {
         // End loading screen
         this.layoutService.setLoading(false);
-        // this.stopLoadingBar();
+        this.stopLoadingBar();
         // this.searchBoxInit();
       });
 
@@ -84,6 +97,14 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.title.setTitle(data.title);
       }
     });
+  }
+
+  startLoadingBar(): void {
+    this.loadingBarService.useRef().start();
+  }
+
+  stopLoadingBar(): void {
+    this.loadingBarService.useRef().complete();
   }
 }
 

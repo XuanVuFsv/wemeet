@@ -8,6 +8,12 @@
 @import '~ng-zorro-antd/avatar/style/index.min.css';
 @import '~ng-zorro-antd/popover/style/index.min.css';
 @import '~ng-zorro-antd/tooltip/style/index.min.css';
+@import '~ng-zorro-antd/input/style/index.min.css';
+@import '~ng-zorro-antd/form/style/index.min.css';
+@import '~ng-zorro-antd/table/style/index.min.css';
+@import '~ng-zorro-antd/popconfirm/style/index.min.css';
+@import '~ng-zorro-antd/button/style/index.min.css';
+@import '~ng-zorro-antd/notification/style/index.min.css';
 @import 'custom';
 @import 'font-open-sans';
 
@@ -54,4 +60,12 @@ a:hover {
 
 .transformXY-50 {
   transform: translate(-50%, -50%);
+}
+
+.transformX-50 {
+  transform: translateX(-50%);
+}
+
+.transformY-50 {
+  transform: translateY(-50%);
 }

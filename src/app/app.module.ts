@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CoreModule } from '@app/core/core.module';
 
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
@@ -10,8 +11,7 @@ import {
 import { LayoutsModule } from './layouts/layouts.module';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { MockDatabaseService } from './data/data.mock.';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,8 +21,9 @@ import { MockDatabaseService } from './data/data.mock.';
     NoopAnimationsModule,
     BrowserAnimationsModule,
     LayoutsModule,
-    HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(MockDatabaseService, { delay: 100 })
+    CoreModule,
+    LoadingBarModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

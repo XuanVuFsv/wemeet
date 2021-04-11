@@ -15,7 +15,7 @@ export class ApiService {
     private httpClient: HttpClient
   ) {
     this.apiUrl = config.url;
-    this.prefix = config.prefix || '/api';
+    this.prefix = config.prefix || '';
   }
 
   /**
