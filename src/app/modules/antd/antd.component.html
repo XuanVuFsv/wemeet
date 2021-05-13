@@ -6,7 +6,7 @@
       nzPlaceHolder="Select a person"
       [(ngModel)]="selectedValue"
       nzSize="large"
-      id="select"
+      id="select_"
     >
       <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
       <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
@@ -20,7 +20,7 @@
       nzPlaceHolder="Please select"
       [(ngModel)]="listOfSelectedValue"
       nzSize="large"
-      id="select"
+      id="select_"
       [style.width.px]="400"
       class="ml-5"
     >
@@ -37,7 +37,7 @@
       nzPlaceHolder="Choose"
       nzSize="large"
       nzShowSearch
-      id="select"
+      id="select_"
       class="mr-5"
     >
       <nz-option-group nzLabel="Manager">
@@ -63,7 +63,7 @@
       [nzFilterOption]="nzFilterOption"
       (nzOnSearch)="search($event)"
       nzSize="large"
-      id="select"
+      id="select_"
       class="mr-5"
     >
       <nz-option *ngFor="let o of listOfOption2" [nzLabel]="o.text" [nzValue]="o.value">
@@ -76,7 +76,7 @@
       [nzDropdownRender]="renderTemplate"
       nzPlaceHolder="custom dropdown render"
       nzSize="large"
-      id="select"
+      id="select_"
       [style.width.px]="300"
     >
       <nz-option *ngFor="let item of listOfItem" [nzLabel]="item" [nzValue]="item"></nz-option>

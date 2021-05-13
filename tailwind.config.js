@@ -25,15 +25,14 @@ module.exports = isProd => ({
       '7xl': '5rem'
     },
     colors: {
+      primary: colors.teal[500],
       blueGray: colors.blueGray,
       coolGray: colors.coolGray,
       gray: colors.gray,
       trueGray: colors.trueGray,
       warmGray: colors.warmGray,
-      purpleGray: {
-        100: 'rgb(180, 184, 210)',
-        200: 'rgb(93, 101, 152)',
-        300: 'rgb(64, 70, 104)'
+      tealCustom: {
+        100: 'rgb(236, 243, 241)'
       },
       red: colors.red,
       orange: colors.orange,

@@ -7,7 +7,8 @@ import {
   DownOutline,
   UserOutline,
   PieChartOutline,
-  TeamOutline
+  TeamOutline,
+  PlusOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -16,7 +17,8 @@ const icons = [
   DownOutline,
   UserOutline,
   PieChartOutline,
-  TeamOutline
+  TeamOutline,
+  PlusOutline
 ];
 
 @NgModule({

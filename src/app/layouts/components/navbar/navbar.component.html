@@ -5,21 +5,51 @@
     </div>
     <div class="flex-grow flex items-center justify-center">
       <a
-        class="flex items-center cursor-pointer outline-none hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+        class="
+          flex
+          items-center
+          cursor-pointer
+          outline-none
+          hover:font-semibold
+          text-trueGray-400
+          hover:text-teal-400
+          uppercase
+          mr-6
+        "
         [routerLink]="['/user-management']"
       >
         <i nz-icon nzType="user" nzTheme="outline" class="mr-2"></i>
         <div class="text-sm">nhân viên</div>
       </a>
       <a
-        class="flex items-center cursor-pointer outline-none hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+        class="
+          flex
+          items-center
+          cursor-pointer
+          outline-none
+          hover:font-semibold
+          text-trueGray-400
+          hover:text-teal-400
+          uppercase
+          mr-6
+        "
         [routerLink]="['/report']"
       >
         <i nz-icon nzType="pie-chart" nzTheme="outline" class="mr-2"></i>
         <div class="text-sm">thống kê</div>
       </a>
       <a
-        class="flex items-center cursor-pointer outline-none hover:font-semibold hover:text-indigo-400 uppercase mr-6"
+        class="
+          flex
+          items-center
+          cursor-pointer
+          outline-none
+          hover:font-semibold
+          text-trueGray-400
+          hover:text-teal-400
+          uppercase
+          mr-6
+        "
         [routerLink]="['/team']"
       >
         <i nz-icon nzType="team" nzTheme="outline" class="mr-2"></i>
@@ -55,7 +85,11 @@
         nzPopoverPlacement="bottomRight"
         nzPopoverOverlayClassName="profile"
       >
-        <nz-avatar class="mr-2 bg-blue-100 text-blue-500" nzText="D"></nz-avatar>
+        <nz-avatar
+          class="mr-2 bg-blue-100 text-blue-500"
+          nzIcon="user"
+          [nzSrc]="avatar"
+        ></nz-avatar>
         <div class="flex-grow mr-2">
           <div class="text-gray-700 text-sm font-semibold">Đức Duy</div>
           <div class="text-gray-400 text-xs">Admin</div>

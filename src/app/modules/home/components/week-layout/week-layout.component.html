@@ -1,0 +1,36 @@
+<section id="app-week-layout" class="flex flex-col h-full">
+  <div class="header flex">
+    <div class="w-12"></div>
+    <div class="flex-grow flex flex-row bg-tealCustom-100 py-2 rounded-t-md pr-1.5">
+      <div *ngFor="let date of weekData" class="day text-center">
+        <strong class="text-2xl" [class]="'text-' + date.colorDay[0]">{{ date.day }}</strong>
+        <p class="uppercase text-sm" [class]="'text-' + date.colorDay[1]">{{ date.dayOfWeek }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="body flex-grow h-0 overflow-y-auto">
+    <div *ngFor="let hour of hourArr" class="hour flex h-20">
+      <div class="w-12 text-left -mt-2.5">
+        <div class="hour-text h-5 text-trueGray-400 text-sm">{{ hour }}</div>
+        <div class="minute-15 h-5 flex items-center justify-start">
+          <div class="h-0.5 w-3 bg-trueGray-300"></div>
+        </div>
+        <div class="minute-30 h-5 flex items-center justify-start">
+          <div class="h-0.5 w-5 bg-trueGray-300"></div>
+        </div>
+        <div class="minute-45 h-5 flex items-center justify-start">
+          <div class="h-0.5 w-3 bg-trueGray-300"></div>
+        </div>
+      </div>
+      <div class="flex-grow flex flex-row border-b border-tealCustom-100">
+        <div class="day-col bg-white border-l border-r border-tealCustom-100"></div>
+        <div class="day-col bg-white border-r border-tealCustom-100"></div>
+        <div class="day-col bg-white border-r border-tealCustom-100"></div>
+        <div class="day-col bg-white border-r border-tealCustom-100"></div>
+        <div class="day-col bg-white border-r border-tealCustom-100"></div>
+        <div class="day-col bg-white border-r border-tealCustom-100"></div>
+        <div class="day-col bg-white border-r border-tealCustom-100"></div>
+      </div>
+    </div>
+  </div>
+</section>

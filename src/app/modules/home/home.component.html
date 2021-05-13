@@ -1,6 +1,69 @@
 <section id="app-home" class="bg-blueGray-50 h-full -mt-16 pt-16">
-  <div class="flex h-full">
-    <div class="w-96 bg-blue-200"></div>
-    <div class="flex-grow bg-yellow-200"></div>
+  <div class="flex h-full pb-5">
+    <div class="w-96"></div>
+    <div class="flex-grow pr-5 flex flex-col h-full">
+      <div class="header w-full py-3 pl-12">
+        <div class="flex justify-between items-center">
+          <div class="time-current flex items-center">
+            <div class="text py-2 text-2xl mr-5">{{ datetimeTextView }}</div>
+            <div class="action flex">
+              <i
+                nz-icon
+                nzType="left"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipPlacement="left"
+                nzTooltipTitle="tuần trước"
+                [nzTooltipMouseEnterDelay]="0.5"
+                class="
+                  px-2
+                  cursor-pointer
+                  hover:font-semibold
+                  text-trueGray-400
+                  hover:text-teal-400
+                "
+                (click)="goWeek('prev')"
+              ></i>
+              <i
+                nz-icon
+                nzType="right"
+                nzTheme="outline"
+                nz-tooltip
+                nzTooltipPlacement="right"
+                nzTooltipTitle="tuần sau"
+                [nzTooltipMouseEnterDelay]="0.5"
+                class="
+                  px-2
+                  cursor-pointer
+                  hover:font-semibold
+                  text-trueGray-400
+                  hover:text-teal-400
+                "
+                (click)="goWeek('next')"
+              ></i>
+            </div>
+          </div>
+          <div class="action flex items-center">
+            <nz-select
+              nzPlaceHolder="Kiểu hiển thị"
+              [nzOptionHeightPx]="36"
+              [(ngModel)]="selectedTypeTime"
+              id="select_"
+              class="mr-4 w-36"
+            >
+              <nz-option nzValue="day" nzLabel="Ngày"></nz-option>
+              <nz-option nzValue="week" nzLabel="Tuần"></nz-option>
+              <nz-option nzValue="month" nzLabel="Tháng"></nz-option>
+            </nz-select>
+            <button nz-button nzType="primary" class="flex items-center">
+              <i nz-icon nzType="plus"></i>Tạo Cuộc Họp
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="calendar flex-grow h-0">
+        <app-week-layout [weekData]="weekData"></app-week-layout>
+      </div>
+    </div>
   </div>
 </section>
