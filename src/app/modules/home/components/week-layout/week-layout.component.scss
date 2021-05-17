@@ -10,4 +10,29 @@
       width: calc(100% / 7);
     }
   }
+
+  .meeting {
+    nz-badge .ant-badge-status-text {
+      margin-left: 0;
+    }
+
+    .h-075 {
+      height: 3px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 0px;
+      display: block;
+      background-color: rgb(238, 238, 238);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      @apply bg-teal-400 rounded shadow-none;
+    }
+
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: none;
+      @apply rounded bg-gray-100;
+    }
+  }
 }

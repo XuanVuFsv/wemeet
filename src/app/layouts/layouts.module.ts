@@ -11,7 +11,6 @@ import { CoreModule } from '@app/core/core.module';
 // Antd
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
     SharedModule,
     CoreModule,
     NzBadgeModule,
-    NzAvatarModule,
     NzPopoverModule
   ],
   exports: [AuthLayoutComponent, MainLayoutComponent, BlankLayoutComponent, NavbarComponent]

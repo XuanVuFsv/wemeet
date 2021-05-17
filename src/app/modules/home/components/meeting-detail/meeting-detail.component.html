@@ -1,0 +1,143 @@
+<section>
+  <div class="name font-semibold text-trueGray-500 border-b border-trueGray-100 pb-2">
+    {{ meetingDetail?.name }}
+  </div>
+  <div class="day flex pt-2 items-center">
+    <div class="w-8 text-left flex items-center">
+      <i nz-icon nzType="calendar" nzTheme="outline" class="text-teal-500"></i>
+    </div>
+    <div class="flex-grow text-smm">{{ meetingDetail?.start | dateFormat: 'dddd, D MMMM' }}</div>
+  </div>
+  <div class="time flex pt-2 items-center">
+    <div class="w-8 text-left flex items-center">
+      <i nz-icon nzType="clock-circle" nzTheme="outline" class="text-teal-500"></i>
+    </div>
+    <div class="flex-grow text-smm flex items-center">
+      <div class="flex-grow">
+        {{ meetingDetail?.start | dateFormat: 'HH:mm' }} -
+        {{ meetingDetail?.end | dateFormat: 'HH:mm' }}
+      </div>
+      <div class="w-fit text-xs text-trueGray-400">(1 giờ 20 phút)</div>
+    </div>
+  </div>
+  <div class="locale flex py-2 items-center text-trueGray-500 border-b border-trueGray-100">
+    <div class="w-8 text-left flex items-center">
+      <i nz-icon nzType="environment" nzTheme="outline" class="text-teal-500"></i>
+    </div>
+    <div class="flex-grow text-smm">Phòng 02, tầng 4</div>
+  </div>
+  <div class="describe my-2 text-xs h-14 overflow-y-auto">
+    It is a long established fact that a reader will be distracted by the readable content of a page
+    when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
+    distribution of letters, as opposed to using 'Content here, content here', making it look like
+    readable English.
+  </div>
+  <div class="file h-14 overflow-y-auto">
+    <a class="flex py-1 items-center">
+      <div class="w-5 text-left flex items-center">
+        <i nz-icon nzType="file-excel" nzTheme="outline" class="text-green-500"></i>
+      </div>
+      <div class="flex-grow text-xs truncate w-0">danh_sach_thanh_vien.xlsx</div>
+    </a>
+    <a class="flex py-1 items-center">
+      <div class="w-5 text-left flex items-center">
+        <i nz-icon nzType="file-pdf" nzTheme="outline" class="text-red-500"></i>
+      </div>
+      <div class="flex-grow text-xs truncate w-0">tai_lieu_doanh_thu_ban_hang_nam_2020.pdf</div>
+    </a>
+    <a class="flex py-1 items-center">
+      <div class="w-5 text-left flex items-center">
+        <i nz-icon nzType="file-word" nzTheme="outline" class="text-blue-500"></i>
+      </div>
+      <div class="flex-grow text-xs truncate w-0">báo_cáo_doanh_thu.xlsx</div>
+    </a>
+  </div>
+  <div class="tag pt-2 pb-1 border-b border-trueGray-100">
+    <nz-tag [nzColor]="colorTag.important" class="mb-2">quan trọng</nz-tag>
+    <nz-tag [nzColor]="colorTag.obligatory" class="mb-2">bắt buộc</nz-tag>
+    <nz-tag [nzColor]="colorTag.emergency" class="mb-2">khẩn</nz-tag>
+    <nz-tag [nzColor]="colorTag.normal" class="mb-2">thông thường</nz-tag>
+  </div>
+  <div class="day flex pt-1 items-center">
+    <div class="w-8 text-left flex items-center">
+      <i nz-icon nzType="team" nzTheme="outline" class="text-teal-500"></i>
+    </div>
+    <div class="flex-grow text-smm">Tên team</div>
+  </div>
+  <div class="member pt-2">
+    <nz-avatar-group>
+      <nz-avatar
+        *ngFor="let member of members"
+        nzIcon="user"
+        [nzSrc]="member"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        nzTooltipTitle="tên nhân viên"
+        [nzTooltipMouseEnterDelay]="0.8"
+      ></nz-avatar>
+      <nz-avatar
+        class="bg-primary text-white"
+        nzText="+2"
+        nz-tooltip
+        nzTooltipPlacement="top"
+        nzTooltipTitle="tên nv 1, tên nv 2"
+        [nzTooltipMouseEnterDelay]="0.8"
+      ></nz-avatar>
+    </nz-avatar-group>
+  </div>
+  <div class="member pt-2">
+    <ng-container *ngIf="!isLeader">
+      <button
+        *ngIf="joinMeeting"
+        nz-button
+        nzType="primary"
+        nzSize="small"
+        class="flex items-center text-smm w-full justify-center"
+      >
+        <i nz-icon nzType="login"></i>Tham Gia Cuộc Họp
+      </button>
+      <button
+        *ngIf="!joinMeeting"
+        nz-button
+        nzType="primary"
+        nzSize="small"
+        class="
+          flex
+          items-center
+          text-smm
+          w-full
+          justify-center
+          bg-red-500
+          border-red-500
+          hover:bg-red-400
+          hover:border-red-400
+          focus:bg-red-500
+          focus:border-red-500
+        "
+      >
+        <i nz-icon nzType="logout"></i>Rời Cuộc Họp
+      </button>
+    </ng-container>
+    <ng-container *ngIf="isLeader">
+      <div class="flex flex-row gap-x-3">
+        <button
+          nz-button
+          nzType="primary"
+          nzSize="small"
+          nzDanger
+          class="flex items-center text-smm w-full justify-center"
+        >
+          <i nz-icon nzType="delete"></i>Huỷ
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          nzSize="small"
+          class="flex items-center text-smm w-full justify-center"
+        >
+          <i nz-icon nzType="edit"></i>Chỉnh Sửa
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</section>

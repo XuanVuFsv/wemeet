@@ -8,7 +8,15 @@ import {
   UserOutline,
   PieChartOutline,
   TeamOutline,
-  PlusOutline
+  PlusOutline,
+  EnvironmentOutline,
+  FileExcelOutline,
+  FileWordOutline,
+  FilePdfOutline,
+  LoginOutline,
+  LogoutOutline,
+  DeleteOutline,
+  EditOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -18,7 +26,15 @@ const icons = [
   UserOutline,
   PieChartOutline,
   TeamOutline,
-  PlusOutline
+  PlusOutline,
+  EnvironmentOutline,
+  FileExcelOutline,
+  FileWordOutline,
+  FilePdfOutline,
+  LoginOutline,
+  LogoutOutline,
+  DeleteOutline,
+  EditOutline
 ];
 
 @NgModule({

@@ -12,8 +12,10 @@ module.exports = isProd => ({
     fontSize: {
       titiny: '.5625rem',
       tiny: '.625rem',
+      xxs: '.6875rem',
       xs: '.75rem',
       sm: '.875rem',
+      smm: '.8125',
       base: '1rem',
       lg: '1.125rem',
       xl: '1.25rem',
@@ -57,7 +59,8 @@ module.exports = isProd => ({
   },
   variants: {
     extend: {
-      fontWeight: ['hover']
+      fontWeight: ['hover'],
+      borderWidth: ['hover']
     }
   },
   plugins: []

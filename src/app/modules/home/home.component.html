@@ -1,11 +1,46 @@
 <section id="app-home" class="bg-blueGray-50 h-full -mt-16 pt-16">
   <div class="flex h-full pb-5">
-    <div class="w-96"></div>
+    <div class="w-96">
+      <nz-date-picker
+        nzShowTime
+        nzFormat="yyyy-MM-dd HH:mm:ss"
+        ngModel
+        (nzOnOk)="onOk($event)"
+      ></nz-date-picker>
+    </div>
     <div class="flex-grow pr-5 flex flex-col h-full">
       <div class="header w-full py-3 pl-12">
         <div class="flex justify-between items-center">
           <div class="time-current flex items-center">
-            <div class="text py-2 text-2xl mr-5">{{ datetimeTextView }}</div>
+            <div
+              nz-popover
+              [(nzPopoverVisible)]="visibleCalendar"
+              nzPopoverTrigger="click"
+              [nzPopoverContent]="calendarSelect"
+              nzPopoverPlacement="bottomCenter"
+              nzPopoverOverlayClassName="calendar-select"
+              class="text cursor-pointer py-2 text-2xl mr-5"
+            >
+              <span
+                nz-tooltip
+                nzTooltipPlacement="top"
+                nzTooltipTitle="chọn tuần"
+                [nzTooltipMouseEnterDelay]="0.8"
+              >
+                {{ datetimeTextView }}
+              </span>
+            </div>
+
+            <ng-template #calendarSelect>
+              <nz-date-picker
+                nzInline
+                nzMode="week"
+                nzDropdownClassName="calendar-select-week"
+                [(ngModel)]="weekSelect"
+                (ngModelChange)="goWeek('select')"
+              ></nz-date-picker>
+            </ng-template>
+
             <div class="action flex">
               <i
                 nz-icon
@@ -14,7 +49,7 @@
                 nz-tooltip
                 nzTooltipPlacement="left"
                 nzTooltipTitle="tuần trước"
-                [nzTooltipMouseEnterDelay]="0.5"
+                [nzTooltipMouseEnterDelay]="0.8"
                 class="
                   px-2
                   cursor-pointer
@@ -31,7 +66,7 @@
                 nz-tooltip
                 nzTooltipPlacement="right"
                 nzTooltipTitle="tuần sau"
-                [nzTooltipMouseEnterDelay]="0.5"
+                [nzTooltipMouseEnterDelay]="0.8"
                 class="
                   px-2
                   cursor-pointer

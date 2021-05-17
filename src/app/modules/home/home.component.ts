@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as dayjs from 'dayjs';
 import { IDayOfWeek } from './home.repository';
 // import * as customParseFormat from 'dayjs/plugin/customParseFormat';
-// import * as weekday from 'dayjs/plugin/weekday';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +14,8 @@ export class HomeComponent implements OnInit {
   weekName: string[] = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
   weekData: IDayOfWeek[] = [];
   datetimeTextView: string = '';
+  weekSelect: Date = null;
+  visibleCalendar: boolean = false;
 
   constructor() {}
 
@@ -37,6 +38,8 @@ export class HomeComponent implements OnInit {
       };
       week.push(objData);
     }
+    this.weekSelect = startDay.toDate();
+
     return week;
   }
 
@@ -52,6 +55,7 @@ export class HomeComponent implements OnInit {
   }
 
   goWeek(action: string = '') {
+    this.visibleCalendar = false;
     let startDayCurrent = this.weekData[0]?.datetime;
     let startDay: dayjs.Dayjs;
     switch (action) {
@@ -61,10 +65,14 @@ export class HomeComponent implements OnInit {
       case 'prev':
         startDay = startDayCurrent.subtract(7, 'day');
         break;
+      case 'select':
+        startDay = dayjs(this.weekSelect).startOf('week');
+        break;
       default:
-        startDay = dayjs().startOf('week').add(1, 'day');
+        startDay = dayjs().startOf('week');
         break;
     }
+
     this.weekData = this.getWeek(startDay);
     this.setDatetimeTextView(this.weekData);
   }
@@ -79,5 +87,9 @@ export class HomeComponent implements OnInit {
     } else {
       this.datetimeTextView = `${weekData[0].day} - ${weekData[6].day} Tháng ${weekData[0].month}, ${weekData[0].year}`;
     }
+  }
+
+  onOk(e) {
+    console.log(e);
   }
 }

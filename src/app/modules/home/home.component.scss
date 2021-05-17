@@ -1,1 +1,39 @@
 @import 'antd/select';
+
+.calendar-select {
+  .ant-popover-inner-content {
+    padding: 0;
+  }
+  .ant-picker-panel-container {
+    box-shadow: none;
+
+    .ant-picker-cell-week {
+      @apply relative;
+
+      &::before {
+        content: '';
+        width: 2px;
+        right: -1px;
+        top: 9px;
+        @apply bg-primary h-3 absolute;
+      }
+    }
+
+    .ant-picker-week-panel-row-selected {
+      .ant-picker-cell-week {
+        &::before {
+          content: '';
+          width: 3px;
+          @apply bg-white;
+        }
+      }
+    }
+  }
+}
+
+// .calendar-select-week {
+//   .ant-popover-inner-content {
+//     padding: 0;
+//   }
+// }
+// .ant-picker-panel-container
