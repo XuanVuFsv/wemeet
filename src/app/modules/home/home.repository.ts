@@ -16,6 +16,14 @@ export interface IDayOfWeek {
   colorDay: string[];
 }
 
+export interface IFile {
+  name: string;
+  extension: string;
+  size: number;
+  type: string;
+  color: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class HomeRepository extends BaseRepository<IHome> {
   resourceType(): string {

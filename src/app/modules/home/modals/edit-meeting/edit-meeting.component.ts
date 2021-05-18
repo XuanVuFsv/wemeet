@@ -7,6 +7,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FileType, FileTypeColor } from '@app/core/constants/file-type';
+import { IFile } from '../../home.repository';
 
 @Component({
   selector: 'app-edit-meeting',
@@ -36,8 +38,33 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
       label: 'thông thường'
     }
   ];
+  listTeam = [
+    {
+      value: 'team1',
+      label: 'team phát triển'
+    },
+    {
+      value: 'team2',
+      label: 'team thiết kế'
+    },
+    {
+      value: 'team3',
+      label: 'team phân tích'
+    },
+    {
+      value: 'team4',
+      label: 'team sale'
+    }
+  ];
+  listMember = [
+    {
+      name: 'Đức Duy - Zojoo',
+      avatar: '../../assets/images/avatar/avatar2.png'
+    }
+  ];
   dragover: boolean = false;
   attachments: File[] = [];
+  attachmentsView: IFile[] = [];
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -70,8 +97,8 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
       date: [null, [Validators.required]],
       time_start: [null, [Validators.required]],
       time_end: [null, [Validators.required]],
-      tag: [null, [Validators.required]]
-      // remarks: [this.data?.remarks],
+      tag: [null, [Validators.required]],
+      team: [null, [Validators.required]]
       // data_type: [this.data?.data_type, [Validators.required]],
       // type: [+this.data?.type + '', [Validators.required]],
       // protocol: [this.data?.protocol, [Validators.required]],
@@ -92,10 +119,24 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
   }
 
   loadFile(files: FileList) {
+    let re = /(?:\.([^.]+))?$/;
     console.log(files.item(0));
     Array.from(files).forEach(file => {
       this.attachments.push(file);
+      let typeFile = FileType[re.exec(file.name)[1]] ?? 'unknown';
+      this.attachmentsView.push({
+        name: file.name,
+        extension: re.exec(file.name)[1],
+        size: file.size,
+        type: 'file-' + typeFile,
+        color: FileTypeColor[typeFile]
+      });
     });
-    console.log(this.attachments);
+    console.log(this.attachmentsView);
+  }
+
+  deleteFileSelect(index: number) {
+    this.attachments.splice(index, 1);
+    this.attachmentsView.splice(index, 1);
   }
 }

@@ -1,13 +1,6 @@
 <section id="app-home" class="bg-blueGray-50 h-full -mt-16 pt-16">
   <div class="flex h-full pb-5">
-    <div class="w-96">
-      <nz-date-picker
-        nzShowTime
-        nzFormat="yyyy-MM-dd HH:mm:ss"
-        ngModel
-        (nzOnOk)="onOk($event)"
-      ></nz-date-picker>
-    </div>
+    <div class="w-96"></div>
     <div class="flex-grow pr-5 flex flex-col h-full">
       <div class="header w-full py-3 pl-12">
         <div class="flex justify-between items-center">
@@ -50,7 +43,13 @@
                 nzTooltipPlacement="left"
                 nzTooltipTitle="tuần trước"
                 [nzTooltipMouseEnterDelay]="0.8"
-                class="px-2 cursor-pointer hover:font-semibold text-trueGray-400 hover:text-teal-400"
+                class="
+                  px-2
+                  cursor-pointer
+                  hover:font-semibold
+                  text-trueGray-400
+                  hover:text-teal-400
+                "
                 (click)="goWeek('prev')"
               ></i>
               <i
@@ -61,7 +60,13 @@
                 nzTooltipPlacement="right"
                 nzTooltipTitle="tuần sau"
                 [nzTooltipMouseEnterDelay]="0.8"
-                class="px-2 cursor-pointer hover:font-semibold text-trueGray-400 hover:text-teal-400"
+                class="
+                  px-2
+                  cursor-pointer
+                  hover:font-semibold
+                  text-trueGray-400
+                  hover:text-teal-400
+                "
                 (click)="goWeek('next')"
               ></i>
             </div>

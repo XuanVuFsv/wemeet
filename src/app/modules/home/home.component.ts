@@ -91,10 +91,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  onOk(e) {
-    console.log(e);
-  }
-
   createMeeting() {
     let title = 'Tạo mới cuộc họp';
     this.showModalEditMeeting(title);

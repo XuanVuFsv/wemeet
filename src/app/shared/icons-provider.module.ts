@@ -17,7 +17,14 @@ import {
   LogoutOutline,
   DeleteOutline,
   EditOutline,
-  SwapOutline
+  SwapOutline,
+  FilePptOutline,
+  FileGifOutline,
+  FileJpgOutline,
+  FileImageOutline,
+  FileUnknownOutline,
+  FileTextOutline,
+  FileZipOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -36,7 +43,14 @@ const icons = [
   LogoutOutline,
   DeleteOutline,
   EditOutline,
-  SwapOutline
+  SwapOutline,
+  FilePptOutline,
+  FileGifOutline,
+  FileJpgOutline,
+  FileImageOutline,
+  FileUnknownOutline,
+  FileTextOutline,
+  FileZipOutline
 ];
 
 @NgModule({

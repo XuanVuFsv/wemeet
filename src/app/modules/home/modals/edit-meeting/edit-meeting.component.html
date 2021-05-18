@@ -93,6 +93,32 @@
         </nz-form-control>
       </nz-form-item>
     </div>
+    <!---- team ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Team tham gia</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng chọn team tham gia cuộc họp">
+          <nz-select
+            [nzMaxTagCount]="3"
+            [nzOptionHeightPx]="36"
+            [nzMaxTagPlaceholder]="tagPlaceHolderTeam"
+            nzMode="multiple"
+            nzPlaceHolder="Chọn team tham gia cuộc họp"
+            formControlName="team"
+            id="select_"
+          >
+            <nz-option
+              *ngFor="let team of listTeam"
+              [nzLabel]="team.label"
+              [nzValue]="team.value"
+            ></nz-option>
+          </nz-select>
+          <ng-template #tagPlaceHolderTeam let-selectedList>
+            và {{ selectedList.length }} team khác
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
     <!---- tag ----->
     <div class="block">
       <nz-form-label nzRequired class="">Nhãn cuộc họp</nz-form-label>
@@ -132,6 +158,63 @@
         <span class="text-trueGray-300 text-sm">hoặc kéo thả file vào đây</span>
       </div>
       <input type="file" #eleInputFile (change)="loadFile($event.target.files)" multiple hidden />
+      <div *ngIf="attachmentsView.length" class="list-file pt-2">
+        <div
+          *ngFor="let file of attachmentsView; let i = index"
+          class="flex items-center text-sm py-1"
+        >
+          <i
+            nz-icon
+            [nzType]="file.type"
+            class="w-fit mr-2"
+            [style.color]="file.color"
+            nzTheme="outline"
+          ></i>
+          <div class="flex-grow text-trueGray-500 truncate w-0">{{ file.name }}</div>
+          <div class="text-trueGray-300 w-fit mx-4 text-right">{{ file.size | fileSize }}</div>
+          <i
+            nz-icon
+            nzType="close"
+            class="w-fit cursor-pointer text-trueGray-300 hover:text-red-500"
+            nzTheme="outline"
+            (click)="deleteFileSelect(i)"
+          ></i>
+        </div>
+      </div>
     </div>
+    <!---- member ----->
+    <div class="block pt-4">
+      <nz-form-label class="">Thành viên tham gia</nz-form-label>
+      <div class="">
+        <nz-avatar-group>
+          <nz-avatar
+            *ngFor="let member of listMember"
+            nzIcon="user"
+            [nzSrc]="member.avatar"
+            nz-tooltip
+            nzTooltipPlacement="top"
+            [nzTooltipTitle]="member.name"
+            [nzTooltipMouseEnterDelay]="0.8"
+          ></nz-avatar>
+          <nz-avatar
+            nzIcon="plus"
+            nz-tooltip
+            nzTooltipPlacement="top"
+            nzTooltipTitle="Thêm thành viên"
+            [nzTooltipMouseEnterDelay]="0.5"
+            nz-popover
+            nzPopoverTrigger="click"
+            [nzPopoverContent]="modalMemberTemplate"
+            nzPopoverPlacement="top"
+            class="flex items-center justify-center bg-primary"
+          ></nz-avatar>
+        </nz-avatar-group>
+      </div>
+    </div>
+    <ng-template #modalMemberTemplate>
+      <div class="select-user">
+        <app-select-user></app-select-user>
+      </div>
+    </ng-template>
   </form>
 </section>
