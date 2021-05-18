@@ -1,0 +1,137 @@
+<section id="app-edit-meeting">
+  <form nz-form nzLayout="vertical" [formGroup]="registerForm" class="w-full">
+    <!---- name ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Tên cuộc họp</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập tên cuộc họp">
+          <input formControlName="name" nz-input placeholder="Nhập tên cuộc họp" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!---- locale ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Địa điểm họp</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng chọn địa điểm họp">
+          <nz-select
+            nzPlaceHolder="Chọn địa điểm họp"
+            [nzOptionHeightPx]="36"
+            formControlName="locale"
+            id="select_"
+            class="mr-4 w-36"
+          >
+            <nz-option nzValue="1" nzLabel="Phòng A02, Lầu 2"></nz-option>
+            <nz-option nzValue="2" nzLabel="Phòng A03, Lầu 2"></nz-option>
+            <nz-option nzValue="3" nzLabel="Phòng A01, Lầu 3"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!---- time ----->
+    <div class="flex">
+      <div class="w-44 mr-4">
+        <nz-form-label nzRequired class="">Ngày họp</nz-form-label>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng chọn ngày họp">
+            <nz-date-picker
+              formControlName="date"
+              nzPlaceHolder="Chọn ngày họp"
+              class="w-full"
+              nzFormat="dd-MM-YYYY"
+            ></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="flex-grow w-0 flex">
+        <div>
+          <nz-form-label nzRequired class="">Bắt đầu</nz-form-label>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Bắt buộc chọn">
+              <nz-time-picker
+                formControlName="time_start"
+                nzFormat="HH:mm"
+                nzPlaceHolder="Chọn giờ bắt đầu"
+                nzPopupClassName="edit-meeting__time"
+              ></nz-time-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div class="flex items-center">
+          <i class="mx-2" nz-icon nzType="swap-right" nzTheme="outline"></i>
+        </div>
+
+        <div>
+          <nz-form-label nzRequired class="">Kết thúc</nz-form-label>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Bắt buộc chọn">
+              <nz-time-picker
+                formControlName="time_end"
+                nzFormat="HH:mm"
+                nzPlaceHolder="Chọn giờ kết thúc"
+                nzPopupClassName="edit-meeting__time"
+              ></nz-time-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+    <!---- describe ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Chi tiết cuộc họp</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập chi tiết cuộc họp">
+          <nz-textarea-count [nzMaxCharacterCount]="100">
+            <textarea
+              rows="4"
+              formControlName="describe"
+              nz-input
+              placeholder="Nhập chi tiết cuộc họp"
+              nz-input
+            ></textarea>
+          </nz-textarea-count>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!---- tag ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Nhãn cuộc họp</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng chọn nhãn họp">
+          <nz-select
+            [nzMaxTagCount]="3"
+            [nzOptionHeightPx]="36"
+            [nzMaxTagPlaceholder]="tagPlaceHolder"
+            nzMode="multiple"
+            nzPlaceHolder="Chọn nhãn cho cuộc họp"
+            formControlName="tag"
+            id="select_"
+          >
+            <nz-option
+              *ngFor="let tag of listTag"
+              [nzLabel]="tag.label"
+              [nzValue]="tag.value"
+            ></nz-option>
+          </nz-select>
+          <ng-template #tagPlaceHolder let-selectedList>
+            và {{ selectedList.length }} lựa chọn khác
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!---- file ----->
+    <div class="block">
+      <nz-form-label class="">File đính kèm</nz-form-label>
+      <div
+        class="drop-area flex h-24 w-full border-dashed items-center justify-center"
+        [class]="dragover ? 'border-primary border-2' : 'border-trueGray-300 border'"
+        #eleDropArea
+      >
+        <i nz-icon nzType="paper-clip" class="text-trueGray-400" nzTheme="outline"></i>
+        <a class="text-primary font-semibold mx-1.5" (click)="selectFile()">Chọn file</a>
+        <span class="text-trueGray-300 text-sm">hoặc kéo thả file vào đây</span>
+      </div>
+      <input type="file" #eleInputFile (change)="loadFile($event.target.files)" multiple hidden />
+    </div>
+  </form>
+</section>

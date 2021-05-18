@@ -18,7 +18,9 @@ import { MessageService } from './services/message.service';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzTagModule } from 'ng-zorro-antd/tag';
@@ -67,9 +69,11 @@ const MODULES: any[] = [
   NzNotificationModule,
   NzPopoverModule,
   NzDatePickerModule,
+  NzTimePickerModule,
   NzBadgeModule,
   NzTagModule,
   NzAvatarModule,
+  NzModalModule,
   DataModule.forRoot({ url: environment.apiUrl })
 ];
 

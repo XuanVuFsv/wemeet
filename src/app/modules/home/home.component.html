@@ -50,13 +50,7 @@
                 nzTooltipPlacement="left"
                 nzTooltipTitle="tuần trước"
                 [nzTooltipMouseEnterDelay]="0.8"
-                class="
-                  px-2
-                  cursor-pointer
-                  hover:font-semibold
-                  text-trueGray-400
-                  hover:text-teal-400
-                "
+                class="px-2 cursor-pointer hover:font-semibold text-trueGray-400 hover:text-teal-400"
                 (click)="goWeek('prev')"
               ></i>
               <i
@@ -67,13 +61,7 @@
                 nzTooltipPlacement="right"
                 nzTooltipTitle="tuần sau"
                 [nzTooltipMouseEnterDelay]="0.8"
-                class="
-                  px-2
-                  cursor-pointer
-                  hover:font-semibold
-                  text-trueGray-400
-                  hover:text-teal-400
-                "
+                class="px-2 cursor-pointer hover:font-semibold text-trueGray-400 hover:text-teal-400"
                 (click)="goWeek('next')"
               ></i>
             </div>
@@ -90,7 +78,7 @@
               <nz-option nzValue="week" nzLabel="Tuần"></nz-option>
               <nz-option nzValue="month" nzLabel="Tháng"></nz-option>
             </nz-select>
-            <button nz-button nzType="primary" class="flex items-center">
+            <button nz-button nzType="primary" class="flex items-center" (click)="createMeeting()">
               <i nz-icon nzType="plus"></i>Tạo Cuộc Họp
             </button>
           </div>

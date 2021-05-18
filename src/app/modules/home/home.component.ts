@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as dayjs from 'dayjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { IDayOfWeek } from './home.repository';
+import { EditMeetingComponent } from './modals/edit-meeting/edit-meeting.component';
 // import * as customParseFormat from 'dayjs/plugin/customParseFormat';
 
 @Component({
@@ -17,7 +19,7 @@ export class HomeComponent implements OnInit {
   weekSelect: Date = null;
   visibleCalendar: boolean = false;
 
-  constructor() {}
+  constructor(private modalService: NzModalService) {}
 
   ngOnInit(): void {
     this.goWeek();
@@ -91,5 +93,25 @@ export class HomeComponent implements OnInit {
 
   onOk(e) {
     console.log(e);
+  }
+
+  createMeeting() {
+    let title = 'Tạo mới cuộc họp';
+    this.showModalEditMeeting(title);
+  }
+
+  showModalEditMeeting(title: string) {
+    this.modalService.create({
+      nzTitle: title,
+      nzContent: EditMeetingComponent,
+      nzMaskClosable: false,
+      nzClosable: true,
+      nzWidth: '500px',
+      nzBodyStyle: { maxHeight: '80vh', paddingTop: '12px', overflow: 'auto' },
+      nzStyle: { paddingBottom: '0' },
+      nzCentered: true,
+      nzComponentParams: {},
+      nzFooter: null
+    });
   }
 }

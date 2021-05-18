@@ -1,23 +1,18 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-// @import '~ng-zorro-antd/style/index.min.css';
-// @import '~ng-zorro-antd/select/style/index.min.css';
-// @import '~ng-zorro-antd/badge/style/index.min.css';
-// @import '~ng-zorro-antd/collapse/style/index.min.css';
-// @import '~ng-zorro-antd/avatar/style/index.min.css';
-// @import '~ng-zorro-antd/popover/style/index.min.css';
-// @import '~ng-zorro-antd/tooltip/style/index.min.css';
-// @import '~ng-zorro-antd/input/style/index.min.css';
-// @import '~ng-zorro-antd/form/style/index.min.css';
-// @import '~ng-zorro-antd/table/style/index.min.css';
-// @import '~ng-zorro-antd/popconfirm/style/index.min.css';
-// @import '~ng-zorro-antd/button/style/index.min.css';
-// @import '~ng-zorro-antd/notification/style/index.min.css';
 @import 'custom';
 @import 'font-open-sans';
 
-// @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+/**
+ * Menu style common app
+ * 1. Global
+ * 2. Common
+ * 3. Custom Antd
+ * 4. ....
+ */
+
+// ------------- 1. Global
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -45,10 +40,6 @@ a:hover {
   background-color: rgb(238, 238, 238);
 }
 
-// ::-webkit-scrollbar-corner {
-//   background: rgb(0 0 0 / 0%);
-// }
-
 ::-webkit-scrollbar-thumb {
   @apply bg-teal-400 rounded shadow-none;
 }
@@ -57,6 +48,8 @@ a:hover {
   -webkit-box-shadow: none;
   @apply rounded bg-gray-100;
 }
+
+// ------------- 2. Common
 
 .transformXY-50 {
   transform: translate(-50%, -50%);
@@ -76,4 +69,17 @@ a:hover {
 
 .w-fit {
   width: fit-content;
+}
+
+// ------------- 3. Custom Antd
+
+.ant-modal-close:focus,
+.ant-modal-close:hover {
+  outline: none;
+}
+
+.ant-form-item-explain-error {
+  div {
+    margin-top: 6px;
+  }
 }
