@@ -9,6 +9,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileType, FileTypeColor } from '@app/core/constants/file-type';
 import { IFile } from '../../home.repository';
+import { EditMeetingService } from './edit-meeting.service';
 
 @Component({
   selector: 'app-edit-meeting',
@@ -66,10 +67,19 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
   attachments: File[] = [];
   attachmentsView: IFile[] = [];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, public editMeetingService: EditMeetingService) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.editMeetingService.members = [
+      {
+        name: 'Đức Duy - Zojoo',
+        id: 1,
+        avatar: '../../assets/images/avatar/avatar2.png',
+        role: 'Giám đốc kinh doanh',
+        selected: true
+      }
+    ];
   }
 
   ngAfterViewInit() {
@@ -120,7 +130,6 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
 
   loadFile(files: FileList) {
     let re = /(?:\.([^.]+))?$/;
-    console.log(files.item(0));
     Array.from(files).forEach(file => {
       this.attachments.push(file);
       let typeFile = FileType[re.exec(file.name)[1]] ?? 'unknown';
@@ -132,7 +141,6 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
         color: FileTypeColor[typeFile]
       });
     });
-    console.log(this.attachmentsView);
   }
 
   deleteFileSelect(index: number) {

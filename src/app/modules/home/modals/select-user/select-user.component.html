@@ -53,7 +53,7 @@
     [nzShowPagination]="false"
     (nzQueryParams)="sortChange($event)"
     nzBordered
-    [nzScroll]="{ y: 'calc(100vh - 340px)' }"
+    [nzScroll]="{ y: 'calc(100vh - 422px)' }"
     nzSize="small"
   >
     <thead>
@@ -64,7 +64,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of rows">
+      <tr *ngFor="let data of rows; let i = index">
         <td>
           <nz-avatar nzIcon="user" [nzSrc]="data.avatar" class="mr-1"></nz-avatar> {{ data.name }}
         </td>
@@ -73,9 +73,17 @@
         </td>
         <td class="text-center">
           <a
+            *ngIf="!data.selected"
             class="text-primary text-link hover:underline cursor-pointer"
-            (click)="selectCompany(data)"
+            (click)="selectMember(data)"
             >Thêm</a
+          >
+          <a
+            *ngIf="data.selected"
+            [class]="i === 0 ? 'hidden' : ''"
+            class="text-red-500 hover:text-red-500 text-link hover:underline"
+            (click)="unselectMember(data.id)"
+            >Bỏ chọn</a
           >
         </td>
       </tr>

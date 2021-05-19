@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { Repository } from '@app/data/repositories/repository';
 import { Table } from '@app/shared/utilities/ui/table';
 import { UserRepository, IUser } from '../../user.repository';
+import { EditMeetingService } from '../edit-meeting/edit-meeting.service';
 
 @Component({
   selector: 'app-select-user',
@@ -36,7 +37,11 @@ export class SelectUserComponent<IUser> extends Table implements OnInit, AfterVi
     }
   ];
 
-  constructor(private fb: FormBuilder, private userRepository: UserRepository) {
+  constructor(
+    private fb: FormBuilder,
+    private userRepository: UserRepository,
+    public editMeetingService: EditMeetingService
+  ) {
     super();
   }
 
@@ -48,63 +53,74 @@ export class SelectUserComponent<IUser> extends Table implements OnInit, AfterVi
         name: 'Đức Duy - Zojoo',
         id: 1,
         avatar: '../../assets/images/avatar/avatar2.png',
-        role: 'Giám đốc kinh doanh'
+        role: 'Giám đốc kinh doanh',
+        selected: true
       },
       {
         name: 'Minh Anh',
         id: 2,
         avatar: '../../assets/images/avatar/avatar1.png',
-        role: 'Develop'
+        role: 'Develop',
+        selected: false
       },
       {
         name: 'Hoàng Văn',
         id: 3,
         avatar: '../../assets/images/avatar/avatar3.png',
-        role: 'Trưởng phòng kinh doanh'
+        role: 'Trưởng phòng kinh doanh',
+        selected: false
       },
       {
         name: 'Kim Oanh',
         id: 4,
         avatar: '../../assets/images/avatar/avatar4.png',
-        role: 'Nhân viên sale'
+        role: 'Nhân viên sale',
+        selected: false
       },
       {
         name: 'Phương Duyên',
         id: 5,
         avatar: '../../assets/images/avatar/avatar5.png',
-        role: 'Kế toán'
+        role: 'Kế toán',
+        selected: false
       },
       {
         name: 'Trúc Linh',
         id: 6,
         avatar: '../../assets/images/avatar/avatar6.png',
-        role: 'Kế toán'
+        role: 'Kế toán',
+        selected: false
       },
       {
         name: 'Văn Tiến',
         id: 7,
         avatar: '../../assets/images/avatar/avatar7.png',
-        role: 'Develop'
+        role: 'Develop',
+        selected: false
       },
       {
         name: 'Minh Vũ',
         id: 8,
         avatar: '../../assets/images/avatar/avatar8.png',
-        role: 'Nhân viên sale'
+        role: 'Nhân viên sale',
+        selected: false
       },
       {
         name: 'Diệu Hương',
         id: 9,
         avatar: '../../assets/images/avatar/avatar1.png',
-        role: 'Nhân viên sale'
+        role: 'Nhân viên sale',
+        selected: false
       },
       {
         name: 'Quốc Thịnh',
         id: 10,
         avatar: '../../assets/images/avatar/avatar4.png',
-        role: 'Develop'
+        role: 'Develop',
+        selected: false
       }
     ];
+    this.changeStatusSelect();
   }
 
   ngAfterViewInit(): void {
@@ -119,4 +135,26 @@ export class SelectUserComponent<IUser> extends Table implements OnInit, AfterVi
   }
 
   keywordFilterChange() {}
+
+  selectMember(dataMember: any) {
+    this.editMeetingService.members.push(dataMember);
+    this.changeStatusSelect();
+  }
+  unselectMember(id: string) {
+    let index = this.editMeetingService.members.findIndex(member => member.id === id);
+    if (index > -1) {
+      this.editMeetingService.members.splice(index, 1);
+      this.changeStatusSelect();
+    }
+  }
+
+  changeStatusSelect() {
+    for (const member of this.rows) {
+      if (this.editMeetingService.members.findIndex(c => c.id === member.id) > -1) {
+        member.selected = true;
+      } else {
+        member.selected = false;
+      }
+    }
+  }
 }
