@@ -7,9 +7,10 @@ import { WeekLayoutComponent } from './components/week-layout/week-layout.compon
 import { MeetingDetailComponent } from './components/meeting-detail/meeting-detail.component';
 import { EditMeetingComponent } from './modals/edit-meeting/edit-meeting.component';
 import { SelectUserComponent } from './modals/select-user/select-user.component';
+import { MonthLayoutComponent } from './components/month-layout/month-layout.component';
 
 @NgModule({
-  declarations: [HomeComponent, WeekLayoutComponent, MeetingDetailComponent, EditMeetingComponent, SelectUserComponent],
+  declarations: [HomeComponent, WeekLayoutComponent, MeetingDetailComponent, EditMeetingComponent, SelectUserComponent, MonthLayoutComponent],
   imports: [CommonModule, SharedModule, HomeRoutingModule]
 })
 export class HomeModule {}

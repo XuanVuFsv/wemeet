@@ -25,6 +25,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import * as dayjs from 'dayjs';
 import * as updateLocale from 'dayjs/plugin/updateLocale';
 import 'dayjs/locale/vi';
@@ -77,6 +78,7 @@ const MODULES: any[] = [
   NzModalModule,
   NzTableModule,
   NzPopconfirmModule,
+  NzCheckboxModule,
   DataModule.forRoot({ url: environment.apiUrl })
 ];
 

@@ -187,33 +187,45 @@
       <nz-form-label class="">Thành viên tham gia</nz-form-label>
       <div class="">
         <nz-avatar-group>
-          <nz-avatar
-            *ngFor="let member of editMeetingService.members$ | async"
-            nzIcon="user"
-            [nzSrc]="member.avatar"
-            nz-tooltip
-            nzTooltipPlacement="top"
-            [nzTooltipTitle]="member.name"
-            [nzTooltipMouseEnterDelay]="0.8"
-            nz-popconfirm
-            [nzPopconfirmTitle]="delete"
-            (nzOnConfirm)="confirm()"
-            (nzOnCancel)="cancel()"
-            nzPopconfirmPlacement="top"
-            class="relative avatar cursor-pointer"
-          >
-            <ng-template #delete
-              ><div class="w-36">
-                <i
-                  nz-icon
-                  nzType="exclamation-circle"
-                  nzTheme="fill"
-                  class="text-yellow-400 mr-2"
-                ></i>
-                Bạn có muốn loại bỏ <strong>{{ member.name }}</strong> ra khỏi cuộc họp?
-              </div></ng-template
+          <ng-container *ngFor="let member of editMeetingService.members$ | async; let i = index">
+            <nz-avatar
+              *ngIf="!i"
+              nzIcon="user"
+              [nzSrc]="member.avatar"
+              nz-tooltip
+              nzTooltipPlacement="top"
+              [nzTooltipTitle]="member.name"
+              [nzTooltipMouseEnterDelay]="0.8"
+            ></nz-avatar>
+            <nz-avatar
+              *ngIf="i"
+              nzIcon="user"
+              [nzSrc]="member.avatar"
+              nz-tooltip
+              nzTooltipPlacement="top"
+              [nzTooltipTitle]="member.name"
+              [nzTooltipMouseEnterDelay]="0.8"
+              nz-popconfirm
+              [nzPopconfirmTitle]="delete"
+              (nzOnConfirm)="unselectMember(member.id)"
+              (nzOnCancel)="cancel()"
+              nzPopconfirmPlacement="top"
+              class="relative avatar cursor-pointer"
             >
-          </nz-avatar>
+              <ng-template #delete
+                ><div class="w-36">
+                  <i
+                    nz-icon
+                    nzType="exclamation-circle"
+                    nzTheme="fill"
+                    class="text-yellow-400 mr-1.5 relative -top-0.5"
+                  ></i>
+                  Bạn có muốn loại bỏ <strong>{{ member.name }}</strong> ra khỏi cuộc họp?
+                </div></ng-template
+              >
+            </nz-avatar>
+          </ng-container>
+
           <nz-avatar
             nzIcon="plus"
             nz-tooltip

@@ -53,13 +53,13 @@
     [nzShowPagination]="false"
     (nzQueryParams)="sortChange($event)"
     nzBordered
-    [nzScroll]="{ y: 'calc(100vh - 422px)' }"
+    [nzScroll]="{ y: '300px' }"
     nzSize="small"
   >
     <thead>
       <tr>
         <th nzColumnKey="name" [nzSortFn]="true">Tên</th>
-        <th nzColumnKey="updated_at" [nzSortFn]="true" nzWidth="200px">Chức vụ</th>
+        <th nzWidth="200px">Chức vụ</th>
         <th nzWidth="80px"></th>
       </tr>
     </thead>

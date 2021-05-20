@@ -1,13 +1,8 @@
 #app-edit-meeting {
   .avatar:hover {
     &::after {
-      content: '✖';
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      @apply bg-black bg-opacity-40;
+      content: '✕';
+      @apply bg-black bg-opacity-40 text-sm top-0 left-0 absolute w-full h-full;
     }
   }
 }

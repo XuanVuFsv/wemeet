@@ -18,6 +18,23 @@ export class HomeComponent implements OnInit {
   datetimeTextView: string = '';
   weekSelect: Date = null;
   visibleCalendar: boolean = false;
+  selectRoomMeeting: string = '';
+  checkOptionsFilter = [
+    { label: 'của tôi', value: 'me' },
+    { label: 'của team tôi', value: 'my_team' }
+  ];
+  selectTag: string = '';
+  selectFilter: string = '';
+  members = [
+    '../../assets/images/avatar/avatar1.png',
+    '../../assets/images/avatar/avatar2.png',
+    '../../assets/images/avatar/avatar3.png',
+    '../../assets/images/avatar/avatar4.png',
+    '../../assets/images/avatar/avatar5.png',
+    '../../assets/images/avatar/avatar6.png'
+  ];
+  listMeeting = [0, 1, 2, 3, 4, 5, 6];
+  meetingDetail: any;
 
   constructor(private modalService: NzModalService) {}
 
@@ -109,5 +126,16 @@ export class HomeComponent implements OnInit {
       nzComponentParams: {},
       nzFooter: null
     });
+  }
+
+  showMeetingDetail() {
+    let detail = {
+      start: 'Tue May 11 2021 15:00:00 GMT+0700 (Indochina Time)',
+      end: 'Tue May 11 2021 15:30:00 GMT+0700 (Indochina Time)',
+      minute_of_day: 900,
+      meeting_time: 30,
+      name: 'Thảo luận phương án thiết kế và công nghệ sử dụng'
+    };
+    this.meetingDetail = detail;
   }
 }

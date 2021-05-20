@@ -1,6 +1,121 @@
 <section id="app-home" class="bg-blueGray-50 h-full -mt-16 pt-16">
   <div class="flex h-full pb-5">
-    <div class="w-96"></div>
+    <div class="w-96">
+      <div class="h-full w-full px-5 pt-5">
+        <div class="bg-white rounded h-full py-4 px-2 flex flex-col">
+          <div class="filter h-fit mb-4 px-2">
+            <nz-select
+              nzPlaceHolder="Chọn phòng họp"
+              [nzOptionHeightPx]="36"
+              [(ngModel)]="selectRoomMeeting"
+              id="select_"
+              class="w-full"
+            >
+              <nz-option nzValue="1" nzLabel="Phòng A02, Lầu 2"></nz-option>
+              <nz-option nzValue="2" nzLabel="Phòng A03, Lầu 2"></nz-option>
+              <nz-option nzValue="3" nzLabel="Phòng A01, Lầu 3"></nz-option>
+            </nz-select>
+            <div class="pt-4 grid gap-4 grid-cols-2">
+              <nz-select
+                nzPlaceHolder="Nhãn"
+                [nzOptionHeightPx]="36"
+                nzAllowClear
+                [(ngModel)]="selectTag"
+                id="select_"
+                class="w-full"
+              >
+                <nz-option nzValue="important" nzLabel="quan trọng"></nz-option>
+                <nz-option nzValue="obligatory" nzLabel="bắt buộc"></nz-option>
+                <nz-option nzValue="emergency" nzLabel="khẩn"></nz-option>
+                <nz-option nzValue="normal" nzLabel="thông thường"></nz-option>
+              </nz-select>
+              <nz-select
+                nzPlaceHolder="Phạm vi"
+                [nzOptionHeightPx]="36"
+                nzAllowClear
+                [(ngModel)]="selectFilter"
+                id="select_"
+                class="w-full"
+              >
+                <nz-option nzValue="me" nzLabel="của tôi"></nz-option>
+                <nz-option nzValue="my-team" nzLabel="của team tôi"></nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <div class="list-meeting flex-grow overflow-y-auto px-2">
+            <div
+              *ngFor="let meeting of listMeeting"
+              class="
+                meeting
+                mb-3
+                py-2
+                px-3
+                bg-blueGray-50
+                hover:bg-blueGray-100
+                rounded
+                cursor-pointer
+                text-trueGray-500 text-sm
+              "
+              nz-popover
+              nzPopoverTrigger="click"
+              [nzPopoverContent]="profileContentTemplate"
+              nzPopoverPlacement="right"
+              [nzPopoverMouseEnterDelay]="0.5"
+              (mouseenter)="showMeetingDetail()"
+            >
+              <div class="name font-semibold text-sm">Phân tích thực trạng công ty cho dự án</div>
+              <div class="time flex pt-1 items-center">
+                <div class="w-6 text-left flex items-center">
+                  <i nz-icon nzType="calendar" nzTheme="outline" class="text-teal-500"></i>
+                </div>
+                <div class="flex-grow flex items-center">
+                  <div class="flex-grow">12:00 - 21-12-2021</div>
+                  <div class="w-fit text-xs text-trueGray-400">(còn 1 ngày 12 giờ)</div>
+                </div>
+              </div>
+              <div class="tag pt-1">
+                <nz-tag [nzColor]="'#f50'">#f50</nz-tag>
+                <nz-tag [nzColor]="'#2db7f5'">#2db7f5</nz-tag>
+              </div>
+              <div class="team flex pt-1 items-center">
+                <div class="w-6 text-left flex items-center">
+                  <i nz-icon nzType="team" nzTheme="outline" class="text-teal-500"></i>
+                </div>
+                <div class="w-fit">13 người</div>
+                <div class="flex-grow flex items-center justify-end">
+                  <nz-avatar-group>
+                    <nz-avatar
+                      *ngFor="let member of members"
+                      nzIcon="user"
+                      nzSize="small"
+                      [nzSrc]="member"
+                      nz-tooltip
+                      nzTooltipPlacement="top"
+                      nzTooltipTitle="tên nhân viên"
+                      [nzTooltipMouseEnterDelay]="0.8"
+                    ></nz-avatar>
+                    <nz-avatar
+                      class="bg-primary text-white text-base"
+                      nzText="+2"
+                      nzSize="small"
+                      nz-tooltip
+                      nzTooltipPlacement="top"
+                      nzTooltipTitle="tên nv 1, tên nv 2"
+                      [nzTooltipMouseEnterDelay]="0.8"
+                    ></nz-avatar>
+                  </nz-avatar-group>
+                </div>
+              </div>
+            </div>
+            <ng-template #profileContentTemplate>
+              <div class="profile-popover w-56 h-fit">
+                <app-meeting-detail [meetingDetail]="meetingDetail"></app-meeting-detail>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="flex-grow pr-5 flex flex-col h-full">
       <div class="header w-full py-3 pl-12">
         <div class="flex justify-between items-center">

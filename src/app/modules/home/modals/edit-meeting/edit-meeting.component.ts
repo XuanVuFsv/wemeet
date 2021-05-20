@@ -109,18 +109,6 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
       time_end: [null, [Validators.required]],
       tag: [null, [Validators.required]],
       team: [null, [Validators.required]]
-      // data_type: [this.data?.data_type, [Validators.required]],
-      // type: [+this.data?.type + '', [Validators.required]],
-      // protocol: [this.data?.protocol, [Validators.required]],
-      // host: [this.data?.receiver_protocol?.host],
-      // port: [this.data?.receiver_protocol?.port, [Validators.pattern(/^[0-9]+$/)]],
-      // folder: [this.data?.receiver_protocol?.folder],
-      // account: [this.data?.receiver_protocol?.account],
-      // user_id: [this.data?.receiver_protocol?.user_id],
-      // password: [this.data?.receiver_protocol?.password],
-      // key_file: [this.data?.receiver_protocol?.key_file],
-      // time_setting_type: [+this.data?.time_setting_type + ''],
-      // is_activated: [+this.data?.is_activated + '']
     });
   }
 
@@ -146,5 +134,12 @@ export class EditMeetingComponent implements OnInit, AfterViewInit {
   deleteFileSelect(index: number) {
     this.attachments.splice(index, 1);
     this.attachmentsView.splice(index, 1);
+  }
+
+  unselectMember(id: string) {
+    let index = this.editMeetingService.members.findIndex(member => member.id === id);
+    if (index > -1) {
+      this.editMeetingService.members.splice(index, 1);
+    }
   }
 }
