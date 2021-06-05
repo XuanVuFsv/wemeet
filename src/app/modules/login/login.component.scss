@@ -1,0 +1,32 @@
+.login-panel {
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.email .ant-input, .password .ant-input {
+    width: 500px;
+    height: 50px;
+    border-radius: 1.5rem;
+  }
+
+  .login.ant-btn-primary {
+    width: 100px;
+    height: 100px;
+    border-radius: 1.5rem;
+  }
+
+  .extra-login.ant-btn-primary {
+    width: 125px;
+    height: 50px;
+    border-radius: 0.75rem;
+    margin-left: 12px;
+  }
+
+  .brand {
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+  }

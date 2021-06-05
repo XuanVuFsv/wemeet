@@ -1,3 +1,52 @@
-<section id="app-login">
-  <p>login works!</p>
+<section id="app-login" class="bg-gradient-to-r from-teal-400 to-white h-full px-20 py-24">
+  <div class="flex h-full justify-center rounded-3xl border-green-900 border-4 bg-white">
+    <div class="w-1/2 object-contain">
+      <div class="justify-start text-black h-full -mr-10">
+        <div class="h-fit text-teal-400 font-extrabold text-4xl text-center">
+          <span class="inline-block align-middle text-center">Đăng nhập</span>
+        </div>
+        <div class="object-contain w-full flex flex-col overflow-y-auto justify-center items-center">
+          <div class="email pt-2">
+            <p class="font-bold pb-2">Email</p>
+            <input class="border-2 border-teal-200 hover:border-4 border-teal-400" nz-input />
+          </div>
+          <div class="password pt-2">
+            <p class="font-bold pb-2">Password</p>
+            <input class="border-1 border-teal-200 hover:border-4 border-teal-400" nz-input />
+            <label class="pt-4" nz-checkbox [(ngModel)]="checked" (click)="'RememberPassword()'">Nhớ mật khẩu</label>
+          </div>
+          <div class="flex flex-grow mt-5 justify-center mt-5">
+            <button class="extra-login bg-blue-600" nz-button nzType="primary">
+              <div class="brand bg-white rounded-2xl">
+                <img [routerLink]="['/']" class="cursor-pointer outline-none" [src]="facebook"/>
+              </div>
+            </button>
+            <button class="extra-login bg-white border-2 border-gray-500" nz-button nzType="primary">
+              <div class="brand bg-white rounded-2xl">
+                <img [routerLink]="['/']" class="cursor-pointer outline-none" [src]="google" />
+              </div>
+            </button>
+            <button class="extra-login bg-black" nz-button nzType="primary">
+              <div class="brand">
+                <img [routerLink]="['/']" class="cursor-pointer outline-none" [src]="apple" />
+              </div>
+            </button>
+          </div>
+          <div class="pb-10 flex-grow flex flex-row justify-center items-center">
+            <button class="login" nz-button nzType="primary">
+              <svg class="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+          </div>
+          <a class="flex-grow text-sm text-red-400 pb-2 hover:text-red-600 font-bold" href="/" style="font-size: 15px;">Quên mật khẩu</a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="login-panel flex flex-grow h-full rounded-3xl object-contain"
+      [ngStyle]="{'background-image': 'url(' + picture + ')'}">
+      <div class="w-full">
+        <img [routerLink]="['/']" class="flex-grow img-container cursor-pointer outline-none" [src]="logo" />
+      </div>
+    </div>
+  </div>
 </section>
