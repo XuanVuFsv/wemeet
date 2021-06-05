@@ -139,13 +139,22 @@
               </span>
             </div>
 
-            <ng-template #calendarSelect>
+            <ng-template #calendarSelect [ngSwitch]="selectedTypeTime">
               <nz-date-picker
+                *ngSwitchCase="'week'"
                 nzInline
                 nzMode="week"
                 nzDropdownClassName="calendar-select-week"
                 [(ngModel)]="weekSelect"
                 (ngModelChange)="goWeek('select')"
+              ></nz-date-picker>
+              <nz-date-picker
+                *ngSwitchCase="'month'"
+                nzInline
+                nzDropdownClassName="calendar-select-week"
+                nzMode="month"
+                [(ngModel)]="monthSelect"
+                (ngModelChange)="log()"
               ></nz-date-picker>
             </ng-template>
 
@@ -204,8 +213,9 @@
           </div>
         </div>
       </div>
-      <div class="calendar flex-grow h-0">
-        <app-week-layout [weekData]="weekData"></app-week-layout>
+      <div class="calendar flex-grow h-0" [ngSwitch]="selectedTypeTime">
+        <app-week-layout [weekData]="weekData" *ngSwitchCase="'week'"></app-week-layout>
+        <app-month-layout *ngSwitchCase="'month'"></app-month-layout>
       </div>
     </div>
   </div>

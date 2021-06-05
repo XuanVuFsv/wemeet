@@ -12,11 +12,12 @@ import { EditMeetingComponent } from './modals/edit-meeting/edit-meeting.compone
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
-  selectedTypeTime: string = 'day';
+  selectedTypeTime: string = 'month';
   weekName: string[] = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
   weekData: IDayOfWeek[] = [];
   datetimeTextView: string = '';
   weekSelect: Date = null;
+  monthSelect: Date = null;
   visibleCalendar: boolean = false;
   selectRoomMeeting: string = '';
   checkOptionsFilter = [
@@ -108,6 +109,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  setDatetimeTextViewMonth(month: Date): void {
+    this.datetimeTextView = 'Tháng ' + (dayjs(month).month() + 1) + ', ' + dayjs(month).year();
+  }
+
   createMeeting() {
     let title = 'Tạo mới cuộc họp';
     this.showModalEditMeeting(title);
@@ -137,5 +142,11 @@ export class HomeComponent implements OnInit {
       name: 'Thảo luận phương án thiết kế và công nghệ sử dụng'
     };
     this.meetingDetail = detail;
+  }
+
+  log() {
+    this.visibleCalendar = false;
+    console.log(this.monthSelect);
+    this.setDatetimeTextViewMonth(this.monthSelect);
   }
 }

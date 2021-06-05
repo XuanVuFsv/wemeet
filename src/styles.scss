@@ -41,12 +41,12 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-teal-400 rounded shadow-none;
+  @apply bg-teal-400 shadow-none;
 }
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: none;
-  @apply rounded bg-gray-100;
+  @apply bg-gray-100;
 }
 
 // ------------- 2. Common
