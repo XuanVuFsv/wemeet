@@ -1,0 +1,54 @@
+#app-month-layout {
+  .header,
+  .body {
+    .day {
+      width: calc(100% / 7);
+    }
+  }
+
+  .body {
+    .day-text {
+      bottom: -24px;
+      right: -24px;
+      .text {
+        top: 5px;
+        left: 6px;
+        font-size: 12px;
+        width: 16px;
+        text-align: center;
+      }
+    }
+
+    .day-hover.not-sunday {
+      @apply bg-primary text-white;
+    }
+    .day-hover.sunday {
+      @apply bg-red-400 text-white;
+    }
+
+    .day {
+      &:hover {
+        .day-text.not-sunday {
+          @apply bg-primary text-white;
+        }
+        .day-text.sunday {
+          @apply bg-red-400 text-white;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      ::-webkit-scrollbar-track {
+        @apply bg-white;
+      }
+    }
+  }
+
+  .meeting {
+    .w-075 {
+      width: 3px;
+    }
+  }
+}

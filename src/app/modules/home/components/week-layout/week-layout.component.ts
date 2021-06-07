@@ -13,7 +13,7 @@ export class WeekLayoutComponent implements OnInit {
   toDay: string = dayjs().format('YYYYMMDD');
   meetingDetail: any;
   rangeShow = {
-    start: 7,
+    start: 0,
     end: 18
   };
   hourArr = [
