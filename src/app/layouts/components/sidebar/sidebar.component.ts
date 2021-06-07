@@ -12,4 +12,10 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public isCollapsed = false;
+
+  public toggleCollapsed(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
 }
