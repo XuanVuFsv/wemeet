@@ -1,3 +1,4 @@
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { NzButtonSize } from 'ng-zorro-antd/button';
 
@@ -15,17 +16,32 @@ export class LoginComponent implements OnInit {
   apple = '../../assets/images/apple.png';
 
   size: NzButtonSize = 'large';
-  checked = false;
+
+  loginForm!: FormGroup;
+  passwordVisible: boolean = false;
 
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
 
-    function RememberPassword(){
-      this.checked = !this.checked;
-      console.log(this.checked);
-    }
+    this.initForm();
+  }
+
+  initForm() {
+    this.loginForm = this.formBuilder.group({
+      email: [''],
+      password: [''],
+      stayLogin: [false]
+    });
+  }
+
+  Login(): void {
+    console.log(this.loginForm.value);
+  }
+
+  StayLogin(): void{
+    console.log(this.loginForm.controls.stayLogin.value);
   }
 
 }
