@@ -1,6 +1,9 @@
+import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { NzButtonSize } from 'ng-zorro-antd/button';
+import { catchError } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +24,7 @@ export class LoginComponent implements OnInit {
   passwordVisible: boolean = false;
 
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
 
@@ -30,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   initForm() {
     this.loginForm = this.formBuilder.group({
-      email: [''],
+      username: [''],
       password: [''],
       stayLogin: [false]
     });
@@ -38,6 +41,12 @@ export class LoginComponent implements OnInit {
 
   Login(): void {
     console.log(this.loginForm.value);
+    this.authService.login(this.loginForm.value).pipe(catchError(err => {
+      console.log(err)
+      return EMPTY;
+    })).subscribe(result => {
+      console.log(result);
+    })
   }
 
   StayLogin(): void{

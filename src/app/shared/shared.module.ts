@@ -26,6 +26,9 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+
 import * as dayjs from 'dayjs';
 import * as updateLocale from 'dayjs/plugin/updateLocale';
 import 'dayjs/locale/vi';
@@ -79,6 +82,8 @@ const MODULES: any[] = [
   NzTableModule,
   NzPopconfirmModule,
   NzCheckboxModule,
+  NzMenuModule,
+  NzSwitchModule,
   DataModule.forRoot({ url: environment.apiUrl })
 ];
 

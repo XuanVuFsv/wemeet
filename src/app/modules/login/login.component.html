@@ -18,12 +18,12 @@
         </div>
         <div class="w-full flex justify-center p-5">
           <form nz-form nzLayout="vertical" [formGroup]="loginForm" class="w-96 h-fit" (ngSubmit)="Login()">
-            <!---- email ----->
+            <!---- Username ----->
             <div class="block">
-              <nz-form-label class="">Email</nz-form-label>
+              <nz-form-label class="">Username</nz-form-label>
               <nz-form-item>
                 <nz-form-control nzErrorTip="">
-                  <input formControlName="email" nz-input placeholder="Nhập email đăng nhập" />
+                  <input formControlName="username" nz-input placeholder="Nhập username đăng nhập" />
                 </nz-form-control>
               </nz-form-item>
             </div>
