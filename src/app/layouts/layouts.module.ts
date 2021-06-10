@@ -12,8 +12,6 @@ import { CoreModule } from '@app/core/core.module';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { SidebarModule } from './components/sidebar/sidebar.module';
 
 @NgModule({
   declarations: [AuthLayoutComponent, MainLayoutComponent, BlankLayoutComponent, NavbarComponent],
@@ -24,9 +22,7 @@ import { SidebarModule } from './components/sidebar/sidebar.module';
     SharedModule,
     CoreModule,
     NzBadgeModule,
-    NzPopoverModule,
-    NzGridModule,
-    SidebarModule
+    NzPopoverModule
   ],
   exports: [AuthLayoutComponent, MainLayoutComponent, BlankLayoutComponent, NavbarComponent]
 })
