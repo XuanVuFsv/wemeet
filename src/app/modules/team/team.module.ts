@@ -6,6 +6,10 @@ import { TeamRoutingModule } from './team.routing';
 
 @NgModule({
   declarations: [TeamComponent],
-  imports: [CommonModule, SharedModule, TeamRoutingModule]
+  imports: [
+    CommonModule,
+    SharedModule,
+    TeamRoutingModule,
+  ]
 })
-export class TeamModule {}
+export class TeamModule { }
