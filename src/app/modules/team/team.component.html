@@ -1,55 +1,134 @@
-<section id="app-team" class="h-full">
-  <div class="flex h-full pb-5">
-    <div class="w-96 bg-gray-200">
-        <div class="rounded h-full py-4 px-2">
-          <div class="h-fit mb-4 px-2">
-            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-              <input type="text" nz-input placeholder="" />
-            </nz-input-group>
-            <ng-template #suffixIconButton>
-              <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+<section id="app-team" class="h-fit">
+  <div class="flex h-full">
+    <div class="w-96 h-full">
+      <div class="rounded fixed w-96 h-full py-4 px-2 border-2 pb-36 bg-gray-200">
+        <div class="h-full px-2">
+          <button class="w-full text-left" nz-button nzType="primary" [nzSize]="'large'"><i nz-icon nzType="plus-circle"
+              nzTheme="twotone"></i>Thêm nhóm</button>
+          <nz-input-group nzSearch>
+            <input type="text" nz-input placeholder="Nhập tên nhóm cần tìm kiếm" />
+          </nz-input-group>
+          <div class="h-full overflow-x-hidden">
+            <nz-tabset [nzSelectedIndex]="currentTeamGroup" class="mb-8">
+              <nz-tab nzTitle="Nhóm của tôi">
+                <ul class="h-full">
+                  <ng-container *ngTemplateOutlet="menuTpl; context: { data: menus[0].children, tab: 0 }">
+                  </ng-container>
+                </ul>
+              </nz-tab>
+              <nz-tab nzTitle="Nhóm tôi tham gia">
+                <ul class="h-full">
+                  <ng-container *ngTemplateOutlet="menuTpl; context: { data: menus[1].children, tab: 1 }">
+                  </ng-container>
+                </ul>
+              </nz-tab>
+            </nz-tabset>
+
+            <div class="fixed bottom-0">
+              <button nz-button nzType="primary" [nzSize]="'default'" (click)="ChangeTeamGroup()"><i nz-icon
+                  nzType="swap"></i>{{menus[currentTeamGroup].title}}</button>
+            </div>
+
+            <ng-template #menuTpl let-menus="data" let-tab="tab">
+              <ng-container *ngFor="let menu of menus">
+                <li [nzPaddingLeft]="menu.level * 24" [nzDisabled]="menu.disabled" [nzSelected]="menu.selected"
+                  class="border-2 border-teal-700 bg-gray-100 mt-3 cursor-pointer hover:bg-teal-400">
+                  <div class="teamtag flex items-center" (click)="LoadTeamInfor(tab, menus.indexOf(menu))">
+                    <i [class]="menu.bg_color" class="p-5 rounded-full mr-2" nz-icon [nzType]="menu.icon"
+                      *ngIf="menu.icon"></i>
+                    <div>
+                      <div>
+                        <span class="text-red-500 font-semibold text-base">{{ menu.title }}</span>
+                      </div>
+                      <div class="hover: text-black">
+                        {{menu.memCount}} thành viên
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ng-container>
             </ng-template>
 
-            <ul nz-menu nzMode="inline" class="w-full">
-              <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
-              <ng-template #menuTpl let-menus>
-                <ng-container *ngFor="let menu of menus">
-                  <li
-                    *ngIf="!menu.children"
-                    nz-menu-item
-                    [nzPaddingLeft]="menu.level * 24"
-                    [nzDisabled]="menu.disabled"
-                    [nzSelected]="menu.selected"
-                  >
-                    <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
-                    <span>{{ menu.title }}</span>
-                  </li>
-                  <li
-                    *ngIf="menu.children"
-                    nz-submenu
-                    [nzPaddingLeft]="menu.level * 24"
-                    [nzOpen]="menu.open"
-                    [nzTitle]="menu.title"
-                    [nzIcon]="menu.icon"
-                    [nzDisabled]="menu.disabled"
-                  >
-                    <ul>
-                      <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
-                    </ul>
-                  </li>
-                </ng-container>
-              </ng-template>
-            </ul>
-
-          </div>
-
-          <div class="list-meeting flex-grow overflow-y-auto px-2">
-
+            <!-- <ul nz-menu nzMode="inline" class="w-full h-fit">
+                <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
+                <ng-template #menuTpl let-menus>
+                  <ng-container *ngFor="let menu of menus">
+                    <li
+                      *ngIf="!menu.children"
+                      nz-menu-item
+                      [nzPaddingLeft]="menu.level * 24"
+                      [nzDisabled]="menu.disabled"
+                      [nzSelected]="menu.selected"
+                      class="h-full border-2 border-teal-700 bg-gray-100"
+                    >
+                    <div class="teamtag flex items-center" (click)="LoadTeamInfor(menus.indexOf(menu))">
+                        <i [class]="menu.bg_color" class="p-5 rounded-full" 
+                        nz-icon [nzType]="menu.icon"
+                        *ngIf="menu.icon"></i>
+                        <div>
+                          <div>
+                            <span class="text-red-500 font-semibold text-base">{{ menu.title }}</span>
+                          </div>
+                          <div class="hover: text-black">
+                            {{menu.memCount}} thành viên
+                        </div>
+                      </div>
+                    </div>
+                    </li>
+                    <li
+                      *ngIf="menu.children"
+                      nz-submenu
+                      [nzPaddingLeft]="menu.level * 24"
+                      [nzOpen]="menu.open"
+                      [nzTitle]="menu.title"
+                      [nzIcon]="menu.icon"
+                      [nzDisabled]="menu.disabled"
+                      class="font-semibold text-lg"
+                    >
+                      <ul>
+                        <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
+                      </ul>
+                    </li>
+                  </ng-container>
+                </ng-template>
+              </ul> -->
           </div>
         </div>
+      </div>
     </div>
-    <div class="flex-grow pr-5 flex flex-col h-full">
-      
+    <div class="flex-grow h-full">
+      <!-- <button nz-button nzType="primary" class="flex items-center fixed" (click)="createMeeting()">
+          <i nz-icon nzType="plus"></i>Tạo Cuộc Họp
+        </button> -->
+
+      <div class="w-full bg-blue-400 mb-5">
+        <div class="flex justify-between items-center mx-5 mt-4">
+          <div class="teamtag flex items-center">
+            <i [class]="menus[currentTeamGroupSelected].children[currentTeamSelected].bg_color"
+            class="p-8 rounded-full mr-2"
+            nz-icon [nzType]="menus[currentTeamGroupSelected].children[currentTeamSelected].icon"
+            style="font-size: 32px"
+              *ngIf="menus[currentTeamGroupSelected].children[currentTeamSelected].icon"></i>
+            <div class="basic-infor">
+              <div>
+                <span class="text-red-500 font-semibold text-lg">{{ menus[currentTeamGroupSelected].children[currentTeamSelected].title }}</span>
+              </div>
+              <div class="hover: text-black">
+                {{menus[currentTeamGroupSelected].children[currentTeamSelected].memCount}} thành viên
+              </div>
+            </div>
+          </div>
+          <button nz-button nzType="primary" nzDanger>Xóa nhóm</button>
+        </div>
+      </div>
+
+      <div class="detail-infor w-full flex bg-yellow-200">
+        <div class="block w-1/2">
+            <p>Ngày tạo: </p>
+            <p>Mô tả về team: </p>
+        </div>
+        <p>Số cuộc họp: <span class=""></span></p>
+      </div>
     </div>
   </div>
 </section>
