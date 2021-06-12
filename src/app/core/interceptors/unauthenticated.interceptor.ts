@@ -26,7 +26,7 @@ export class UnauthenticatedInterceptor implements HttpInterceptor {
         if (err.status === 401) {
           this.authService.removeCurrentUser();
           this.router.navigateByUrl('/login');
-          return throwError(err);
+          return EMPTY;
         }
         return throwError(err);
       })

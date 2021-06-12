@@ -22,7 +22,8 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     BrowserAnimationsModule,
     LayoutsModule,
     CoreModule,
-    LoadingBarModule
+    LoadingBarModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
