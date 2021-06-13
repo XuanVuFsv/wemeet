@@ -118,16 +118,23 @@
               </div>
             </div>
           </div>
-          <button nz-button nzType="primary" nzDanger>Xóa nhóm</button>
+          <button [class.hidden]="role != 'admin'" nz-button nzType="primary" nzDanger>Xóa nhóm</button>
         </div>
       </div>
-
-      <div class="detail-infor w-full flex bg-yellow-200">
-        <div class="block w-1/2">
-            <p>Ngày tạo: </p>
-            <p>Mô tả về team: </p>
+      <div class="detail-infor w-full flex justify-between bg-yellow-200 pl-5">
+        <div class="block" style="max-width: 480px;">
+            <p><span class="font-bold text-base">Ngày tạo: </span>{{GetCurrentDate()}}</p>
+            <p class="font-normal" style="word-break:break-all;"><span class="font-bold text-base">Mô tả về team: </span>{{menus[currentTeamGroupSelected].children[currentTeamSelected].describe}}</p>
+            <!-- <p  class="font-bold text-base" style="word-break:break-all;">Mô tả về team: <span class="font-normal">{{menus[currentTeamGroupSelected].children[currentTeamSelected].describe}}</span></p> -->
         </div>
-        <p>Số cuộc họp: <span class=""></span></p>
+        <div class="w-1/2">
+          <p><span class="font-bold text-base">Số cuộc họp: </span>{{menus[currentTeamGroupSelected].children[currentTeamSelected].memCount}}</p>
+        </div>
+      </div>
+      <div class="list-meeting-user w-full bg-pink-200">
+        <div class="list-meeting">
+
+        </div>
       </div>
     </div>
   </div>

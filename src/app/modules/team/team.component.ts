@@ -1,6 +1,7 @@
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { EditMeetingComponent } from '../home/modals/edit-meeting/edit-meeting.component';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-team',
@@ -14,6 +15,8 @@ export class TeamComponent implements OnInit, AfterViewInit {
   currentTeamGroup = 0;
   currentTeamGroupSelected = 0;
   currentTeamSelected = 0;
+  
+  role = 'admin';
 
 
   menus = [
@@ -31,6 +34,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 15,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 0 ',
           open: false,
           selected: false,
           disabled: false
@@ -41,6 +45,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 20,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 1',
           selected: true,
           disabled: false
         },
@@ -50,6 +55,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 10,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 2',
           selected: false,
           disabled: false
         },
@@ -59,6 +65,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 14,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 3',
           selected: false,
           disabled: false
         },
@@ -68,6 +75,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 23,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 4',
           selected: false,
           disabled: false
         },
@@ -77,6 +85,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 24,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 5',
           selected: false,
           disabled: false
         },
@@ -86,18 +95,19 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 17,
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team Android',
-          icon: 'user',
-          bg_color: this.RandomColor(),
-          memCount: 10,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 6',
           selected: false,
           disabled: false
         }
+        // {
+        //   level: 2,
+        //   title: 'Team Android',
+        //   icon: 'user',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 10,
+        //   selected: false,
+        //   disabled: false
+        // }
       ]
     },
     {
@@ -114,6 +124,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'team',
           bg_color: this.RandomColor(),
           memCount: 32,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 1',
           selected: false,
           disabled: false
         },
@@ -123,6 +134,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'team',
           bg_color: this.RandomColor(),
           memCount: 25,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 2',
           selected: false,
           disabled: false
         },
@@ -132,6 +144,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'team',
           bg_color: this.RandomColor(),
           memCount: 25,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 3',
           selected: false,
           disabled: false
         },
@@ -139,56 +152,57 @@ export class TeamComponent implements OnInit, AfterViewInit {
           level: 2,
           title: 'Team BA',
           icon: 'team',
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 4',
           bg_color: this.RandomColor(),
           memCount: 15,
           selected: false,
           disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team Tester',
-          icon: 'team',
-          bg_color: this.RandomColor(),
-          memCount: 32,
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team Sound',
-          icon: 'team',
-          bg_color: this.RandomColor(),
-          memCount: 25,
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team Effect',
-          icon: 'team',
-          bg_color: this.RandomColor(),
-          memCount: 17,
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team UE4',
-          icon: 'team',
-          bg_color: this.RandomColor(),
-          memCount: 20,
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team Designer',
-          icon: 'team',
-          bg_color: this.RandomColor(),
-          memCount: 25,
-          selected: false,
-          disabled: false
         }
+        // {
+        //   level: 2,
+        //   title: 'Team Tester',
+        //   icon: 'team',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 32,
+        //   selected: false,
+        //   disabled: false
+        // },
+        // {
+        //   level: 2,
+        //   title: 'Team Sound',
+        //   icon: 'team',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 25,
+        //   selected: false,
+        //   disabled: false
+        // },
+        // {
+        //   level: 2,
+        //   title: 'Team Effect',
+        //   icon: 'team',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 17,
+        //   selected: false,
+        //   disabled: false
+        // },
+        // {
+        //   level: 2,
+        //   title: 'Team UE4',
+        //   icon: 'team',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 20,
+        //   selected: false,
+        //   disabled: false
+        // },
+        // {
+        //   level: 2,
+        //   title: 'Team Designer',
+        //   icon: 'team',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 25,
+        //   selected: false,
+        //   disabled: false
+        // }
       ]
     }
   ];
@@ -196,6 +210,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
   constructor(private modalService: NzModalService, ) { }
 
   ngOnInit(): void {
+    // this.role ='admin';
     console.log(this.menus);
   }
 
@@ -203,6 +218,10 @@ export class TeamComponent implements OnInit, AfterViewInit {
     
   }
   
+  GetCurrentDate(): any {
+    
+    return dayjs().format('DD/MM/YYYY HH[ giờ ]MM[ phút]');
+  }
 
   RandomColor(): string {
     let valColor = (Math.floor(Math.random() * 9) + 1) * 100;
