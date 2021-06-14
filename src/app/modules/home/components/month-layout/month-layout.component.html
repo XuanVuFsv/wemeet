@@ -1,0 +1,80 @@
+<section id="app-month-layout" class="flex flex-col h-full">
+  <div class="header">
+    <div class="flex flex-row bg-tealCustom-100 py-2 rounded-t-md pr-1.5">
+      <div *ngFor="let day of dayOfWeek; let last = last" class="day text-center">
+        <p class="uppercase text-sm font-semibold" [class.text-red-400]="last">{{ day }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="body flex-grow h-0 overflow-y-auto border-l border-tealCustom-100">
+    <div
+      *ngFor="let week of monthData"
+      class="week flex flex-row h-20 bg-white border-b border-tealCustom-100"
+    >
+      <div
+        *ngFor="let dayData of week.data; let last = last"
+        class="day h-20 border-r border-tealCustom-100 relative overflow-hidden"
+      >
+        <div
+          *ngIf="dayData.day"
+          class="
+            day-text
+            absolute
+            border border-tealCustom-100
+            w-12
+            h-12
+            text-primary
+            rounded-full
+            z-30
+          "
+          [ngClass]="{
+            'text-red-400 sunday': last,
+            'text-primary not-sunday': !last,
+            'day-hover': dayData.schedule.length
+          }"
+        >
+          <div class="absolute text font-semibold">{{ dayData.day }}</div>
+        </div>
+        <div class="overflow-y-auto h-full">
+          <ng-container *ngFor="let meeting of dayData.schedule">
+            <div
+              class="meeting h-auto rounded-b opacity-70 bg-tealCustom-100 flex mb-1"
+              nz-popover
+              nzPopoverTrigger="click"
+              [nzPopoverContent]="detailMeetingTemplate"
+              nzPopoverPlacement="left"
+              [nzPopoverMouseEnterDelay]="0.5"
+              (click)="changeMeetingDetail(meeting)"
+            >
+              <div class="w-075 h-auto pt-1" [class]="'bg-' + meeting.color + '-400'"></div>
+              <div class="flex-grow w-0 border-b border-trueGray-200">
+                <div class="header flex px-2 text-xs items-center h-fit">
+                  <div class="time flex-grow text-trueGray-400">
+                    {{ meeting.start_time }} - {{ meeting.end_time }}
+                  </div>
+                  <div class="status w-3 h-full text-right">
+                    <nz-badge
+                      nzStatus="processing"
+                      nz-tooltip
+                      nzTooltipPlacement="top"
+                      nzTooltipTitle="đang diễn ra"
+                      [nzTooltipMouseEnterDelay]="0.8"
+                    ></nz-badge>
+                  </div>
+                </div>
+                <div class="name text-trueGray-500 text-xs px-2 pb-1 font-semibold">
+                  {{ meeting.name }}
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <ng-template #detailMeetingTemplate>
+      <div class="profile-popover w-56 h-fit">
+        <app-meeting-detail [meetingDetail]="meetingDetail"></app-meeting-detail>
+      </div>
+    </ng-template>
+  </div>
+</section>

@@ -19,7 +19,15 @@
 @import 'custom';
 @import 'font-open-sans';
 
-// @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+/**
+ * Menu style common app
+ * 1. Global
+ * 2. Common
+ * 3. Custom Antd
+ * 4. ....
+ */
+
+// ------------- 1. Global
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -47,18 +55,16 @@ a:hover {
   background-color: rgb(238, 238, 238);
 }
 
-// ::-webkit-scrollbar-corner {
-//   background: rgb(0 0 0 / 0%);
-// }
-
 ::-webkit-scrollbar-thumb {
-  @apply bg-teal-400 rounded shadow-none;
+  @apply bg-teal-400 shadow-none;
 }
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: none;
-  @apply rounded bg-gray-100;
+  @apply bg-gray-100;
 }
+
+// ------------- 2. Common
 
 .transformXY-50 {
   transform: translate(-50%, -50%);
@@ -78,4 +84,66 @@ a:hover {
 
 .w-fit {
   width: fit-content;
+}
+
+// ------------- 3. Custom Antd
+
+.ant-modal-close:focus,
+.ant-modal-close:hover {
+  outline: none;
+}
+
+.ant-form-item-explain-error {
+  div {
+    margin-top: 6px;
+  }
+}
+
+.custom-pagination-nz {
+  .pagination-btn-first,
+  .pagination-btn-end {
+    display: block;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 12px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    outline: 0;
+    transition: all 0.3s;
+
+    min-width: 32px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &:hover {
+      color: #1890ff;
+      border: 1px solid #1890ff;
+    }
+  }
+
+  .pagination-btn-first {
+    margin-right: 8px;
+  }
+
+  .pagination-btn-end {
+    margin-left: 8px;
+  }
+
+  .pagination-btn-disabled {
+    &:hover {
+      color: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+    color: rgba(0, 0, 0, 0.25);
+    cursor: not-allowed;
+  }
+}
+
+.ant-table-column-sorter-full {
+  line-height: 1;
 }

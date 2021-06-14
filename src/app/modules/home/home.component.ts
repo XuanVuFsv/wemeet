@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as dayjs from 'dayjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { IDayOfWeek } from './home.repository';
+import { EditMeetingComponent } from './modals/edit-meeting/edit-meeting.component';
 // import * as customParseFormat from 'dayjs/plugin/customParseFormat';
 
 @Component({
@@ -10,14 +12,32 @@ import { IDayOfWeek } from './home.repository';
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
-  selectedTypeTime: string = 'day';
+  selectedTypeTime: string = 'month';
   weekName: string[] = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
   weekData: IDayOfWeek[] = [];
   datetimeTextView: string = '';
   weekSelect: Date = null;
+  monthSelect: Date = null;
   visibleCalendar: boolean = false;
+  selectRoomMeeting: string = '';
+  checkOptionsFilter = [
+    { label: 'của tôi', value: 'me' },
+    { label: 'của team tôi', value: 'my_team' }
+  ];
+  selectTag: string = '';
+  selectFilter: string = '';
+  members = [
+    '../../assets/images/avatar/avatar1.png',
+    '../../assets/images/avatar/avatar2.png',
+    '../../assets/images/avatar/avatar3.png',
+    '../../assets/images/avatar/avatar4.png',
+    '../../assets/images/avatar/avatar5.png',
+    '../../assets/images/avatar/avatar6.png'
+  ];
+  listMeeting = [0, 1, 2, 3, 4, 5, 6];
+  meetingDetail: any;
 
-  constructor() {}
+  constructor(private modalService: NzModalService) {}
 
   ngOnInit(): void {
     this.goWeek();
@@ -89,7 +109,44 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  onOk(e) {
-    console.log(e);
+  setDatetimeTextViewMonth(month: Date): void {
+    this.datetimeTextView = 'Tháng ' + (dayjs(month).month() + 1) + ', ' + dayjs(month).year();
+  }
+
+  createMeeting() {
+    let title = 'Tạo mới cuộc họp';
+    this.showModalEditMeeting(title);
+  }
+
+  showModalEditMeeting(title: string) {
+    this.modalService.create({
+      nzTitle: title,
+      nzContent: EditMeetingComponent,
+      nzMaskClosable: false,
+      nzClosable: true,
+      nzWidth: '500px',
+      nzBodyStyle: { maxHeight: '80vh', paddingTop: '12px', overflow: 'auto' },
+      nzStyle: { paddingBottom: '0' },
+      nzCentered: true,
+      nzComponentParams: {},
+      nzFooter: null
+    });
+  }
+
+  showMeetingDetail() {
+    let detail = {
+      start: 'Tue May 11 2021 15:00:00 GMT+0700 (Indochina Time)',
+      end: 'Tue May 11 2021 15:30:00 GMT+0700 (Indochina Time)',
+      minute_of_day: 900,
+      meeting_time: 30,
+      name: 'Thảo luận phương án thiết kế và công nghệ sử dụng'
+    };
+    this.meetingDetail = detail;
+  }
+
+  log() {
+    this.visibleCalendar = false;
+    console.log(this.monthSelect);
+    this.setDatetimeTextViewMonth(this.monthSelect);
   }
 }

@@ -12,6 +12,14 @@
   }
 }
 
-.ant-select-dropdown {
+.ant-select-dropdown-placement-bottomLeft {
   @apply border border-t-0 border-teal-500 rounded-b shadow-none -mt-1 pt-1;
+}
+
+.ant-select-dropdown-placement-topLeft {
+  @apply border border-b-0 border-teal-500 rounded-t shadow-none -mb-1 pb-1;
+}
+
+.ant-select-item-option {
+  @apply items-center;
 }

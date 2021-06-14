@@ -1,0 +1,19 @@
+#app-edit-meeting {
+  .avatar:hover {
+    &::after {
+      content: '✕';
+      @apply bg-black bg-opacity-40 text-sm top-0 left-0 absolute w-full h-full;
+    }
+  }
+}
+
+.edit-meeting__time {
+  .ant-picker-footer {
+    display: none;
+  }
+}
+
+.select-user {
+  width: 600px;
+  height: 450px;
+}

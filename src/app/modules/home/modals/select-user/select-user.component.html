@@ -1,0 +1,121 @@
+<section id="app-select-user" class="py-1">
+  <div class="flex items-center mb-4">
+    <form
+      nz-form
+      [formGroup]="filterForm"
+      class="form-filter flex items-center w-full flex-nowrap gap-x-4"
+      nzLayout="horizontal"
+      (keyup.enter)="keywordFilterChange()"
+    >
+      <div class="w-1/2">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input
+            formControlName="keyword"
+            type="text"
+            nz-input
+            placeholder="Nhập tên thành viên cần tìm..."
+          />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i
+            nz-icon
+            nzType="search"
+            nzTheme="outline"
+            (click)="keywordFilterChange()"
+            [nzTooltipMouseEnterDelay]="0.8"
+            nz-tooltip
+            nzTooltipTitle="Tìm kiếm"
+          ></i>
+        </ng-template>
+      </div>
+      <div class="w-1/2">
+        <nz-select
+          nzPlaceHolder="Lọc theo team"
+          [nzOptionHeightPx]="36"
+          formControlName="team"
+          id="select_"
+          class="w-full"
+        >
+          <nz-option
+            *ngFor="let team of listTeam"
+            [nzValue]="team.value"
+            [nzLabel]="team.label"
+          ></nz-option>
+        </nz-select>
+      </div>
+    </form>
+  </div>
+
+  <nz-table
+    [nzData]="rows"
+    [nzTotal]="total"
+    [nzLoading]="isLoading"
+    [nzShowPagination]="false"
+    (nzQueryParams)="sortChange($event)"
+    nzBordered
+    [nzScroll]="{ y: '300px' }"
+    nzSize="small"
+  >
+    <thead>
+      <tr>
+        <th nzColumnKey="name" [nzSortFn]="true">Tên</th>
+        <th nzWidth="200px">Chức vụ</th>
+        <th nzWidth="80px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of rows; let i = index">
+        <td>
+          <nz-avatar nzIcon="user" [nzSrc]="data.avatar" class="mr-1"></nz-avatar> {{ data.name }}
+        </td>
+        <td>
+          {{ data.role }}
+        </td>
+        <td class="text-center">
+          <a
+            *ngIf="!data.selected"
+            class="text-primary text-link hover:underline cursor-pointer"
+            (click)="selectMember(data)"
+            >Thêm</a
+          >
+          <a
+            *ngIf="data.selected"
+            [class]="i === 0 ? 'hidden' : ''"
+            class="text-red-500 hover:text-red-500 text-link hover:underline"
+            (click)="unselectMember(data.id)"
+            >Bỏ chọn</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="custom-pagination-nz flex w-full content-center justify-center mt-4">
+    <div class="flex">
+      <button
+        *ngIf="total"
+        class="ant-pagination-item-link pagination-btn-first"
+        [class.pagination-btn-disabled]="pageIndex === 1"
+        [disabled]="pageIndex === 1"
+        (click)="gotoFirstPage()"
+      >
+        <<
+      </button>
+      <!-- <nz-pagination
+          #tableTempRef
+          [nzPageIndex]="pageIndex"
+          [nzPageSize]="pageSize"
+          [nzTotal]="total"
+        ></nz-pagination> -->
+      <button
+        *ngIf="total"
+        class="ant-pagination-item-link pagination-btn-end"
+        [class.pagination-btn-disabled]="pageIndex === totalPages"
+        [disabled]="pageIndex === totalPages"
+        (click)="gotoEndPage()"
+      >
+        >>
+      </button>
+    </div>
+  </div>
+</section>

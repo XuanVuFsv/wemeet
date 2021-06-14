@@ -22,4 +22,4 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     MeetingModule
   ]
 })
-export class UserManagementModule { }
+export class UserManagementModule {}
