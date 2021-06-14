@@ -8,6 +8,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { MeetingDetailModule } from '../../modals/meeting-detail/meeting-detail.module';
 
 
 
@@ -21,7 +22,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
     NzButtonModule,
     NzIconModule,
     NzTableModule,
-    NzDropDownModule
+    NzDropDownModule,
+    MeetingDetailModule
   ],
   exports: [
     MeetingComponent
