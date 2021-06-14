@@ -1,1 +1,91 @@
-<p>room works!</p>
+<section id="pending">
+    <div class="px-4">
+        <div nz-row class="header w-full py-4">
+            <div nz-row class="filter-action w-full">
+                <div nz-col nzSpan="12" class="px-4">
+                    <h5 class="font-bold mt-2">
+                        Tòa nhà / văn phòng
+                    </h5>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <nz-select nzPlaceHolder="Lọc theo trạng thái" class="w-full" ngModel="lucy">
+                        <nz-option *ngFor="let option of teams" [nzValue]="option.id" [nzLabel]="option.name"></nz-option>
+                      </nz-select>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <button class="w-full" nz-button nzType="primary">
+                        <i nz-icon nzType="plus"></i>
+                        Thêm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div nz-row class="content py-4">
+            <div nz-col nzSpan="24" class="px-4">
+                <nz-table #basicTable [nzData]="listOfData" nzShowSizeChanger>
+                    <thead>
+                        <tr>
+                            <th>Tên tòa nhà / văn phòng</th>
+                            <th>Địa chỉ</th>
+                            <th [nzSortFn]="true">Ngày tạo</th>
+                            <th>Số phòng họp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data">
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.nickname }}</td>
+                            <td>{{ data.role }}</td>
+                            <td>{{ data.auth }}</td>                           
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="priority">
+    <div class="px-4">
+        <div nz-row class="header w-full py-4">
+            <div nz-row class="filter-action w-full">
+                <div nz-col nzSpan="18" class="px-4">
+                    <h5 class="font-bold mt-2">
+                        Phòng họp
+                    </h5>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <button class="w-full" nz-button nzType="primary">
+                        <i nz-icon nzType="plus"></i>
+                        Thêm phòng
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div nz-row class="content py-4">
+            <div nz-col nzSpan="24" class="px-4">
+                <nz-table #basicTable [nzData]="listOfData" nzShowSizeChanger>
+                    <thead>
+                        <tr>
+                            <th>Người tạo</th>
+                            <th>Lý do</th>
+                            <th>Cuộc họp bị ảnh hưởng</th>
+                            <th [nzSortFn]="true">Thời gian tạo</th>
+                            <th>Tình trạng</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data">
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.nickname }}</td>
+                            <td>{{ data.role }}</td>
+                            <td>{{ data.auth }}</td>
+                            <td>{{ data.team }}</td>
+                            <td>{{ data.date }}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</section>

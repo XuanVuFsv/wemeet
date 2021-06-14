@@ -3,9 +3,9 @@
         <div nz-row class="header w-full py-4">
             <div nz-row class="filter-action w-full">
                 <div nz-col nzSpan="6" class="px-4">
-                   <h5 class="font-bold mt-2">
-                       Cuộc họp chờ duyệt
-                   </h5>
+                    <h5 class="font-bold mt-2">
+                        Cuộc họp chờ duyệt
+                    </h5>
                 </div>
                 <div nz-col nzSpan="6" class="px-4">
                     <nz-input-group [nzSuffix]="suffixIconSearch">
@@ -49,7 +49,23 @@
                             <td>{{ data.role }}</td>
                             <td>{{ data.auth }}</td>
                             <td>{{ data.team }}</td>
-                            <td>{{ data.date }}</td>
+                            <td>
+                                <a nz-dropdown [nzDropdownMenu]="menu">
+                                    ...
+                                </a>
+                                <nz-dropdown-menu #menu="nzDropdownMenu">
+                                    <ul nz-menu nzSelectable>
+                                        <li class="text-red-500" nz-menu-item>
+                                            <i nz-icon nzType="delete" nzTheme="outline"></i>
+                                            Xóa
+                                        </li>
+                                        <li nz-menu-item>
+                                            <i nz-icon nzType="edit" nzTheme="outline"></i>
+                                            Sửa
+                                        </li>
+                                    </ul>
+                                </nz-dropdown-menu>
+                            </td>
                         </tr>
                     </tbody>
                 </nz-table>
@@ -62,9 +78,9 @@
         <div nz-row class="header w-full py-4">
             <div nz-row class="filter-action w-full">
                 <div nz-col nzSpan="12" class="px-4">
-                   <h5 class="font-bold mt-2">
-                       Yêu cầu nhường phòng họp
-                   </h5>
+                    <h5 class="font-bold mt-2">
+                        Yêu cầu nhường phòng họp
+                    </h5>
                 </div>
                 <div nz-col nzSpan="6" class="px-4">
                     <nz-input-group [nzSuffix]="suffixIconSearch">
@@ -88,11 +104,11 @@
                     <thead>
                         <tr>
                             <th>Người tạo</th>
-                            <th>Tên cuộc họp</th>
-                            <th>Team</th>
+                            <th>Lý do</th>
+                            <th>Cuộc họp bị ảnh hưởng</th>
                             <th [nzSortFn]="true">Thời gian tạo</th>
-                            <th>Duyệt</th>
-                            <th>Xóa</th>
+                            <th>Tình trạng</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
