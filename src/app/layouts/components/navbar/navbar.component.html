@@ -97,7 +97,49 @@
         <i nz-icon nzType="down" class="text-tiny mr-2" nzTheme="outline"></i>
       </div>
       <ng-template #profileContentTemplate>
-        <div class="profile-popover w-56 h-64">Setting</div>
+        <div class="profile-popover w-72 h-64 flex flex-col">
+          <div class="flex-grow h-0">
+            <div class="font-semibold text-trueGray-800">Cài đặt</div>
+            <div class="text-trueGray-500 flex items-center w-full py-1">
+              <span class="w-fit">lịch tuần hiển thị từ: </span>
+              <nz-slider
+                class="flex-grow w-0 ml-6"
+                nzRange
+                [(ngModel)]="weekHourShow"
+                [nzTipFormatter]="hourTipFormatter"
+                [nzMin]="0"
+                [nzMax]="24"
+              ></nz-slider>
+            </div>
+            <div class="text-trueGray-500 flex items-center w-full py-1">
+              <span class="w-fit">nhận thông báo trước cuộc họp: </span>
+              <nz-switch
+                [(ngModel)]="getNotifications"
+                nzSize="small"
+                class="flex-grow flex w-0 justify-end"
+              ></nz-switch>
+            </div>
+            <div *ngIf="getNotifications" class="text-trueGray-500 flex items-center w-full py-1">
+              <span class="flex-grow w-0">nhận thông báo trước: </span>
+              <nz-input-number
+                class="flex w-24 justify-end"
+                [(ngModel)]="timeBeforeSendNoti"
+                [nzMin]="5"
+                [nzMax]="180"
+                [nzStep]="5"
+                [nzFormatter]="formatterHour"
+                [nzParser]="parserHour"
+                nzSize="small"
+              ></nz-input-number>
+            </div>
+          </div>
+          <div class="flex h-fit items-center justify-center">
+            <button (click)="saveSetting()" class="mr-4" nz-button nzType="default">
+              Lưu cài đặt
+            </button>
+            <button nz-button nzType="link">Đăng xuất</button>
+          </div>
+        </div>
       </ng-template>
     </div>
   </div>

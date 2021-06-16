@@ -28,8 +28,8 @@
             z-30
           "
           [ngClass]="{
-            'text-red-400 sunday': last,
-            'text-primary not-sunday': !last,
+            'text-red-400 sunday': dayData.dayOfWeek === 6,
+            'text-primary not-sunday': dayData.dayOfWeek !== 6,
             'day-hover': dayData.schedule.length
           }"
         >
