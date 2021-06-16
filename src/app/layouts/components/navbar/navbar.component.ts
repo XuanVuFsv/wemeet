@@ -9,11 +9,24 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class NavbarComponent implements OnInit {
   logo = '../../assets/images/logo/logo.png';
   avatar = '../../assets/images/avatar.png';
-  username = '';
+  hourTipFormatter = (value: number) => `${value} giờ`;
+  parserHour = (value: string) => value.replace(' phút', '');
+  formatterHour = (value: number) => `${value} phút`;
+  weekHourShow: number[] = [0, 24];
+  getNotifications: boolean = true;
+  timeBeforeSendNoti: number = 30;
+  username: string = '';
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.username = this.authService.getCurrentUser().user.email;
+  }
+  changeHourStart(hourStart: any) {}
+
+  saveSetting() {
+    console.log(this.weekHourShow);
+    console.log(this.getNotifications);
+    console.log(this.timeBeforeSendNoti);
   }
 }

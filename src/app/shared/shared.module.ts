@@ -29,6 +29,9 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 import * as dayjs from 'dayjs';
 import * as updateLocale from 'dayjs/plugin/updateLocale';
@@ -85,6 +88,9 @@ const MODULES: any[] = [
   NzCheckboxModule,
   NzTabsModule,
   NzPaginationModule,
+  NzInputNumberModule,
+  NzSliderModule,
+  NzSwitchModule,
   DataModule.forRoot({ url: environment.apiUrl })
 ];
 
