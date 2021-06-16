@@ -14,7 +14,7 @@ export class WeekLayoutComponent implements OnInit {
   meetingDetail: any;
   rangeShow = {
     start: 0,
-    end: 18
+    end: 24
   };
   hourArr = [
     '00:00',
