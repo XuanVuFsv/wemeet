@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -14,11 +15,13 @@ export class NavbarComponent implements OnInit {
   weekHourShow: number[] = [0, 24];
   getNotifications: boolean = true;
   timeBeforeSendNoti: number = 30;
+  username: string = '';
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {}
-
+  ngOnInit(): void {
+    this.username = this.authService.getCurrentUser().user.email;
+  }
   changeHourStart(hourStart: any) {}
 
   saveSetting() {

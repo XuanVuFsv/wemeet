@@ -25,7 +25,13 @@ import {
   FileUnknownOutline,
   FileTextOutline,
   FileZipOutline,
-  ExclamationCircleFill
+  AppleOutline,
+  EyeInvisibleOutline,
+  SettingOutline,
+  GoogleOutline,
+  FacebookOutline,
+  PlusCircleTwoTone,
+  
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -52,7 +58,12 @@ const icons = [
   FileUnknownOutline,
   FileTextOutline,
   FileZipOutline,
-  ExclamationCircleFill
+  AppleOutline,
+  EyeInvisibleOutline,
+  SettingOutline,
+  GoogleOutline,
+  FacebookOutline,
+  PlusCircleTwoTone
 ];
 
 @NgModule({

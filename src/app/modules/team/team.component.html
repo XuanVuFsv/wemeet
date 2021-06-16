@@ -1,3 +1,223 @@
-<section id="app-team">
-  <p>team works!</p>
+<section id="app-team" class="bg-blueGray-50 h-full -mt-16 pt-16">
+  <div class="flex h-full pb-5">
+    <div class="w-96 pt-5 px-5">
+      <div class="bg-white rounded py-4 px-2 flex flex-col h-full">
+        <nz-input-group nzSearch class="px-2">
+          <input type="text" nz-input placeholder="Nhập tên nhóm cần tìm kiếm" />
+        </nz-input-group>
+        <div class="flex-grow h-0 flex flex-col">
+          <nz-tabset [nzSelectedIndex]="currentTeamGroup" class="mb-4 h-0 flex-grow">
+            <nz-tab nzTitle="Nhóm của tôi" (nzClick)="ChangeTeamGroup(0)">
+              <ul class="overflow-y-auto px-2 h-full">
+                <ng-container
+                  *ngTemplateOutlet="menuTpl; context: { data: menus[0].children, tab: 0 }"
+                >
+                </ng-container>
+              </ul>
+            </nz-tab>
+            <nz-tab nzTitle="Nhóm tôi tham gia" (nzClick)="ChangeTeamGroup(1)">
+              <ul class="overflow-y-auto px-2 h-full">
+                <ng-container
+                  *ngTemplateOutlet="menuTpl; context: { data: menus[1].children, tab: 1 }"
+                >
+                </ng-container>
+              </ul>
+            </nz-tab>
+            <ng-template #menuTpl let-menus="data" let-tab="tab">
+              <ng-container *ngFor="let menu of menus; let first = first">
+                <li
+                  [nzPaddingLeft]="menu.level * 24"
+                  [nzDisabled]="menu.disabled"
+                  [nzSelected]="menu.selected"
+                  class="bg-blueGray-100 cursor-pointer hover:bg-blueGray-200 py-1"
+                  [class.mt-2]="!first"
+                >
+                  <div
+                    class="teamtag flex items-center"
+                    (click)="LoadTeamInfor(tab, menus.indexOf(menu))"
+                  >
+                    <i
+                      [class]="menu.bg_color"
+                      class="p-5 rounded-full mr-4"
+                      nz-icon
+                      [nzType]="menu.icon"
+                      *ngIf="menu.icon"
+                    ></i>
+                    <div>
+                      <div>
+                        <span class="text-black font-extrabold text-base">{{ menu.title }}</span>
+                      </div>
+                      <div class="hover: text-black">{{ menu.memCount }} thành viên</div>
+                    </div>
+                  </div>
+                </li>
+              </ng-container>
+            </ng-template>
+          </nz-tabset>
+          <button nz-button nzType="primary" class="h-fit">Tạo nhóm</button>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col flex-grow w-0 pt-5 pr-5">
+      <div class="bg-white p-4 mb-5 h-fit">
+        <div class="flex justify-between items-center">
+          <div class="teamtag flex items-center">
+            <i
+              [class]="menus[currentTeamGroupSelected].children[currentTeamSelected].bg_color"
+              class="p-8 rounded-full mr-5"
+              nz-icon
+              [nzType]="menus[currentTeamGroupSelected].children[currentTeamSelected].icon"
+              style="font-size: 20px"
+              *ngIf="menus[currentTeamGroupSelected].children[currentTeamSelected].icon"
+            ></i>
+            <div class="basic-infor">
+              <div>
+                <span class="text-black font-extrabold text-lg">{{
+                  menus[currentTeamGroupSelected].children[currentTeamSelected].title
+                }}</span>
+              </div>
+              <div class="hover: text-black">
+                {{ menus[currentTeamGroupSelected].children[currentTeamSelected].memCount }} thành
+                viên
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-5">
+            <button [class.hidden]="role != 'admin'" nz-button nzType="primary">Chỉnh sửa</button>
+            <button
+              class="border-1 border-teal-400"
+              [class.hidden]="role != 'admin'"
+              nz-button
+              nzType="default"
+            >
+              Xóa nhóm
+            </button>
+          </div>
+        </div>
+        <div class="detail-infor w-full flex justify-between py-4">
+          <div class="block w-4/6" style="max-width: 480px">
+            <p><span class="font-bold text-base">Ngày tạo: </span>{{ GetCurrentDate() }}</p>
+            <p class="font-normal" style="word-break: break-all">
+              <span class="font-bold text-base">Mô tả về team: </span
+              >{{ menus[currentTeamGroupSelected].children[currentTeamSelected].describe }}
+            </p>
+          </div>
+          <div class="w-2/6 pl-7">
+            <p><span class="font-bold text-base">Số cuộc họp: </span>{{ currentTotalMeeting }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-grow h-0">
+        <div class="w-4/6 pr-5">
+          <div class="bg-white h-full w-full">
+            <div>
+              <button class="text-left" nz-button nzType="primary" [nzSize]="'default'">
+                <i nz-icon nzType="plus"></i>Thêm cuộc họp
+              </button>
+              <div class="w-full flex">
+                <div class="w-1/2 mr-2">
+                  <ng-container
+                    *ngTemplateOutlet="
+                      meetingtpl;
+                      context: { data: meetingData, indexes: [0, 1, 2] }
+                    "
+                  >
+                  </ng-container>
+                  <!-- Phân trang ở đây thì được dựa trên totalMeeting của obj nằm trong arr children thuộc arr menus. Do đang test nên khác nhau giữa phân trang và số cuộc họp hiển thị -->
+                  <!-- <nz-pagination
+                    [nzPageSize]="meetingPageSize"
+                    [nzPageIndex]="1"
+                    [nzTotal]="
+                      menus[currentTeamGroupSelected].children[currentTeamSelected].totalMeeting
+                    "
+                    [nzItemRender]="renderItemTemplate"
+                  ></nz-pagination> -->
+                </div>
+                <div class="w-1/2">
+                  <ng-container
+                    *ngTemplateOutlet="
+                      meetingtpl;
+                      context: { data: meetingData, indexes: [3, 4, 5] }
+                    "
+                  >
+                  </ng-container>
+                </div>
+              </div>
+              <ng-template #meetingtpl let-data="data" let-indexes="indexes">
+                <ng-container *ngFor="let index of indexes">
+                  <!-- <div class="border-2 border-gray-200 cursor-pointer hover:bg-gray-400"> -->
+                  <div
+                    *ngIf="data[index]"
+                    class="
+                      meeting
+                      my-3
+                      py-1
+                      px-3
+                      bg-white
+                      hover:bg-blueGray-100
+                      rounded
+                      cursor-pointer
+                      text-trueGray-500 text-sm
+                    "
+                  >
+                    <div class="name font-semibold text-sm">
+                      Phân tích thực trạng công ty cho dự án
+                    </div>
+                    <div class="time flex pt-1 items-center">
+                      <div class="w-6 text-left flex items-center">
+                        <i nz-icon nzType="calendar" nzTheme="outline" class="text-teal-500"></i>
+                      </div>
+                      <div class="flex-grow flex items-center">
+                        <div class="flex-grow">12:00 - 21-12-2021</div>
+                        <div class="w-fit text-xs text-trueGray-400">(còn 1 ngày 12 giờ)</div>
+                      </div>
+                    </div>
+                    <div class="tag pt-1">
+                      <nz-tag [nzColor]="'#f50'">#f50</nz-tag>
+                      <nz-tag [nzColor]="'#2db7f5'">#2db7f5</nz-tag>
+                    </div>
+                    <div class="team flex pt-1 items-center">
+                      <div class="w-6 text-left flex items-center">
+                        <i nz-icon nzType="team" nzTheme="outline" class="text-teal-500"></i>
+                      </div>
+                      <div class="w-fit">13 người</div>
+                      <div class="flex-grow flex items-center justify-end">
+                        <nz-avatar-group>
+                          <nz-avatar
+                            *ngFor="let member of members"
+                            nzIcon="user"
+                            nzSize="small"
+                            [nzSrc]="member"
+                            nz-tooltip
+                            nzTooltipPlacement="top"
+                            nzTooltipTitle="tên nhân viên"
+                            [nzTooltipMouseEnterDelay]="0.8"
+                          >
+                          </nz-avatar>
+                          <nz-avatar
+                            class="bg-primary text-white text-base"
+                            nzText="+2"
+                            nzSize="small"
+                            nz-tooltip
+                            nzTooltipPlacement="top"
+                            nzTooltipTitle="tên nv 1, tên nv 2"
+                            [nzTooltipMouseEnterDelay]="0.8"
+                          >
+                          </nz-avatar>
+                        </nz-avatar-group>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </ng-container>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="flex-grow w-0">
+          <div class="bg-white h-full w-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

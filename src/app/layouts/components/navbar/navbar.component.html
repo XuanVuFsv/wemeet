@@ -1,4 +1,4 @@
-<section id="app-navbar" class="h-16 bg-white border-b border-gray-100 fixed w-full">
+<section id="app-navbar" class="h-16 bg-white border-b border-gray-100 fixed w-full z-50">
   <div class="h-full flex items-center justify-between px-4">
     <div class="w-48">
       <img [routerLink]="['/']" class="w-40 cursor-pointer outline-none" [src]="logo" />
@@ -91,7 +91,7 @@
           [nzSrc]="avatar"
         ></nz-avatar>
         <div class="flex-grow mr-2">
-          <div class="text-gray-700 text-sm font-semibold">Đức Duy</div>
+          <div class="text-gray-700 text-sm font-semibold">{{username}}</div>
           <div class="text-gray-400 text-xs">Admin</div>
         </div>
         <i nz-icon nzType="down" class="text-tiny mr-2" nzTheme="outline"></i>
