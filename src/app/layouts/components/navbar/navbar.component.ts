@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -8,8 +9,12 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class NavbarComponent implements OnInit {
   logo = '../../assets/images/logo/logo.png';
   avatar = '../../assets/images/avatar.png';
+  username = '';
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.username = this.authService.getCurrentUser().user.email;
+  }
 }

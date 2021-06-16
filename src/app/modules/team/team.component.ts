@@ -17,7 +17,13 @@ export class TeamComponent implements OnInit, AfterViewInit {
   currentTeamSelected = 0;
   
   role = 'admin';
+  meetingPageSize = 6;
+  userPageSize = 5;
 
+  currentTotalMeeting = 0;
+
+  meetingData = [1, 2, 3, 4 ];
+  
 
   menus = [
     {
@@ -34,6 +40,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 15,
+          totalMeeting: 10,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 0 ',
           open: false,
           selected: false,
@@ -45,6 +52,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 20,
+          totalMeeting: 8,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 1',
           selected: true,
           disabled: false
@@ -55,6 +63,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 10,
+          totalMeeting: 15,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 2',
           selected: false,
           disabled: false
@@ -65,6 +74,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 14,
+          totalMeeting: 10,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 3',
           selected: false,
           disabled: false
@@ -75,6 +85,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 23,
+          totalMeeting: 12,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 4',
           selected: false,
           disabled: false
@@ -85,20 +96,39 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'user',
           bg_color: this.RandomColor(),
           memCount: 24,
+          totalMeeting: 10,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 5',
           selected: false,
           disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team VFX',
-          icon: 'user',
-          bg_color: this.RandomColor(),
-          memCount: 17,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 6',
-          selected: false,
-          disabled: false
         }
+        // {
+        //   level: 2,
+        //   title: 'Team VFX',
+        //   icon: 'user',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 17,
+        //   describe: 'Wemeet: Quản lý cuộc họp của bạn 6',
+        //   selected: false,
+        //   disabled: false
+        // },
+        // {
+        //   level: 2,
+        //   title: 'Team Android',
+        //   icon: 'user',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 10,
+        //   selected: false,
+        //   disabled: false
+        // },
+        // {
+        //   level: 2,
+        //   title: 'Team Android',
+        //   icon: 'user',
+        //   bg_color: this.RandomColor(),
+        //   memCount: 10,
+        //   selected: false,
+        //   disabled: false
+        // },
         // {
         //   level: 2,
         //   title: 'Team Android',
@@ -124,6 +154,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'team',
           bg_color: this.RandomColor(),
           memCount: 32,
+          totalMeeting: 4,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 1',
           selected: false,
           disabled: false
@@ -134,6 +165,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'team',
           bg_color: this.RandomColor(),
           memCount: 25,
+          totalMeeting: 7,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 2',
           selected: false,
           disabled: false
@@ -144,6 +176,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           icon: 'team',
           bg_color: this.RandomColor(),
           memCount: 25,
+          totalMeeting: 11,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 3',
           selected: false,
           disabled: false
@@ -152,6 +185,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
           level: 2,
           title: 'Team BA',
           icon: 'team',
+          totalMeeting: 24,
           describe: 'Wemeet: Quản lý cuộc họp của bạn 4',
           bg_color: this.RandomColor(),
           memCount: 15,
@@ -206,12 +240,52 @@ export class TeamComponent implements OnInit, AfterViewInit {
       ]
     }
   ];
+  users = [
+    {
+      username: 'abc',
+      email: 'abc@gmail.com',
+      role: 'staff',
+      avatar: ''
+    },
+    {
+      username: 'abc',
+      email: 'abc@gmail.com',
+      role: 'staff',
+      avatar: ''
+    },
+    {
+      username: 'abc',
+      email: 'abc@gmail.com',
+      role: 'staff',
+      avatar: ''
+    },
+    {
+      username: 'abc',
+      email: 'abc@gmail.com',
+      role: 'staff',
+      avatar: ''
+    },
+    {
+      username: 'abc',
+      email: 'abc@gmail.com',
+      role: 'staff',
+      avatar: ''
+    }
+  ];
+  members = [
+    '../../assets/images/avatar/avatar1.png',
+    '../../assets/images/avatar/avatar2.png',
+    '../../assets/images/avatar/avatar3.png',
+    '../../assets/images/avatar/avatar4.png',
+    '../../assets/images/avatar/avatar5.png',
+    '../../assets/images/avatar/avatar6.png'
+  ];
 
   constructor(private modalService: NzModalService, ) { }
 
   ngOnInit(): void {
     // this.role ='admin';
-    console.log(this.menus);
+    this.currentTotalMeeting = this.menus[0].children[0].totalMeeting;
   }
 
   ngAfterViewInit() {
@@ -232,7 +306,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
   LoadTeamInfor(tab, index): void {
     this.currentTeamGroupSelected = tab;
     this.currentTeamSelected = index;
-    console.log(tab + ' ' + index);
+    this.currentTotalMeeting = this.menus[tab].children[index].totalMeeting;
   }
 
   createMeeting() {
@@ -240,8 +314,13 @@ export class TeamComponent implements OnInit, AfterViewInit {
     this.showModalEditMeeting(title);
   }
 
-  ChangeTeamGroup(): void {
-    this.currentTeamGroup = this.currentTeamGroup == 0 ? 1:0;
+  ChangeTeamGroup(tab): void {
+    if (tab != 3)
+    {
+      this.currentTeamGroup = tab;
+    }
+    else this.currentTeamGroup = this.currentTeamGroup == 0 ? 1:0;
+    console.log(this.currentTeamGroup);
   }
 
   showModalEditMeeting(title: string) {

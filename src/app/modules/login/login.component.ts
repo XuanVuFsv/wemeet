@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
   passwordVisible: boolean = false;
 
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
 
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
 
   initForm() {
     this.loginForm = this.formBuilder.group({
-      username: [''],
+      email: [''],
       password: [''],
       stayLogin: [false]
     });
@@ -41,11 +42,13 @@ export class LoginComponent implements OnInit {
 
   Login(): void {
     console.log(this.loginForm.value);
+    delete this.loginForm.value.stayLogin;
     this.authService.login(this.loginForm.value).pipe(catchError(err => {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
       console.log(result);
+      this.router.navigateByUrl('/');
     })
   }
 

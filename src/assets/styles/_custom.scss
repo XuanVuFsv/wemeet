@@ -27,3 +27,6 @@
 .ant-tabs-tab {
   width: 100%;
 }
+.ant-tabs > .ant-tabs-nav .ant-tabs-nav-operations, .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-operations {
+  display: none;
+}
