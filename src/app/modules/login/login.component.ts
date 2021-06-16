@@ -2,7 +2,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { NzButtonSize } from 'ng-zorro-antd/button';
 import { catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 
@@ -18,8 +17,6 @@ export class LoginComponent implements OnInit {
   google = '../../assets/images/google.png';
   facebook = '../../assets/images/facebook.png';
   apple = '../../assets/images/apple.png';
-
-  size: NzButtonSize = 'large';
 
   loginForm!: FormGroup;
   passwordVisible: boolean = false;

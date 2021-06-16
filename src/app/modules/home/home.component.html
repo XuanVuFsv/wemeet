@@ -1,7 +1,8 @@
 <section id="app-home" class="bg-blueGray-50 h-full -mt-16 pt-16">
   <div class="flex h-full pb-5">
     <div class="w-96">
-        <div class="bg-white rounded h-full py-4 px-2">
+      <div class="h-full w-full px-5 pt-5">
+        <div class="bg-white rounded h-full py-4 px-2 flex flex-col">
           <div class="filter h-fit mb-4 px-2">
             <nz-select
               nzPlaceHolder="Chọn phòng họp"
@@ -113,6 +114,7 @@
             </ng-template>
           </div>
         </div>
+      </div>
     </div>
     <div class="flex-grow pr-5 flex flex-col h-full">
       <div class="header w-full py-3 pl-12">
@@ -163,7 +165,7 @@
                 nzTheme="outline"
                 nz-tooltip
                 nzTooltipPlacement="left"
-                nzTooltipTitle="tuần trước"
+                [nzTooltipTitle]="selectedTypeTime === 'month' ? 'tháng trước' : 'tuần trước'"
                 [nzTooltipMouseEnterDelay]="0.8"
                 class="
                   px-2
@@ -180,7 +182,7 @@
                 nzTheme="outline"
                 nz-tooltip
                 nzTooltipPlacement="right"
-                nzTooltipTitle="tuần sau"
+                [nzTooltipTitle]="selectedTypeTime === 'month' ? 'tháng sau' : 'tuần sau'"
                 [nzTooltipMouseEnterDelay]="0.8"
                 class="
                   px-2
@@ -198,10 +200,10 @@
               nzPlaceHolder="Kiểu hiển thị"
               [nzOptionHeightPx]="36"
               [(ngModel)]="selectedTypeTime"
+              (ngModelChange)="changeView($event)"
               id="select_"
               class="mr-4 w-36"
             >
-              <nz-option nzValue="day" nzLabel="Ngày"></nz-option>
               <nz-option nzValue="week" nzLabel="Tuần"></nz-option>
               <nz-option nzValue="month" nzLabel="Tháng"></nz-option>
             </nz-select>
@@ -213,7 +215,7 @@
       </div>
       <div class="calendar flex-grow h-0" [ngSwitch]="selectedTypeTime">
         <app-week-layout [weekData]="weekData" *ngSwitchCase="'week'"></app-week-layout>
-        <app-month-layout *ngSwitchCase="'month'"></app-month-layout>
+        <app-month-layout [monthSelect]="monthSelect" *ngSwitchCase="'month'"></app-month-layout>
       </div>
     </div>
   </div>

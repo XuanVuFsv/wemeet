@@ -1,5 +1,5 @@
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EditMeetingComponent } from '../home/modals/edit-meeting/edit-meeting.component';
 import * as dayjs from 'dayjs';
 
@@ -8,7 +8,7 @@ import * as dayjs from 'dayjs';
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss']
 })
-export class TeamComponent implements OnInit, AfterViewInit {
+export class TeamComponent implements OnInit {
 
   colorList = ['red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
   heightTeamTag = 'h-auto';
@@ -22,7 +22,7 @@ export class TeamComponent implements OnInit, AfterViewInit {
 
   currentTotalMeeting = 0;
 
-  meetingData = [1, 2, 3, 4 ];
+  meetingData = [1, 2, 3, 4, 5];
   
 
   menus = [
@@ -100,44 +100,44 @@ export class TeamComponent implements OnInit, AfterViewInit {
           describe: 'Wemeet: Quản lý cuộc họp của bạn 5',
           selected: false,
           disabled: false
+        },
+        {
+          level: 2,
+          title: 'Team VFX',
+          icon: 'user',
+          bg_color: this.RandomColor(),
+          memCount: 17,
+          describe: 'Wemeet: Quản lý cuộc họp của bạn 6',
+          selected: false,
+          disabled: false
+        },
+        {
+          level: 2,
+          title: 'Team Android',
+          icon: 'user',
+          bg_color: this.RandomColor(),
+          memCount: 10,
+          selected: false,
+          disabled: false
+        },
+        {
+          level: 2,
+          title: 'Team Android',
+          icon: 'user',
+          bg_color: this.RandomColor(),
+          memCount: 10,
+          selected: false,
+          disabled: false
+        },
+        {
+          level: 2,
+          title: 'Team Android',
+          icon: 'user',
+          bg_color: this.RandomColor(),
+          memCount: 10,
+          selected: false,
+          disabled: false
         }
-        // {
-        //   level: 2,
-        //   title: 'Team VFX',
-        //   icon: 'user',
-        //   bg_color: this.RandomColor(),
-        //   memCount: 17,
-        //   describe: 'Wemeet: Quản lý cuộc họp của bạn 6',
-        //   selected: false,
-        //   disabled: false
-        // },
-        // {
-        //   level: 2,
-        //   title: 'Team Android',
-        //   icon: 'user',
-        //   bg_color: this.RandomColor(),
-        //   memCount: 10,
-        //   selected: false,
-        //   disabled: false
-        // },
-        // {
-        //   level: 2,
-        //   title: 'Team Android',
-        //   icon: 'user',
-        //   bg_color: this.RandomColor(),
-        //   memCount: 10,
-        //   selected: false,
-        //   disabled: false
-        // },
-        // {
-        //   level: 2,
-        //   title: 'Team Android',
-        //   icon: 'user',
-        //   bg_color: this.RandomColor(),
-        //   memCount: 10,
-        //   selected: false,
-        //   disabled: false
-        // }
       ]
     },
     {

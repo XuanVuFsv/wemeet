@@ -2,14 +2,14 @@
   <div class="flex h-full">
     <div class="w-96 h-full">
       <div class="rounded w-96 h-full py-4 px-2 pb-36 bg-white">
-        <div class="fixed h-full w-96 pr-4">
+        <div class="h-full w-96 pr-4">
           <div class="h-full px-2">
             <nz-input-group nzSearch>
               <input type="text" nz-input placeholder="Nhập tên nhóm cần tìm kiếm" />
             </nz-input-group>
-            <button class="w-full text-left" nz-button nzType="primary" [nzSize]="'large'"><i nz-icon
-                nzType="plus-circle" nzTheme="twotone"></i>Thêm nhóm</button>
-            <div class="h-full overflow-x-hidden">
+            <!-- <button class="w-full text-left" nz-button nzType="primary" [nzSize]="'large'"><i nz-icon
+                nzType="plus-circle" nzTheme="twotone"></i>Thêm nhóm</button> -->
+            <div class="tab-box">
               <nz-tabset [nzSelectedIndex]="currentTeamGroup" class="mb-8">
                 <nz-tab nzTitle="Nhóm của tôi" (nzClick)="ChangeTeamGroup(0)">
                   <ul class="h-full">
@@ -25,10 +25,10 @@
                 </nz-tab>
               </nz-tabset>
 
-              <div class="fixed bottom-0">
+              <!-- <div class="fixed bottom-0">
                 <button nz-button nzType="primary" [nzSize]="'default'" (click)="ChangeTeamGroup(3)"><i nz-icon
                     nzType="swap"></i>{{menus[currentTeamGroup].title}}</button>
-              </div>
+              </div> -->
 
               <ng-template #menuTpl let-menus="data" let-tab="tab">
                 <ng-container *ngFor="let menu of menus">
@@ -99,8 +99,7 @@
         <span class="font-bold text-lg">Cuộc họp của team</span>
         <div class="list-meeting-user w-full flex mt-2 mb-10">
           <div class="w-4/6 list-meeting">
-            <button class="text-left" nz-button nzType="primary" [nzSize]="'default'"><i nz-icon nzType="plus-circle"
-                nzTheme="twotone"></i>Thêm cuộc họp</button>
+            <button class="text-left" nz-button nzType="primary" [nzSize]="'default'"><i nz-icon nzType="plus"></i>Thêm cuộc họp</button>
             <div class="w-full flex">
               <div class="w-1/2 mr-2">
                 <ng-container *ngTemplateOutlet="meetingtpl; context: { data: meetingData, indexes: [0,1,2] }">
@@ -116,12 +115,11 @@
               </div>
             </div>
           </div>
-          <div class="list-user ml-7">
-            <button class="text-left" nz-button nzType="primary" [nzSize]="'default'"><i nz-icon nzType="plus-circle"
-                nzTheme="twotone"></i>Thêm thành viên</button>
+          <div class="list-user ml-7 -mr-5">
+            <button class="text-left" nz-button nzType="primary" [nzSize]="'default'"><i nz-icon nzType="plus"></i>Thêm thành viên</button>
                 <ng-container *ngTemplateOutlet="usertpl; context: { users: users }">
                 </ng-container>
-                <nz-pagination [nzPageSize]="userPageSize" [nzPageIndex]="1"
+                <nz-pagination class="mt-10" [nzPageSize]="userPageSize" [nzPageIndex]="1" 
                 [nzTotal]="menus[currentTeamGroupSelected].children[currentTeamSelected].memCount"
                 [nzItemRender]="renderItemTemplate"></nz-pagination>
           </div>
@@ -189,12 +187,12 @@
 
         <ng-template #usertpl let-users="users">
           <ng-container *ngFor="let user of users">
-            <div class="bg-blueGray-100 mt-3 cursor-pointer hover:bg-blueGray-200 py-2">
+            <div class="bg-white mt-3 cursor-pointer hover:bg-blueGray-100 py-2">
               <div class="teamtag flex items-center">
-                <i class="p-4 bg-teal-400 rounded-full mr-4" nz-icon nzType="user"></i>
-                <div>
+                <i class="p-3 bg-teal-400 rounded-full mr-4" nz-icon nzType="user"></i>
+                <div class="flex w-full">
                   <div>
-                    <span class="text-black font-extrabold text-base">{{ user.username }}</span>
+                    <span class="text-black font-extrabold text-base mr-10">{{ user.username }}</span>
                   </div>
                   <div class="hover: text-black">
                     {{ user.role }}

@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   weekData: IDayOfWeek[] = [];
   datetimeTextView: string = '';
   weekSelect: Date = null;
-  monthSelect: Date = null;
+  monthSelect: Date = new Date();
   visibleCalendar: boolean = false;
   selectRoomMeeting: string = '';
   checkOptionsFilter = [
@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.goWeek();
+    this.setDatetimeTextViewMonth(new Date());
   }
 
   getWeek(startDay: dayjs.Dayjs): IDayOfWeek[] {
@@ -76,25 +77,39 @@ export class HomeComponent implements OnInit {
 
   goWeek(action: string = '') {
     this.visibleCalendar = false;
-    let startDayCurrent = this.weekData[0]?.datetime;
-    let startDay: dayjs.Dayjs;
-    switch (action) {
-      case 'next':
-        startDay = startDayCurrent.add(7, 'day');
-        break;
-      case 'prev':
-        startDay = startDayCurrent.subtract(7, 'day');
-        break;
-      case 'select':
-        startDay = dayjs(this.weekSelect).startOf('week');
-        break;
-      default:
-        startDay = dayjs().startOf('week');
-        break;
-    }
+    if (this.selectedTypeTime === 'month') {
+      switch (action) {
+        case 'next':
+          this.monthSelect = dayjs(this.monthSelect).add(1, 'month').toDate();
+          break;
+        case 'prev':
+          this.monthSelect = dayjs(this.monthSelect).subtract(1, 'month').toDate();
+          break;
+        default:
+          break;
+      }
+      this.setDatetimeTextViewMonth(this.monthSelect);
+    } else {
+      let startDayCurrent = this.weekData[0]?.datetime;
+      let startDay: dayjs.Dayjs;
+      switch (action) {
+        case 'next':
+          startDay = startDayCurrent.add(7, 'day');
+          break;
+        case 'prev':
+          startDay = startDayCurrent.subtract(7, 'day');
+          break;
+        case 'select':
+          startDay = dayjs(this.weekSelect).startOf('week');
+          break;
+        default:
+          startDay = dayjs().startOf('week');
+          break;
+      }
 
-    this.weekData = this.getWeek(startDay);
-    this.setDatetimeTextView(this.weekData);
+      this.weekData = this.getWeek(startDay);
+      this.setDatetimeTextView(this.weekData);
+    }
   }
 
   setDatetimeTextView(weekData: IDayOfWeek[]): void {
@@ -142,6 +157,16 @@ export class HomeComponent implements OnInit {
       name: 'Thảo luận phương án thiết kế và công nghệ sử dụng'
     };
     this.meetingDetail = detail;
+  }
+
+  changeView(value) {
+    if (value === 'week') {
+      let startDay: dayjs.Dayjs = dayjs().startOf('week');
+      this.weekData = this.getWeek(startDay);
+      this.setDatetimeTextView(this.weekData);
+    } else {
+      this.setDatetimeTextViewMonth(new Date());
+    }
   }
 
   log() {
