@@ -36,7 +36,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
     data: { title: 'Trang chủ' }
   }
