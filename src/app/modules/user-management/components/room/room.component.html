@@ -54,7 +54,7 @@
                     </h5>
                 </div>
                 <div nz-col nzSpan="6" class="px-4">
-                    <button class="w-full" nz-button nzType="primary">
+                    <button (click)="addMeetingRoom()" class="w-full" nz-button nzType="primary">
                         <i nz-icon nzType="plus"></i>
                         Thêm phòng
                     </button>
@@ -88,4 +88,8 @@
             </div>
         </div>
     </div>
+
+    <ng-container>
+        <app-new-meeting-room (modalEvent) ="closeModal($event)" [isVisible]="isVisible"></app-new-meeting-room>
+    </ng-container>
 </section>

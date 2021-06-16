@@ -1,3 +1,4 @@
+import { NewMeetingRoomModule } from './../../modals/new-meeting-room/new-meeting-room.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoomComponent } from './room.component';
@@ -21,7 +22,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
     NzButtonModule,
     NzIconModule,
     NzTableModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NewMeetingRoomModule
   ],
   exports: [
     RoomComponent

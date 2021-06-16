@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class RoomComponent implements OnInit {
 
   public listOfData;
+  public isVisible: boolean;
 
   public room = [
     {
@@ -42,6 +43,16 @@ export class RoomComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public addMeetingRoom(): void {
+    this.isVisible = true;
+  }
+
+  public closeModal(e: Event): void {
+    if (e) {
+      this.isVisible = false;
+    }
   }
 
 }
