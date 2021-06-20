@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class RoomComponent implements OnInit {
 
   public listOfData;
-  public isVisible: boolean;
+  public roomVisibility: boolean;
+  public buildingVisibility: boolean;
 
   public room = [
     {
@@ -46,12 +47,17 @@ export class RoomComponent implements OnInit {
   }
 
   public addMeetingRoom(): void {
-    this.isVisible = true;
+    this.roomVisibility = true;
+  }
+
+  public addBuilding(): void {
+    this.buildingVisibility = true;
   }
 
   public closeModal(e: Event): void {
     if (e) {
-      this.isVisible = false;
+      this.roomVisibility = false;
+      this.buildingVisibility = false;
     }
   }
 

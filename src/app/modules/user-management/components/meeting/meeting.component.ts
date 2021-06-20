@@ -48,4 +48,10 @@ export class MeetingComponent implements OnInit {
     this.isVisible = true;
   }
 
+  public closeModal(e: Event): void {
+    if (e) {
+      this.isVisible = false;
+    }
+  }
+
 }

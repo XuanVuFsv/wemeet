@@ -29,7 +29,7 @@
           </div>
         </div>
         <div nz-col nzSpan="4" class="px-4">
-          <button class="w-full" nz-button nzType="primary">
+          <button (click)="addEmployee()" class="w-full" nz-button nzType="primary">
             <i nz-icon nzType="plus"></i>
             Thêm nhân viên
           </button>
@@ -82,4 +82,8 @@
         </div>
       </div>
     </div>
+
+    <ng-container>
+      <app-new-employee (modalEvent)="closeModal($event)" [isVisible]="userVisibility"></app-new-employee>
+    </ng-container>
   </section>

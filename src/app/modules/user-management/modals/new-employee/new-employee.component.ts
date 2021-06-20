@@ -14,7 +14,7 @@ export class NewEmployeeComponent implements OnInit {
   @Output() modalEvent = new EventEmitter<string>();
   public newEmployeeForm: any;
   public loading = false;
-  public avatarUrl?: string;
+  public avatarUrl?: any;
   constructor(
     private formBuilder: FormBuilder,
     private msg: NzMessageService
@@ -50,10 +50,12 @@ export class NewEmployeeComponent implements OnInit {
     });
   };
 
-  private getBase64(img: File, callback: (img: string) => void): void {
+  private getBase64(img: File): void {
     const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result!.toString()));
     reader.readAsDataURL(img);
+    reader.onload = (event) => {
+      this.avatarUrl = event.target.result;
+    }
   }
 
   public onChange(info: { file: NzUploadFile }): void {
@@ -63,10 +65,7 @@ export class NewEmployeeComponent implements OnInit {
         break;
       case 'done':
         // Get this url from response in real world.
-        this.getBase64(info.file!.originFileObj!, (img: string) => {
-          this.loading = false;
-          this.avatarUrl = img;
-        });
+        this.getBase64(info.file!.originFileObj!)
         break;
       case 'error':
         this.msg.error('Network error');

@@ -1,3 +1,4 @@
+import { NewEmployeeModule } from './../../modals/new-employee/new-employee.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './user.component';
@@ -21,7 +22,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
     NzButtonModule,
     NzIconModule,
     NzTableModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NewEmployeeModule
   ],
   exports: [
     UserComponent

@@ -22,6 +22,8 @@ enum Status {
 })
 export class UserComponent implements OnInit {
 
+  public userVisibility: boolean;
+
   public role = [
     {
       id: 1,
@@ -133,6 +135,16 @@ export class UserComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public addEmployee(): void {
+    this.userVisibility = true;
+  }
+
+  public closeModal(e: Event): void {
+    if (e) {
+      this.userVisibility = false;
+    }
   }
 
 }

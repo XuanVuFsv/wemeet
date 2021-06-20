@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-meeting-detail',
@@ -8,6 +8,11 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 export class MeetingDetailComponent implements OnInit {
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
   @Input() isVisible: boolean;
+  @Output() modalEvent = new EventEmitter<string>();
+
+  tags = ['Tag 1', 'Tag 2', 'Tag 3'];
+  inputVisible = false;
+  inputValue = '';
 
   constructor() { }
 
@@ -15,11 +20,8 @@ export class MeetingDetailComponent implements OnInit {
   }
 
   public handleCancel(): void {
-    this.isVisible = false;
+   this.modalEvent.emit('true');
   }
-  tags = ['Tag 1', 'Tag 2', 'Tag 3'];
-  inputVisible = false;
-  inputValue = '';
 
   handleClose(removedTag: {}): void {
     this.tags = this.tags.filter(tag => tag !== removedTag);

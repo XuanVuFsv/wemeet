@@ -9,11 +9,12 @@
                 </div>
                 <div nz-col nzSpan="6" class="px-4">
                     <nz-select nzPlaceHolder="Lọc theo trạng thái" class="w-full" ngModel="lucy">
-                        <nz-option *ngFor="let option of teams" [nzValue]="option.id" [nzLabel]="option.name"></nz-option>
-                      </nz-select>
+                        <nz-option *ngFor="let option of teams" [nzValue]="option.id" [nzLabel]="option.name">
+                        </nz-option>
+                    </nz-select>
                 </div>
                 <div nz-col nzSpan="6" class="px-4">
-                    <button class="w-full" nz-button nzType="primary">
+                    <button (click)="addBuilding()" class="w-full" nz-button nzType="primary">
                         <i nz-icon nzType="plus"></i>
                         Thêm mới
                     </button>
@@ -36,7 +37,7 @@
                             <td>{{ data.name }}</td>
                             <td>{{ data.nickname }}</td>
                             <td>{{ data.role }}</td>
-                            <td>{{ data.auth }}</td>                           
+                            <td>{{ data.auth }}</td>
                         </tr>
                     </tbody>
                 </nz-table>
@@ -90,6 +91,10 @@
     </div>
 
     <ng-container>
-        <app-new-meeting-room (modalEvent) ="closeModal($event)" [isVisible]="isVisible"></app-new-meeting-room>
+        <app-new-meeting-room (modalEvent)="closeModal($event)" [isVisible]="roomVisibility"></app-new-meeting-room>
+    </ng-container>
+
+    <ng-container>
+        <app-new-building (modalEvent)="closeModal($event)" [isVisible]="buildingVisibility"></app-new-building>
     </ng-container>
 </section>

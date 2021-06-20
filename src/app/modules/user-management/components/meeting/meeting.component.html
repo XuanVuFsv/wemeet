@@ -129,6 +129,6 @@
     <button (click)="openMeetingDialog()">abc</button>
 
     <ng-container>
-        <app-meeting-detail [isVisible]="isVisible"></app-meeting-detail>
+        <app-meeting-detail (modalEvent)="closeModal($event)" [isVisible]="isVisible"></app-meeting-detail>
     </ng-container>
 </section>
