@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NzTabPosition } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'app-user-management',
@@ -8,8 +7,6 @@ import { NzTabPosition } from 'ng-zorro-antd/tabs';
 })
 export class UserManagementComponent implements OnInit {
 
-  public nzTabPosition: NzTabPosition = 'left';
-  public tabs = [1, 2, 3];
   constructor() { }
 
   ngOnInit(): void {
