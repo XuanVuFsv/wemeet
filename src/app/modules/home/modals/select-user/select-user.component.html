@@ -59,17 +59,22 @@
     <thead>
       <tr>
         <th nzColumnKey="name" [nzSortFn]="true">Tên</th>
-        <th nzWidth="200px">Chức vụ</th>
+        <th nzWidth="200px">Vai trò / vị trí</th>
         <th nzWidth="80px"></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of rows; let i = index">
         <td>
-          <nz-avatar nzIcon="user" [nzSrc]="data.avatar" class="mr-1"></nz-avatar> {{ data.name }}
+          <nz-avatar
+            [nzText]="getTextName(data.fullname)"
+            [nzSrc]="data.avatar"
+            class="mr-1"
+          ></nz-avatar>
+          {{ data.fullname }} - {{ data.nickname }}
         </td>
         <td>
-          {{ data.role }}
+          {{ data.position }}
         </td>
         <td class="text-center">
           <a
@@ -94,27 +99,27 @@
     <div class="flex">
       <button
         *ngIf="total"
-        class="ant-pagination-item-link pagination-btn-first"
+        class="ant-pagination-item-link pagination-btn-first flex items-center"
         [class.pagination-btn-disabled]="pageIndex === 1"
         [disabled]="pageIndex === 1"
         (click)="gotoFirstPage()"
       >
-        <<
+        <i nz-icon nzType="double-left" nzTheme="outline"></i>
       </button>
-      <!-- <nz-pagination
-          #tableTempRef
-          [nzPageIndex]="pageIndex"
-          [nzPageSize]="pageSize"
-          [nzTotal]="total"
-        ></nz-pagination> -->
+      <nz-pagination
+        #tableTempRef
+        [nzPageIndex]="pageIndex"
+        [nzPageSize]="pageSize"
+        [nzTotal]="total"
+      ></nz-pagination>
       <button
         *ngIf="total"
-        class="ant-pagination-item-link pagination-btn-end"
+        class="ant-pagination-item-link pagination-btn-end flex items-center"
         [class.pagination-btn-disabled]="pageIndex === totalPages"
         [disabled]="pageIndex === totalPages"
         (click)="gotoEndPage()"
       >
-        >>
+        <i nz-icon nzType="double-right" nzTheme="outline"></i>
       </button>
     </div>
   </div>

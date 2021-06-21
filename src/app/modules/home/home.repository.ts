@@ -24,9 +24,20 @@ export interface IFile {
   color: string;
 }
 
+export interface IUser {
+  id: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class HomeRepository extends BaseRepository<IHome> {
   resourceType(): string {
     return '/home';
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class UserRepository extends BaseRepository<IUser> {
+  resourceType(): string {
+    return '/users';
   }
 }

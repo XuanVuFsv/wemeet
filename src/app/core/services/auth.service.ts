@@ -19,7 +19,7 @@ export interface User extends Auth {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   private static TOKEN_KEY: string = 'token';
@@ -85,7 +85,7 @@ export class AuthService {
   }
 
   fetchAuthenticatedUser() {
-    return this.apiService.get('/users/me').pipe(
+    return this.apiService.get('/auth/me').pipe(
       // Set authenticated user
       tap(resp => {
         this.setCurrentUser(resp.body);

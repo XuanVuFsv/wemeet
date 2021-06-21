@@ -16,6 +16,37 @@ export class NavbarComponent implements OnInit {
   getNotifications: boolean = true;
   timeBeforeSendNoti: number = 30;
   username: string = '';
+  visibleNotification = false;
+  listNoti = [
+    {
+      time: '5 phút',
+      seen: false
+    },
+    {
+      time: '34 phút',
+      seen: false
+    },
+    {
+      time: '1 giờ',
+      seen: true
+    },
+    {
+      time: '8 giờ',
+      seen: true
+    },
+    {
+      time: '1 ngày',
+      seen: false
+    },
+    {
+      time: '2 ngày',
+      seen: true
+    },
+    {
+      time: '3 tuần',
+      seen: false
+    }
+  ];
 
   constructor(private authService: AuthService) {}
 
@@ -28,5 +59,13 @@ export class NavbarComponent implements OnInit {
     console.log(this.weekHourShow);
     console.log(this.getNotifications);
     console.log(this.timeBeforeSendNoti);
+  }
+
+  showNotificationList() {
+    if (this.visibleNotification) {
+      setTimeout(() => {
+        this.visibleNotification = false;
+      }, 0);
+    }
   }
 }

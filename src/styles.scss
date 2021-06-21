@@ -41,7 +41,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-teal-400 shadow-none;
+  background-color: rgb(143 189 176 / 40%);
+  @apply shadow-none;
 }
 
 ::-webkit-scrollbar-track {
@@ -131,4 +132,14 @@ a:hover {
 
 .ant-table-column-sorter-full {
   line-height: 1;
+}
+
+.ant-pagination-disabled .ant-pagination-item-link,
+.ant-pagination-disabled:hover .ant-pagination-item-link,
+.ant-pagination-disabled:focus-visible .ant-pagination-item-link,
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

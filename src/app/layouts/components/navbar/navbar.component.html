@@ -68,6 +68,13 @@
         <i nz-icon nzType="calendar" nzTheme="outline" class="text-xl"></i>
       </nz-badge>
       <nz-badge
+        nz-popover
+        [nzPopoverContent]="notiTemplate"
+        nzPopoverPlacement="bottom"
+        nzPopoverOverlayClassName="noti"
+        [(nzPopoverVisible)]="visibleNotification"
+        [nzPopoverTrigger]="'click'"
+        (click)="showNotificationList()"
         class="mr-5 cursor-pointer"
         [nzCount]="5"
         nz-tooltip
@@ -77,6 +84,35 @@
       >
         <i nz-icon nzType="bell" nzTheme="outline" class="text-xl"></i>
       </nz-badge>
+      <ng-template #notiTemplate>
+        <div class="profile-popover w-72 h-80 overflow-y-scroll">
+          <div
+            *ngFor="let noti of listNoti; let i = index"
+            class="
+              noti-item
+              inline-block
+              px-2
+              py-1.5
+              rounded
+              hover:bg-warmGray-100
+              mb-2
+              cursor-pointer
+            "
+            [class.bg-warmGray-50]="!noti.seen"
+          >
+            <div class="flex">
+              <div class="flex-grow w-0" [class.font-semibold]="!noti.seen">
+                Tên thông báo {{ i }}
+              </div>
+              <div class="text-xs text-gray-400">{{ noti.time }} trước</div>
+            </div>
+            <div class="text-gray-400 text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt
+            </div>
+          </div>
+        </div>
+      </ng-template>
       <div
         nz-popover
         class="flex items-center cursor-pointer"
@@ -91,7 +127,7 @@
           [nzSrc]="avatar"
         ></nz-avatar>
         <div class="flex-grow mr-2">
-          <div class="text-gray-700 text-sm font-semibold">{{username}}</div>
+          <div class="text-gray-700 text-sm font-semibold">{{ username }}</div>
           <div class="text-gray-400 text-xs">Admin</div>
         </div>
         <i nz-icon nzType="down" class="text-tiny mr-2" nzTheme="outline"></i>
