@@ -31,7 +31,7 @@ import {
   GoogleOutline,
   FacebookOutline,
   PlusCircleTwoTone,
-  
+  CrownTwoTone
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -63,7 +63,8 @@ const icons = [
   SettingOutline,
   GoogleOutline,
   FacebookOutline,
-  PlusCircleTwoTone
+  PlusCircleTwoTone,
+  CrownTwoTone
 ];
 
 @NgModule({

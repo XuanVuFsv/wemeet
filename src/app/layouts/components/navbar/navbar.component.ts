@@ -1,5 +1,7 @@
+import { catchError } from 'rxjs/operators';
 import { AuthService } from './../../../core/services/auth.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -16,11 +18,18 @@ export class NavbarComponent implements OnInit {
   getNotifications: boolean = true;
   timeBeforeSendNoti: number = 30;
   username: string = '';
+  role: string = '';
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.username = this.authService.getCurrentUser().user.email;
+    this.authService.fetchAuthenticatedUser().pipe(catchError(err => {
+      console.log(err);
+      return EMPTY;
+    })).subscribe(result => {
+      this.username = this.authService.getCurrentUser().data.user.fullname;
+      this.role = this.authService.getCurrentUser().data.roles;
+    })
   }
   changeHourStart(hourStart: any) {}
 

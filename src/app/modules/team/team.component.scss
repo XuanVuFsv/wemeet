@@ -1,3 +1,13 @@
+::ng-deep .ant-tabs > .ant-tabs-nav .ant-tabs-nav-operations,
+.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-operations {
+  display: none;
+}
+
+::ng-deep .nz-tabs-nav {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
 ::ng-deep .ant-tabs-tab {
   width: 50%;
 }
@@ -6,21 +16,15 @@
   vertical-align: 0px;
 }
 
-::ng-deep .ant-tabs > .ant-tabs-nav .ant-tabs-nav-operations,
-.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-operations {
-  display: none;
-}
-
-::ng-deep .ant-tabs-content-animated {
-  height: 100%;
-}
-
-::ng-deep nz-tabs-nav {
-  margin-left: 8px !important;
-  margin-right: 8px !important;
-}
 #app-team {
   .tab-box {
     height: calc(100vh - 132px);
   }
+  .nz-select {
+    width: 100%;
+  }
+}
+
+::ng-deep .ant-tabs-content-animated {
+  height: 100%;
 }

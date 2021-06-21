@@ -1,4 +1,4 @@
-<section id="app-login" class="h-full">
+<section id="app-login" class="h-screen">
   <div class="h-full flex items-center justify-center " style="
   background: url(../../assets/images/picture.jpg);
   background-repeat: no-repeat;
@@ -18,7 +18,7 @@
         </div>
         <div class="w-full flex justify-center p-5">
           <form nz-form nzLayout="vertical" [formGroup]="loginForm" class="w-96 h-fit" (ngSubmit)="Login()">
-            <!---- Username ----->
+            <!---- Email ----->
             <div class="block">
               <nz-form-label class="">Email</nz-form-label>
               <nz-form-item>
@@ -46,7 +46,7 @@
             </div>
             <div class="block flex justify-between pb-4">
               <label class="" nz-checkbox formControlName="stayLogin" (ngModelChange)="StayLogin()">Nhớ mật khẩu</label>
-              <a class="text-red-400 hover:text-red-600 font-bold" href="/">Quên mật khẩu?</a>
+              <a class="text-red-400 hover:text-red-600 font-bold" href="/forget-password">Quên mật khẩu?</a>
             </div>
             <button nz-button nzType="primary" class="w-full">Đăng nhập</button>
           </form>

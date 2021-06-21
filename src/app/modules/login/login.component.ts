@@ -32,20 +32,26 @@ export class LoginComponent implements OnInit {
   initForm() {
     this.loginForm = this.formBuilder.group({
       email: [''],
-      password: [''],
-      stayLogin: [false]
+      password: ['']
     });
   }
 
   Login(): void {
     console.log(this.loginForm.value);
-    delete this.loginForm.value.stayLogin;
+    // delete this.loginForm.value.stayLogin;
     this.authService.login(this.loginForm.value).pipe(catchError(err => {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
       console.log(result);
-      this.router.navigateByUrl('/');
+      if (result.body.data.user.isFirstLogin)
+      {
+        this.router.navigateByUrl('/change-password');
+      }
+      else
+      {
+        this.router.navigateByUrl('/');
+      }
     })
   }
 

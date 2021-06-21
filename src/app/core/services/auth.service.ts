@@ -84,13 +84,28 @@ export class AuthService {
     );
   }
 
+  
+  resetPassword(body: any) {
+    return this.apiService.get('/auth/reset-password', body).pipe();
+  }
+
+  changePassword(body: any) {
+    return this.apiService.post('/auth/change-password', body).pipe();
+  }
+
+  forgetPassword(body: any) {
+    return this.apiService.post('/auth/forget-request', body).pipe(
+    );
+  }
+
   fetchAuthenticatedUser() {
-    return this.apiService.get('/users/me').pipe(
+    return this.apiService.get('/auth/me').pipe(
       // Set authenticated user
       tap(resp => {
         this.setCurrentUser(resp.body);
+        console.log(resp);
         // Set permissions of user right here!
-        const permissions: string[] = resp.body.roles || ['can read users'];
+        const permissions: string[] = resp.body.role || ['can read users'];
         this.ngxPermissionsService.addPermission([...permissions]);
       })
     );

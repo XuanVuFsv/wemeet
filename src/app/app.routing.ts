@@ -1,3 +1,4 @@
+import { ResetPasswordModule } from './modules/reset-password/reset-password.module';
 import { LoginGuard } from './core/guards/login.guard';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NgModule } from '@angular/core';
@@ -14,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    canActivate: [LoginGuard],
+    // canActivate: [LoginGuard],
     loadChildren: () => import('@modules/login/login.module').then(m => m.LoginModule),
     data: { title: 'Đăng nhập' }
   },
@@ -39,6 +40,24 @@ const routes: Routes = [
     // canActivate: [AuthGuard],
     loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
     data: { title: 'Trang chủ' }
+  },
+  {
+    path: 'reset-password',
+    // canActivate: [AuthGuard],
+    loadChildren: () => import('@modules/reset-password/reset-password.module').then(m => m.ResetPasswordModule),
+    data: { title: 'Đặt lại mật khẩu' }
+  },
+  {
+    path: 'forget-password',
+    // canActivate: [AuthGuard],
+    loadChildren: () => import('@modules/forget-password/forget-password.module').then(m => m.ForgetPasswordModule),
+    data: { title: 'Quên mật khẩu' }
+  },
+  {
+    path: 'change-password',
+    // canActivate: [AuthGuard],
+    loadChildren: () => import('@modules/change-password/change-password.module').then(m => m.ChangePasswordModule),
+    data: { title: 'Thay đổi mật khẩu' }
   }
 ];
 
