@@ -1,0 +1,134 @@
+<section id="pending">
+    <div class="px-4">
+        <div nz-row class="header w-full py-4">
+            <div nz-row class="filter-action w-full">
+                <div nz-col nzSpan="6" class="px-4">
+                    <h5 class="font-bold mt-2">
+                        Cuộc họp chờ duyệt
+                    </h5>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <nz-input-group [nzSuffix]="suffixIconSearch">
+                        <input type="text" nz-input placeholder="Tìm theo tên người tạo" />
+                        <ng-template #suffixIconSearch>
+                            <i nz-icon nzType="search"></i>
+                        </ng-template>
+                    </nz-input-group>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <nz-select nzPlaceHolder="Lọc theo team" class="w-full" ngModel="lucy">
+                        <nz-option *ngFor="let option of teams" [nzValue]="option.id" [nzLabel]="option.name">
+                        </nz-option>
+                    </nz-select>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <nz-select nzPlaceHolder="Lọc theo phòng" class="w-full" ngModel="lucy">
+                        <nz-option *ngFor="let option of room" [nzValue]="option.id" [nzLabel]="option.name">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+        </div>
+        <div nz-row class="content py-4">
+            <div nz-col nzSpan="24" class="px-4">
+                <nz-table #basicTable [nzData]="listOfData" nzShowSizeChanger>
+                    <thead>
+                        <tr>
+                            <th>Người tạo</th>
+                            <th>Tên cuộc họp</th>
+                            <th>Team</th>
+                            <th [nzSortFn]="true">Thời gian tạo</th>
+                            <th>Duyệt</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data">
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.nickname }}</td>
+                            <td>{{ data.role }}</td>
+                            <td>{{ data.auth }}</td>
+                            <td>{{ data.team }}</td>
+                            <td>
+                                <a nz-dropdown [nzDropdownMenu]="menu">
+                                    ...
+                                </a>
+                                <nz-dropdown-menu #menu="nzDropdownMenu">
+                                    <ul nz-menu nzSelectable>
+                                        <li class="text-red-500" nz-menu-item>
+                                            <i nz-icon nzType="delete" nzTheme="outline"></i>
+                                            Xóa
+                                        </li>
+                                        <li nz-menu-item>
+                                            <i nz-icon nzType="edit" nzTheme="outline"></i>
+                                            Sửa
+                                        </li>
+                                    </ul>
+                                </nz-dropdown-menu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="priority">
+    <div class="px-4">
+        <div nz-row class="header w-full py-4">
+            <div nz-row class="filter-action w-full">
+                <div nz-col nzSpan="12" class="px-4">
+                    <h5 class="font-bold mt-2">
+                        Yêu cầu nhường phòng họp
+                    </h5>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <nz-input-group [nzSuffix]="suffixIconSearch">
+                        <input type="text" nz-input placeholder="Tìm theo tên người tạo" />
+                        <ng-template #suffixIconSearch>
+                            <i nz-icon nzType="search"></i>
+                        </ng-template>
+                    </nz-input-group>
+                </div>
+                <div nz-col nzSpan="6" class="px-4">
+                    <nz-select nzPlaceHolder="Lọc theo phòng" class="w-full" ngModel="lucy">
+                        <nz-option *ngFor="let option of room" [nzValue]="option.id" [nzLabel]="option.name">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+        </div>
+        <div nz-row class="content py-4">
+            <div nz-col nzSpan="24" class="px-4">
+                <nz-table #basicTable [nzData]="listOfData" nzShowSizeChanger>
+                    <thead>
+                        <tr>
+                            <th>Người tạo</th>
+                            <th>Lý do</th>
+                            <th>Cuộc họp bị ảnh hưởng</th>
+                            <th [nzSortFn]="true">Thời gian tạo</th>
+                            <th>Tình trạng</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data">
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.nickname }}</td>
+                            <td>{{ data.role }}</td>
+                            <td>{{ data.auth }}</td>
+                            <td>{{ data.team }}</td>
+                            <td>{{ data.date }}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </div>
+
+    <button (click)="openMeetingDialog()">abc</button>
+
+    <ng-container>
+        <app-meeting-detail (modalEvent)="closeModal($event)" [isVisible]="isVisible"></app-meeting-detail>
+    </ng-container>
+</section>
