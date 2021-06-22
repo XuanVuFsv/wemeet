@@ -14,32 +14,33 @@ export class ForgetPasswordComponent implements OnInit {
 
   logo = '../../assets/images/logo/logo.png';
   picture = '../../assets/images/picture.jpg';
-  getPasswordSuccess: boolean = true;
+  getPasswordSuccess: boolean = false;
+  domain: string = '';
 
   forgetPasswordForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-
+    this.domain = window.location.origin.slice(7) + '/reset-password';
+    console.log(this.domain);
     this.initForm();
   }
 
   initForm() {
     this.forgetPasswordForm = this.formBuilder.group({
       email: [''],
-      domain: ['localhost:4000']
+      domain: ['']
     });
   }
 
   ForgetPassword(): void {
-    console.log(this.forgetPasswordForm.value);
+    this.forgetPasswordForm.value.domain = this.domain;
     this.authService.forgetPassword(this.forgetPasswordForm.value).pipe(catchError(err => {
       console.log(err);
       return EMPTY;
     })).subscribe(result => {
-      console.log(result);
-      result.body.status == '404' ? this.getPasswordSuccess = false : this.router.navigateByUrl('/login');
+      this.getPasswordSuccess = true;
     })
   }
 

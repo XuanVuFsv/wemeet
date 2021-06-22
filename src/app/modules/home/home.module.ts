@@ -5,14 +5,14 @@ import { SharedModule } from '@app/shared/shared.module';
 import { HomeRoutingModule } from './home.routing';
 import { WeekLayoutComponent } from './components/week-layout/week-layout.component';
 import { MeetingDetailComponent } from './components/meeting-detail/meeting-detail.component';
-import { MeetingDetailModule } from './components/meeting-detail/meeting-detail.module';
 import { EditMeetingComponent } from './modals/edit-meeting/edit-meeting.component';
 import { SelectUserComponent } from './modals/select-user/select-user.component';
 import { MonthLayoutComponent } from './components/month-layout/month-layout.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, WeekLayoutComponent, EditMeetingComponent, SelectUserComponent, MonthLayoutComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule, MeetingDetailModule]
+  declarations: [HomeComponent, WeekLayoutComponent, EditMeetingComponent, SelectUserComponent, MonthLayoutComponent, MeetingDetailComponent],
+  imports: [CommonModule, SharedModule, HomeRoutingModule],
+  exports: [MeetingDetailComponent]
 })
 export class HomeModule {}

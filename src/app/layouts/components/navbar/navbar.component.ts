@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './../../../core/services/auth.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
@@ -20,7 +21,7 @@ export class NavbarComponent implements OnInit {
   username: string = '';
   role: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.authService.fetchAuthenticatedUser().pipe(catchError(err => {
@@ -37,5 +38,10 @@ export class NavbarComponent implements OnInit {
     console.log(this.weekHourShow);
     console.log(this.getNotifications);
     console.log(this.timeBeforeSendNoti);
+  }
+
+  Logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 }

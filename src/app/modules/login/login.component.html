@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="w-full flex justify-center p-5">
-          <form nz-form nzLayout="vertical" [formGroup]="loginForm" class="w-96 h-fit" (ngSubmit)="Login()">
+          <form nz-form nzLayout="vertical" [formGroup]="loginForm" class="w-96 h-fit">
             <!---- Email ----->
             <div class="block">
               <nz-form-label class="">Email</nz-form-label>
@@ -48,7 +48,7 @@
               <label class="" nz-checkbox formControlName="stayLogin" (ngModelChange)="StayLogin()">Nhớ mật khẩu</label>
               <a class="text-red-400 hover:text-red-600 font-bold" href="/forget-password">Quên mật khẩu?</a>
             </div>
-            <button nz-button nzType="primary" class="w-full">Đăng nhập</button>
+            <button nz-button nzType="primary" class="w-full" (click)="Login()">Đăng nhập</button>
           </form>
         </div>
       </div>

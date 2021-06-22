@@ -15,43 +15,46 @@ export class ChangePasswordComponent implements OnInit {
   picture = '../../assets/images/picture.jpg';
 
   changePasswordForm!: FormGroup;
-  currentEmail: string;
   passwordVisible1: boolean = false;
   passwordVisible2: boolean = false;
-  isFirstLogin: boolean = true;
+  canLogin: boolean = false;
+  message: string = 'Lần đầu đăng nhập! Vui lòng đổi sang mật khẩu mới!';
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.initForm();
     this.authService.fetchAuthenticatedUser().pipe(catchError(err => {
       console.log(err);
       return EMPTY;
     })).subscribe(result => {
-      this.changePasswordForm.value.email = this.authService.getCurrentUser().data.user.email; 
-      this.isFirstLogin = this.authService.getCurrentUser().data.user.isFirstLogin;
+      if (!this.authService.getCurrentUser().data.user.isFirstLogin)
+      {
+        this.router.navigateByUrl('/');
+      }
     })
+    this.initForm();
   }
 
   initForm() {
     this.changePasswordForm = this.formBuilder.group({
-      email: [''],
-      curentPassword: [''],
-      password: ['']
+      password: [''],
+      confirmPassword: ['']
     });
   }
 
   ChangePassword(): void {
-    delete this.changePasswordForm.value.curentPassword;
+    delete this.changePasswordForm.value.confirmPassword;
     this.authService.changePassword(this.changePasswordForm.value).pipe(catchError(err => {
     console.log(err)
     return EMPTY;
     })).subscribe(result => {
-      this.router.navigateByUrl('/login');
+      this.authService.removeCurrentUser();
+      this.message = 'Đổi mật khẩu thành công!'
+      this.canLogin = true;
     })
   }
 
   ComparePassword(): boolean {
-    return false;
+    return this.changePasswordForm.value.password == this.changePasswordForm.value.confirmPassword && this.changePasswordForm.value.password != '';
   }
 }

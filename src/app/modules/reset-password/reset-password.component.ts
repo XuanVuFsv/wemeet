@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -18,30 +18,38 @@ export class ResetPasswordComponent implements OnInit {
   resetPasswordForm!: FormGroup;
   passwordVisible1: boolean = false;
   passwordVisible2: boolean = false;
+  canLogin: boolean = false;
+  token: string = '';
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-
     this.initForm();
+    this.token = this.router.url.slice(22)
   }
 
   initForm() {
     this.resetPasswordForm = this.formBuilder.group({
       password: [''],
-      newPassword: ['']
+      confirmPassword: ['']
     });
+    
   }
 
   ResetPassword(): void {
-    // console.log(this.resetPasswordForm.value);
-    // // delete this.resetPasswordForm.value.stayLogin;
-    // this.authService.resetPassword(this.resetPasswordForm.value).pipe(catchError(err => {
-    //   console.log(err)
-    //   return EMPTY;
-    // })).subscribe(result => {
-    //   console.log(result);
-    //   // this.router.navigateByUrl('/');
-    // })
+    delete this.resetPasswordForm.value.confirmPassword;
+    console.log(this.resetPasswordForm.value);
+    console.log(this.token);
+    this.authService.resetPassword(this.resetPasswordForm.value, this.token).pipe(catchError(err => {
+    console.log(err)
+    return EMPTY;
+    })).subscribe(result => {
+      console.log(result);
+      this.canLogin = true;
+    })
+  }
+
+  ComparePassword(): boolean {
+    return this.resetPasswordForm.value.password == this.resetPasswordForm.value.confirmPassword && this.resetPasswordForm.value.password != '';
   }
 }

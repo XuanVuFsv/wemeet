@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from '@core/services/storage.service';
 import { ApiService } from '@data/api.service';
@@ -65,12 +66,8 @@ export class AuthService {
     return this.storageService.getLocalValue(AuthService.TOKEN_KEY);
   }
 
-  logout(): Observable<any> {
-    return this.apiService.get('/auth/logout').pipe(
-      finalize(() => {
-        this.removeCurrentUser();
-      })
-    );
+  logout() {
+    this.removeCurrentUser();
   }
 
   login(cred: Credential) {
@@ -83,10 +80,17 @@ export class AuthService {
       switchMap(_ => this.fetchAuthenticatedUser())
     );
   }
-
   
-  resetPassword(body: any) {
-    return this.apiService.get('/auth/reset-password', body).pipe();
+  resetPassword(body: any, token: string) {
+    return this.apiService.get('/auth/reset-password'
+    ,{
+      headers: {
+        // 'Content-Type':  'application/json',
+        // Authorization: `Bearer ${token}`
+      },
+      params: new HttpParams().set('token', token)
+    }
+    ).pipe();
   }
 
   changePassword(body: any) {
@@ -103,7 +107,6 @@ export class AuthService {
       // Set authenticated user
       tap(resp => {
         this.setCurrentUser(resp.body);
-        console.log(resp);
         // Set permissions of user right here!
         const permissions: string[] = resp.body.role || ['can read users'];
         this.ngxPermissionsService.addPermission([...permissions]);

@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
 
   Login(): void {
     console.log(this.loginForm.value);
-    // delete this.loginForm.value.stayLogin;
     this.authService.login(this.loginForm.value).pipe(catchError(err => {
       console.log(err)
       return EMPTY;
