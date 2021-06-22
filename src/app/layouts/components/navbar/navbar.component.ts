@@ -20,6 +20,37 @@ export class NavbarComponent implements OnInit {
   timeBeforeSendNoti: number = 30;
   username: string = '';
   role: string = '';
+  visibleNotification = false;
+  listNoti = [
+    {
+      time: '5 phút',
+      seen: false
+    },
+    {
+      time: '34 phút',
+      seen: false
+    },
+    {
+      time: '1 giờ',
+      seen: true
+    },
+    {
+      time: '8 giờ',
+      seen: true
+    },
+    {
+      time: '1 ngày',
+      seen: false
+    },
+    {
+      time: '2 ngày',
+      seen: true
+    },
+    {
+      time: '3 tuần',
+      seen: false
+    }
+  ];
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -42,6 +73,12 @@ export class NavbarComponent implements OnInit {
 
   Logout() {
     this.authService.logout();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/login');}
+  showNotificationList() {
+    if (this.visibleNotification) {
+      setTimeout(() => {
+        this.visibleNotification = false;
+      }, 0);
+    }
   }
 }

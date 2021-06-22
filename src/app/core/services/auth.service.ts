@@ -20,7 +20,7 @@ export interface User extends Auth {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   private static TOKEN_KEY: string = 'token';
