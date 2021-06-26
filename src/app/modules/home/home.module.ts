@@ -11,7 +11,7 @@ import { MonthLayoutComponent } from './components/month-layout/month-layout.com
 
 
 @NgModule({
-  declarations: [HomeComponent, WeekLayoutComponent, EditMeetingComponent, SelectUserComponent, MonthLayoutComponent, MeetingDetailComponent],
+  declarations: [HomeComponent, WeekLayoutComponent, MeetingDetailComponent, EditMeetingComponent, SelectUserComponent, MonthLayoutComponent],
   imports: [CommonModule, SharedModule, HomeRoutingModule],
   exports: [MeetingDetailComponent]
 })

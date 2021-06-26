@@ -81,15 +81,8 @@ export class AuthService {
     );
   }
   
-  resetPassword(body: any, token: string) {
-    return this.apiService.get('/auth/reset-password'
-    ,{
-      headers: {
-        // 'Content-Type':  'application/json',
-        // Authorization: `Bearer ${token}`
-      },
-      params: new HttpParams().set('token', token)
-    }
+  resetPassword(body: any) {
+    return this.apiService.post('/auth/reset-password', body
     ).pipe();
   }
 
@@ -98,8 +91,7 @@ export class AuthService {
   }
 
   forgetPassword(body: any) {
-    return this.apiService.post('/auth/forget-request', body).pipe(
-    );
+    return this.apiService.post('/auth/forget-request', body).pipe();
   }
 
   fetchAuthenticatedUser() {
@@ -108,7 +100,7 @@ export class AuthService {
       tap(resp => {
         this.setCurrentUser(resp.body);
         // Set permissions of user right here!
-        const permissions: string[] = resp.body.role || ['can read users'];
+        const permissions: string[] = resp.body.data.roles || ['can read users'];
         this.ngxPermissionsService.addPermission([...permissions]);
       })
     );

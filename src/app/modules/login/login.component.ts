@@ -1,7 +1,8 @@
+import { TeamService } from './../../core/services/team.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 
@@ -19,13 +20,16 @@ export class LoginComponent implements OnInit {
   apple = '../../assets/images/apple.png';
 
   loginForm!: FormGroup;
+  onInit: boolean = true;
   passwordVisible: boolean = false;
+  isEmail: boolean = false;
+  acountNotExist: boolean = false;
+  checkPasswordMessage: string = '';
+  loginSucces: boolean = false;
 
-
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private teamSerive: TeamService, private router: Router) { }
 
   ngOnInit(): void {
-
     this.initForm();
   }
 
@@ -36,26 +40,54 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ValidateEmail() {
+    this.onInit = false;
+    this.isEmail = !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.loginForm.value.email) && this.loginForm.value.email.includes('.'));
+    this.checkPasswordMessage = '';
+    this.acountNotExist = false;
+  };
+
   Login(): void {
-    console.log(this.loginForm.value);
-    this.authService.login(this.loginForm.value).pipe(catchError(err => {
-      console.log(err)
-      return EMPTY;
-    })).subscribe(result => {
-      console.log(result);
-      if (result.body.data.user.isFirstLogin)
+    this.onInit = false;
+    this.ValidateEmail();
+      if (this.isEmail)
       {
-        this.router.navigateByUrl('/change-password');
+        return;
       }
-      else
-      {
-        this.router.navigateByUrl('/');
-      }
-    })
+      this.teamSerive.getUserByEmail(this.loginForm.value.email).subscribe(result => {
+        if (result.body == null) {
+          this.acountNotExist = true;
+          this.checkPasswordMessage = '';
+          return;
+        }
+        else {
+          setTimeout(() => {
+            if (!this.loginSucces && !this.acountNotExist)
+            {
+              this.checkPasswordMessage = 'Mật khẩu không chính xác';
+              this.acountNotExist = false;
+            }
+          }, 1500)
+          this.authService.login(this.loginForm.value).pipe(catchError(err => {
+            console.log(err);
+            return EMPTY;
+          })).subscribe(result => {
+            result.body != null ? this.loginSucces = true : this.loginSucces = false;
+            if (result.body.data.user.is_first_login) {
+              this.router.navigateByUrl('/change-password');
+            }
+            else {
+              this.checkPasswordMessage = '';
+              this.router.navigateByUrl('/');
+            }
+            return;
+          })
+        }
+      });
+    // }
   }
 
-  StayLogin(): void{
+  StayLogin(): void {
     console.log(this.loginForm.controls.stayLogin.value);
   }
-
 }

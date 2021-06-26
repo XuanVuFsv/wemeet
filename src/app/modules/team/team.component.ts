@@ -1,3 +1,7 @@
+import { ITeam } from './team.repository';
+import { IUser } from './team.repository';
+import { catchError } from 'rxjs/operators';
+import { TeamService } from './../../core/services/team.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -6,18 +10,14 @@ import { EditMeetingComponent } from '../home/modals/edit-meeting/edit-meeting.c
 import { SelectUserComponent } from '../home/modals/select-user/select-user.component';
 // import { MeetingDetailComponent } from '../home/components/meeting-detail/meeting-detail.component';
 import * as dayjs from 'dayjs';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-team',
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss']})
 export class TeamComponent implements OnInit {
-  isVisibleMiddle = false;
-
-
-
   isAddUser: boolean = false;
-  isAddTeam: boolean = true;
   showEditTeamModal: boolean = false;
   showAddTeamModal: boolean = false;
   showRequestRoomModal: boolean = false;
@@ -26,6 +26,7 @@ export class TeamComponent implements OnInit {
   currentTeamGroup = 0;
   currentTeamGroupSelected = 0;
   currentTeamSelected = 0;
+  curTeamId: string = '1';
   
   role = 'admin';
   meetingPageSize = 20;
@@ -44,617 +45,63 @@ export class TeamComponent implements OnInit {
     '../../assets/images/avatar/avatar8.png',
     '../../assets/images/avatar/avatar9.png'
   ];
-  users= [
-    {
-      id: '1',
-      username: 'Nairobi',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[3]
-    },
-    {
-      id: '2',
-      username: 'money',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[0],
-    },
-    {
-      id: '3',
-      username: 'Rio',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[4],
-    },
-    {
-      id: '4',
-      username: 'Denver',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[5],
-    },
-    {
-      id: '5',
-      username: 'Professor',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[1],
-    },
-    {
-      id: '6',
-      username: 'Porto',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[6],
-    },
-    {
-      id: '7',
-      username: 'Berlin',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[7],
-    },
-    {
-      id: '8',
-      username: 'Palermo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[8],
-    },
-    {
-      id: '9',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '91',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '97',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '94',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '93',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '39',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '29',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '19',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '90',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '910',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '940',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '903',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    },
-    {
-      id: '920',
-      username: 'Tokyo',
-      email: 'abc@gmail.com',
-      role: 'staff',
-      avatar:  this.members[2],
-    }
-  ];
-  menus = [
-    {
-      level: 1,
-      title: 'Nhóm của tôi',
-      icon: 'user',
-      open: false,
-      selected: false,
-      disabled: false,
-      children: [
-        {
-          level: 2,
-          title: 'Team Mobile',
-          icon: 'user',
-          avatar:  this.members[0],
-          bg_color: this.RandomColor(),
-          memCount: 15,
-          totalMeeting: 10,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 0 ',
-          open: false,
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '2',
-              username: 'money',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[0],
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '4',
-              username: 'Denver',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[5],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team Angular',
-          icon: 'user',
-          avatar:  this.members[1],
-          bg_color: this.RandomColor(),
-          memCount: 20,
-          totalMeeting: 8,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 1',
-          selected: true,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team React',
-          icon: 'user',
-          avatar:  this.members[2],
-          bg_color: this.RandomColor(),
-          memCount: 10,
-          totalMeeting: 15,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 2',
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team Go',
-          icon: 'user',
-          avatar:  this.members[3],
-          bg_color: this.RandomColor(),
-          memCount: 14,
-          totalMeeting: 10,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 3',
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team Swift',
-          icon: 'user',
-          avatar:  this.members[4],
-          bg_color: this.RandomColor(),
-          memCount: 23,
-          totalMeeting: 12,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 4',
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team Swift',
-          icon: 'user',
-          avatar:  this.members[4],
-          bg_color: this.RandomColor(),
-          memCount: 23,
-          totalMeeting: 12,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 4',
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team VFX',
-          icon: 'user',
-          avatar:  this.members[1],
-          bg_color: this.RandomColor(),
-          memCount: 17,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 6',
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team Android',
-          icon: 'user',
-          avatar:  this.members[3],
-          bg_color: this.RandomColor(),
-          memCount: 10,
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team Android',
-          icon: 'user',
-          avatar:  this.members[5],
-          bg_color: this.RandomColor(),
-          memCount: 10,
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        },
-        {
-          level: 2,
-          title: 'Team Android',
-          icon: 'user',
-          avatar:  this.members[0],
-          bg_color: this.RandomColor(),
-          memCount: 10,
-          selected: false,
-          disabled: false,
-          users: [
-            {
-              id: '1',
-              username: 'Nairobi',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[3]
-            },
-            {
-              id: '3',
-              username: 'Rio',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[4],
-            },
-            {
-              id: '5',
-              username: 'Professor',
-              email: 'abc@gmail.com',
-              role: 'staff',
-              avatar:  this.members[1],
-            }
-          ]
-        }
-      ]
-    },
-    {
-      level: 1,
-      title: 'Nhóm tôi tham gia',
-      icon: 'team',
-      open: false,
-      selected: false,
-      disabled: false,
-      children: [
-        {
-          level: 2,
-          title: 'Team Vue',
-          icon: 'team',
-          avatar:  this.members[0],
-          bg_color: this.RandomColor(),
-          memCount: 32,
-          totalMeeting: 4,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 1',
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team .Net',
-          icon: 'team',
-          avatar:  this.members[2],
-          bg_color: this.RandomColor(),
-          memCount: 25,
-          totalMeeting: 7,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 2',
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team Unity',
-          icon: 'team',
-          avatar:  this.members[1],
-          bg_color: this.RandomColor(),
-          memCount: 25,
-          totalMeeting: 11,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 3',
-          selected: false,
-          disabled: false
-        },
-        {
-          level: 2,
-          title: 'Team BA',
-          icon: 'team',
-          avatar:  this.members[4],
-          totalMeeting: 24,
-          describe: 'Wemeet: Quản lý cuộc họp của bạn 4',
-          bg_color: this.RandomColor(),
-          memCount: 15,
-          selected: false,
-          disabled: false
-        }
-      ]
-    }
-  ];
+
+  teams: ITeam[] = new Array();
+  users: IUser[][] = new Array();
+  curTeamSelected: ITeam;
+  usersTest: IUser[] = new Array(20);
 
   meetingDetail : any;
   listOfSelectedValue: string[] = [];
   addTeamForm!: FormGroup;
   editTeamForm!: FormGroup;
 
-  constructor(private nzMessageService: NzMessageService, private modalService: NzModalService, private formBuilder: FormBuilder) { }
+  constructor(private nzMessageService: NzMessageService, private modalService: NzModalService, private formBuilder: FormBuilder, private teamService: TeamService) { }
 
   ngOnInit(): void {
     this.initAddTeamForm();
     this.initEdiTeamForm();
-    this.role ='admin';
-    this.currentTotalMeeting = this.menus[0].children[0].totalMeeting;
+
+    this.UpdateTeams();
+
+    for (let i = 0; i < 20; i++)
+    {
+      this.usersTest[i] = {
+        id: i + '',
+        email: 'me' + i + '@gmail.com',
+        fullname: 'name ' + i,
+        nickname: 'm' + i,
+        position: 'dev',
+        role: 'staff'
+      }
+    }
+    // this.currentTotalMeeting = this.menus[0].children[0].totalMeeting;
   }
 
   initAddTeamForm() {
     this.addTeamForm = this.formBuilder.group({
-      teamName: [''],
-      teamDescribe: ['']
+      name: [''],
+      description: ['']
     });
   }
 
   initEdiTeamForm() {
     this.editTeamForm = this.formBuilder.group({
-      teamName: [''],
-      teamDescribe: ['']
+      id: [''],
+      name: [''],
+      description: ['']
     });
   }
-
-  // resetCustomTeamForm() {
-  //   this.customTeamForm.value.teamName = '';
-  //   this.customTeamForm.value.teamDescribe = '';
-  // }
-
-  // isNotSelected(value: string): boolean {
-  //   return this.listOfSelectedValue.indexOf(value) === -1;
-  // }
 
   show(): void {
     console.log(this.listOfSelectedValue);
   }
 
   isSelected(value: string): boolean {
-    return this.listOfSelectedValue.indexOf(value) != -1 || this.menus[this.currentTeamGroupSelected].children[this.currentTeamSelected]['users'].map(x => x.id).indexOf(value) != -1;
+    return this.listOfSelectedValue.indexOf(value) != -1 || this.curTeamSelected.users.map(user => user.email).indexOf(value) != -1;
   }
   
-  GetCurrentDate(): any {
-    
+  GetDateByTeam(date: string): any {  
     return dayjs().format('DD/MM/YYYY HH[ giờ ]MM[ phút]');
   }
 
@@ -664,10 +111,17 @@ export class TeamComponent implements OnInit {
     return 'bg-'+ color + '-' + valColor;
   }
 
-  LoadTeamInfor(tab, index): void {
-    this.currentTeamGroupSelected = tab;
-    this.currentTeamSelected = index;
-    this.currentTotalMeeting = this.menus[tab].children[index].totalMeeting;
+  LoadTeamInfor(id: string): void {
+    if (this.curTeamId == id) return;
+    this.curTeamId = id;
+    this.teamService.getTeam(id).pipe(catchError(err => {
+      console.log(err)
+      return EMPTY;
+    })).subscribe(result => {
+      this.curTeamSelected = result.body.data;
+      this.curTeamSelected.created_at = this.curTeamSelected.created_at.slice(0, 16);
+    });
+    // this.currentTotalMeeting = this.menus[tab].children[index].totalMeeting;
   }
 
   ChangeTeamGroup(tab): void {
@@ -710,41 +164,112 @@ export class TeamComponent implements OnInit {
     this.meetingDetail = detail;
   }
 
+  UpdateListUser(): void
+  {
+    this.teamService.getAllUser(1, 10, '').pipe(catchError(err => {
+      console.log(err)
+      return EMPTY;
+    })).subscribe(result => {
+      this.users[0] = result.body.data;
+      let totalPage = result.body.pagination.total_page;
+      let pageSize = result.body.pagination.per_page;
+
+      if (totalPage > 1)
+      {
+        for (let i = 2; i <= totalPage; i++)
+        {
+          this.teamService.getAllUser(i, pageSize, '').pipe(catchError(err => {
+            console.log(err)
+            return EMPTY;
+          })).subscribe(result => {
+            this.users.push(result.body.data);
+          });
+          if (i == totalPage) console.log(this.users);
+        }
+      }
+    })
+  }
+
   SelectUsers(): void{
     this.isAddUser = !this.isAddUser;
+    this.UpdateListUser();
   }
 
-  AddUsers(): void{
+  AddUser(): void{
     this.isAddUser = !this.isAddUser;
-    let newUsers = this.users.filter(user => {
-     return this.listOfSelectedValue.indexOf(user.id) != -1});
-    this.menus[this.currentTeamGroupSelected].children[this.currentTeamSelected]['users'] = this.menus[this.currentTeamGroupSelected].children[this.currentTeamSelected]['users'].concat(newUsers);
     this.listOfSelectedValue.length = 0;
+
+  }
+  
+  UpdateTeams(): void
+  {
+    this.teamService.getAllTeam(1, 10, '').pipe(catchError(err => {
+      console.log(err)
+      return EMPTY;
+    })).subscribe(result => {
+      this.teams = result.body.data;
+      this.curTeamSelected = this.teams[0];
+      for (let team of this.teams) team.created_at = team.created_at.slice(0, 16);
+
+      let totalPage = result.body.pagination.total_page;
+      let pageSize = result.body.pagination.per_page;
+
+      if (totalPage > 1)
+      {
+        for (let i = 2; i <= totalPage; i++)
+        {
+          this.teamService.getAllTeam(i, pageSize, '').pipe(catchError(err => {
+            console.log(err)
+            return EMPTY;
+          })).subscribe(result => {
+            for (let team of result.body.data)
+            {
+              team.created_at = team.created_at.slice(0, 16);
+              this.teams.push(team);
+            }
+          });
+        }
+      }
+    })
   }
 
-  CustomTeam(): void {
-    if (this.isAddTeam)
+  CreateTeam(): void {
+    if (this.addTeamForm.value.name != '')
     {
-      if (this.addTeamForm.value.teamName != '')
-      {
-        console.log(this.addTeamForm.value);
-        this.showAddTeamModal = false;
-      }
+      this.showAddTeamModal = false;
+      this.teamService.createTeam(this.addTeamForm.value).pipe(catchError(err => {
+        console.log(err)
+        return EMPTY;
+      })).subscribe(result => {
+        this.UpdateTeams();
+      })
     }
     else
     {
-      if (this.editTeamForm.value.teamDescribe == '')
-      {
-        this.editTeamForm.value.teamDescribe = this.menus[this.currentTeamGroupSelected].children[this.currentTeamSelected].describe;
-      }
-      if (this.editTeamForm.value.teamName == '')
-      {
-        this.editTeamForm.value.teamName = this.menus[this.currentTeamGroupSelected].children[this.currentTeamSelected].title;
-      }
-      console.log('edit');
-      console.log(this.editTeamForm.value);
-      console.log(this.showEditTeamModal);
+      console.log('type new team name');
     }
+  }
+
+  EditTeam(): void {
+      if (this.editTeamForm.value.name == '' && this.editTeamForm.value.description == '') return;
+      this.editTeamForm.value.id = this.curTeamId;
+      if (this.editTeamForm.value.name == '')
+      {
+        this.editTeamForm.value.name = this.curTeamSelected.name;
+      }
+      if (this.editTeamForm.value.description == '')
+      {
+        this.editTeamForm.value.description = this.curTeamSelected.description;
+      }
+      this.teamService.editTeam(this.editTeamForm.value).pipe(catchError(err => {
+        console.log(err)
+        return EMPTY;
+      })).subscribe(result => {
+        console.log(result);
+        this.UpdateTeams();
+        this.LoadTeamInfor(result.body.data.id);
+      })
+      this.showEditTeamModal = false;
   }
 
   DisableTeam(): void {
@@ -753,10 +278,6 @@ export class TeamComponent implements OnInit {
 
   ShowRequestRoomModal(): void {
     this.showRequestRoomModal = true;
-  }
-
-  showModalMiddle(): void {
-    this.isVisibleMiddle = true;
   }
 
   handleOkRequestRoom(): void {

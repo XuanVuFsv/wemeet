@@ -9,44 +9,36 @@
           <nz-tabset [nzSelectedIndex]="currentTeamGroup" class="mb-4 h-0 flex-grow">
             <nz-tab nzTitle="Nhóm của tôi" (nzClick)="ChangeTeamGroup(0)">
               <ul class="overflow-y-auto px-2 h-full">
-                <ng-container *ngTemplateOutlet="menuTpl; context: { data: menus[0].children, tab: 0 }">
+                <ng-container *ngTemplateOutlet="teamTpl; context: { teams: teams, tab: 0 }">
                 </ng-container>
               </ul>
             </nz-tab>
             <nz-tab nzTitle="Nhóm tôi tham gia" (nzClick)="ChangeTeamGroup(1)">
               <ul class="overflow-y-auto px-2 h-full">
-                <ng-container *ngTemplateOutlet="menuTpl; context: { data: menus[1].children, tab: 1 }">
+                <ng-container *ngTemplateOutlet="teamTpl; context: { teams: teams, tab: 1 }">
                 </ng-container>
               </ul>
             </nz-tab>
-            <ng-template #menuTpl let-menus="data" let-tab="tab">
-              <ng-container *ngFor="let menu of menus; let first = first">
-                <li [nzPaddingLeft]="menu.level * 24" [nzDisabled]="menu.disabled" [nzSelected]="menu.selected"
-                  class="bg-blueGray-100 cursor-pointer hover:bg-blueGray-200 py-1" [class.mt-2]="!first">
-                  <div class="teamtag flex items-center" (click)="LoadTeamInfor(tab, menus.indexOf(menu))">
-                    <!-- <i [class]="menu.bg_color" class="p-5 rounded-full mr-4" nz-icon [nzType]="menu.icon"
-                      *ngIf="menu.icon"></i> -->
-                      <nz-avatar class="mr-4" nzIcon="team" nzSize="large" [nzSrc]="menu.avatar"></nz-avatar>
-                    <div>
+            <ng-template #teamTpl let-teams="teams" let-tab="tab">
+              <ng-container *ngFor="let team of teams; let first = first">
+                  <li [nzPaddingLeft]="24" class="bg-blueGray-100 cursor-pointer hover:bg-blueGray-200 py-1"
+                    [class.mt-2]="!first" [class.bg-blueGray-300]="curTeamId == team.id">
+                    <div class="teamtag flex items-center" (click)="LoadTeamInfor(team.id)">
+                      <nz-avatar class="mr-4" nzIcon="team" nzSize="large" [nzSrc]="team.avatar"></nz-avatar>
                       <div>
-                        <span class="text-black font-extrabold text-base">{{ menu.title }}</span>
+                        <div>
+                          <span class="text-black font-extrabold text-base">{{ team.name }}</span>
+                        </div>
+                        <div class="hover: text-black"> {{curTeamSelected.users.length}} thành viên</div>
                       </div>
-                      <div class="hover: text-black">{{ menu.memCount }} thành viên</div>
                     </div>
-                  </div>
-                </li>
+                  </li>
               </ng-container>
             </ng-template>
           </nz-tabset>
-          <button nz-button nzType="primary" class="h-fit"
-          nz-popover
-          nzPopoverTitle="Tạo nhóm"
-          [(nzPopoverVisible)]="showAddTeamModal"
-          nzPopoverTrigger="click"
-          [nzPopoverContent]="addTeamTpl"
-          [nzPopoverMouseEnterDelay]="0.5"
-          (click)="isAddTeam = true"
-          >Tạo nhóm</button>
+          <button nz-button nzType="primary" class="h-fit" nz-popover nzPopoverTitle="Tạo nhóm"
+            [(nzPopoverVisible)]="showAddTeamModal" nzPopoverTrigger="click" [nzPopoverContent]="addTeamTpl"
+            [nzPopoverMouseEnterDelay]="0.5">Tạo nhóm</button>
           <ng-template #addTeamTpl>
             <div class="w-full">
               <form nz-form nzLayout="vertical" [formGroup]="addTeamForm" class="w-full">
@@ -55,26 +47,27 @@
                   <nz-form-label nzRequired class="">Tên nhóm</nz-form-label>
                   <nz-form-item>
                     <nz-form-control nzErrorTip="Vui lòng nhập tên nhóm">
-                      <input formControlName="teamName" nz-input placeholder="Nhập tên nhóm" />
+                      <input formControlName="name" nz-input placeholder="Nhập tên nhóm" />
                     </nz-form-control>
                   </nz-form-item>
                 </div>
-                 <!---- Mô tả nhóm ----->
-                 <div class="block">
+                <!---- Mô tả nhóm ----->
+                <div class="block">
                   <nz-form-label class="">Mô tả về nhóm</nz-form-label>
                   <nz-form-item>
                     <nz-form-control nzErrorTip="Vui lòng nhập mô tả về nhóm">
                       <!-- <input formControlName="teamDescribe" nz-input placeholder="Nhập mô tả về nhóm" /> -->
                       <nz-input-group>
-                        <textarea nz-input rows="2" formControlName="teamDescribe" placeholder="Nhập mô tả về nhóm"></textarea>
+                        <textarea nz-input rows="2" formControlName="description"
+                          placeholder="Nhập mô tả về nhóm"></textarea>
                       </nz-input-group>
                     </nz-form-control>
                   </nz-form-item>
                 </div>
-                </form>
-                <button nz-button nzType="primary" [nzSize]="'small'" (click)="CustomTeam()" class="w-full">
-                  <span>Tạo</span>
-                </button>
+              </form>
+              <button nz-button nzType="primary" [nzSize]="'small'" (click)="CreateTeam()" class="w-full">
+                <span>Tạo</span>
+              </button>
             </div>
           </ng-template>
         </div>
@@ -84,159 +77,143 @@
       <div class="bg-white p-4 mb-5 h-fit">
         <div class="flex justify-between items-center">
           <div class="teamtag flex items-center">
-              <nz-avatar class="mr-5" nzIcon="team" [nzSize]="75" [nzSrc]="menus[currentTeamGroupSelected].children[currentTeamSelected].avatar"></nz-avatar>
+            <nz-avatar class="mr-5" nzIcon="team" [nzSize]="75" [nzSrc]="curTeamSelected.avatar"></nz-avatar>
             <div class="basic-infor">
               <div>
                 <span class="text-black font-extrabold text-lg">{{
-                  menus[currentTeamGroupSelected].children[currentTeamSelected].title
+                  curTeamSelected.name
                   }}</span>
               </div>
               <div class="hover: text-black">
-                {{ menus[currentTeamGroupSelected].children[currentTeamSelected].memCount }} thành
+                {{ curTeamSelected.users.length }} thành
                 viên
               </div>
             </div>
           </div>
           <div class="flex gap-5">
-            <button [class.hidden]="role != 'admin'" nz-button nzType="primary"
-            nz-popover
-            nzPopoverTitle="Chỉnh sửa nhóm"
-            [(nzPopoverVisible)]="showEditTeamModal"
-            nzPopoverTrigger="click"
-            [nzPopoverContent]="editTeamTpl"
-            [nzPopoverMouseEnterDelay]="0.5"
-            (click)="isAddTeam = false"
-            >Chỉnh sửa</button>
+            <button [class.hidden]="role != 'admin'" nz-button nzType="primary" nz-popover
+              nzPopoverTitle="Chỉnh sửa nhóm" [(nzPopoverVisible)]="showEditTeamModal" nzPopoverTrigger="click"
+              [nzPopoverContent]="editTeamTpl" [nzPopoverMouseEnterDelay]="0.5">Chỉnh sửa</button>
             <ng-template #editTeamTpl>
-                <form nz-form nzLayout="vertical" [formGroup]="editTeamForm" class="w-full">
-                  <!---- Tên nhóm ----->
-                  <div class="block">
-                    <nz-form-label nzRequired class="">Tên nhóm</nz-form-label>
-                    <nz-form-item>
-                      <nz-form-control nzErrorTip="Vui lòng nhập tên nhóm">
-                        <input formControlName="teamName" nz-input placeholder="Nhập tên nhóm" />
-                      </nz-form-control>
-                    </nz-form-item>
-                  </div>
-                   <!---- Mô tả nhóm ----->
-                   <div class="block">
-                    <nz-form-label class="">Mô tả về nhóm</nz-form-label>
-                    <nz-form-item>
-                      <nz-form-control nzErrorTip="Vui lòng nhập mô tả về nhóm">
-                        <!-- <input formControlName="teamDescribe" nz-input placeholder="Nhập mô tả về nhóm" /> -->
-                        <nz-input-group>
-                          <textarea nz-input rows="2" formControlName="teamDescribe" placeholder="Nhập mô tả về nhóm"></textarea>
-                        </nz-input-group>
-                      </nz-form-control>
-                    </nz-form-item>
-                  </div>
-                  </form>
-                  <button nz-button nzType="primary" [nzSize]="'small'" (click)="CustomTeam()" class="w-full">
-                    <span>Lưu</span>
-                  </button>
+              <form nz-form nzLayout="vertical" [formGroup]="editTeamForm" class="w-full">
+                <!---- Tên nhóm ----->
+                <div class="block">
+                  <nz-form-label nzRequired class="">Tên nhóm</nz-form-label>
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng nhập tên nhóm">
+                      <input formControlName="name" nz-input placeholder="Nhập tên nhóm" />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <!---- Mô tả nhóm ----->
+                <div class="block">
+                  <nz-form-label class="">Mô tả về nhóm</nz-form-label>
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Vui lòng nhập mô tả về nhóm">
+                      <!-- <input formControlName="teamDescribe" nz-input placeholder="Nhập mô tả về nhóm" /> -->
+                      <nz-input-group>
+                        <textarea nz-input rows="2" formControlName="description"
+                          placeholder="Nhập mô tả về nhóm"></textarea>
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </form>
+              <button nz-button nzType="primary" [nzSize]="'small'" (click)="EditTeam()" class="w-full">
+                <span>Lưu</span>
+              </button>
             </ng-template>
             <button class="border-1 border-teal-400" [class.hidden]="role != 'admin'" nz-button nzType="default"
-            nz-popconfirm
-            nzPopconfirmTitle="Xác nhận ngưng hoạt động nhóm này?"
-            nzPopconfirmPlacement="bottom"
-            (nzOnConfirm)="DisableTeam()"
-            >
+              nz-popconfirm nzPopconfirmTitle="Xác nhận ngưng hoạt động nhóm này?" nzPopconfirmPlacement="bottom"
+              (nzOnConfirm)="DisableTeam()">
               Xóa nhóm
             </button>
           </div>
         </div>
         <div class="detail-infor w-full flex justify-between py-4">
           <div class="block w-4/6">
-            <p><span class="font-bold text-base">Ngày tạo: </span>{{ GetCurrentDate() }}</p>
+            <p><span class="font-bold text-base">Ngày tạo: </span>{{ curTeamSelected.created_at }}</p>
             <p class="font-normal" style="word-break: break-all; min-width: 150px">
               <span class="font-bold text-base">Mô tả về team: </span>{{
-              menus[currentTeamGroupSelected].children[currentTeamSelected].describe }}
+              curTeamSelected.description }}
             </p>
           </div>
           <div class="w-2/6 pl-7">
             <div class="flex flex-col"></div>
             <p><span class="font-bold text-base">Số cuộc họp: </span>{{ currentTotalMeeting }}</p>
-            <a class="underline text-teal-400 hover:underline hover:text-teal-600" (click)="ShowRequestRoomModal()">Có 2 yêu cầu xin nhường phòng họp</a>
+            <a class="underline text-teal-400 hover:underline hover:text-teal-600" (click)="ShowRequestRoomModal()">Có 2
+              yêu cầu xin nhường phòng họp</a>
 
-            <nz-modal
-            [(nzVisible)]="showRequestRoomModal"
-            nzTitle="Yêu cầu nhường phòng họp"
-            nzCentered
-            [nzFooter]="null"
-            [nzWidth]="750"
-            (nzOnCancel)="handleCancelRequestRoom()"
-          >
-            <ng-container *nzModalContent>
-              <div class="w-full flex-grow h-full mb-2 mt-3">
-                <div class="flex h-full overflow-y-auto overflow-x-hidden">
-                  <div class="w-1/2 mr-2 h-full">
-                    <ng-container *ngTemplateOutlet="
+            <nz-modal [(nzVisible)]="showRequestRoomModal" nzTitle="Yêu cầu nhường phòng họp" nzCentered
+              [nzFooter]="null" (nzOnCancel)="handleCancelRequestRoom()">
+              <ng-container *nzModalContent>
+                <div class="w-full flex-grow h-full mb-2 mt-3">
+                  <div class="flex w-full h-full justify-center overflow-y-auto overflow-x-hidden">
+                    <div class="w-full mr-2 h-full">
+                      <ng-container *ngTemplateOutlet="
                         meetingtpl;
-                        context: { meetingData: meetingData, pos: 'left', inRequest: true }
+                        context: { meetingData: meetingData, pos: 'none', inRequest: true }
                       ">
-                    </ng-container>
-                  </div>
-                  <div class="w-1/2 h-full">
+                      </ng-container>
+                    </div>
+                    <!-- <div class="w-1/2 h-full">
                     <ng-container *ngTemplateOutlet="
                         meetingtpl;
                         context: { meetingData: meetingData, pos: 'right', inRequest: true }
                       ">
                     </ng-container>
+                  </div> -->
                   </div>
                 </div>
-              </div>
-            </ng-container>
-          </nz-modal>
+              </ng-container>
+            </nz-modal>
           </div>
         </div>
       </div>
       <div class="flex flex-grow h-0">
-        <div class="w-4/6 pr-5">
+        <div class="w-3/4 pr-5">
           <div class="bg-white w-full flex flex-col h-full">
-              <div class="w-full flex justify-between">
-                <span class="font-bold">Cuộc họp của nhóm</span>
-                <button class="text-left" nz-button nzType="primary" [nzSize]="'small'" (click)="createMeeting()">
-                  <i nz-icon nzType="plus"></i>Thêm cuộc họp
-                </button>
-              </div>
-                <div class="w-full flex-grow h-0 mb-2 mt-3">
-                  <div class="flex h-full overflow-y-auto overflow-x-hidden">
-                    <div class="w-1/2 mr-2 h-full">
-                      <ng-container *ngTemplateOutlet="
+            <div class="w-full flex justify-between">
+              <span class="font-bold">Cuộc họp của nhóm</span>
+              <button class="text-left" nz-button nzType="primary" [nzSize]="'small'" (click)="createMeeting()">
+                <i nz-icon nzType="plus"></i>Thêm cuộc họp
+              </button>
+            </div>
+            <div class="w-full flex-grow h-0 mb-2 mt-2">
+              <div class="flex h-full overflow-y-auto overflow-x-hidden">
+                <div class="w-1/2 mr-2 h-full">
+                  <ng-container *ngTemplateOutlet="
                           meetingtpl;
                           context: { meetingData: meetingData, pos: 'left', inRequest: false }
                         ">
-                      </ng-container>
-                    </div>
-                    <div class="w-1/2 h-full">
-                      <ng-container *ngTemplateOutlet="
+                  </ng-container>
+                </div>
+                <div class="w-1/2 h-full">
+                  <ng-container *ngTemplateOutlet="
                           meetingtpl;
                           context: { meetingData: meetingData, pos: 'right', inRequest: false }
                         ">
-                      </ng-container>
-                    </div>
-                  </div>
+                  </ng-container>
                 </div>
-              <!-- <div class="w-full h-fit flex justify-end"> -->
-                <nz-pagination [nzPageSize]="meetingPageSize" [nzPageIndex]="1" [nzTotal]="
-                menus[currentTeamGroupSelected].children[currentTeamSelected].totalMeeting
+              </div>
+            </div>
+            <!-- <div class="w-full h-fit flex justify-end"> -->
+            <nz-pagination [nzPageSize]="meetingPageSize" [nzPageIndex]="1" [nzTotal]="1
               " [nzItemRender]="renderItemTemplate"></nz-pagination>
-              <!-- </div> -->
-              <ng-template #renderItemTemplate let-type let-page="page">
-                <ng-container [ngSwitch]="type">
-                  <a *ngSwitchCase="'page'">{{ page }}</a>
-                  <a *ngSwitchCase="'prev'">Previous</a>
-                  <a *ngSwitchCase="'next'">Next</a>
-                  <a *ngSwitchCase="'prev_5'"><<</a>
-                  <a *ngSwitchCase="'next_5'">>></a>
-                </ng-container>
-              </ng-template>
-              <ng-template #meetingtpl let-meetingData="meetingData" let-pos="pos" let-inRequest="inRequest">
-                <ng-container *ngFor="let meeting of meetingData; even as isEven; index as i">
-                <div *ngIf="(pos == 'left' && isEven) || (pos == 'right' && !isEven)" class="flex">
-                  <div
-                    [class.my-2] = "i != 0 && i!= 1"
-                     class="
+            <!-- </div> -->
+            <ng-template #renderItemTemplate let-type let-page="page">
+              <ng-container [ngSwitch]="type">
+                <a *ngSwitchCase="'page'">{{ page }}</a>
+                <a *ngSwitchCase="'prev'">Previous</a>
+                <a *ngSwitchCase="'next'">Next</a>
+                <a *ngSwitchCase="'prev_5'"> << </a>
+                    <a *ngSwitchCase="'next_5'">>></a>
+              </ng-container>
+            </ng-template>
+            <ng-template #meetingtpl let-meetingData="meetingData" let-pos="pos" let-inRequest="inRequest">
+              <ng-container *ngFor="let meeting of meetingData; even as isEven; index as i">
+                <div *ngIf="(pos == 'left' && isEven) || (pos == 'right' && !isEven) || pos == 'none'" class="flex">
+                  <div [class.my-2]="(i != 0 && inRequest) || (!inRequest && i > 1)" class="
                       w-full
                       meeting
                       py-1
@@ -246,14 +223,8 @@
                       rounded
                       cursor-pointer
                       text-trueGray-500 text-sm
-                    "
-                    nz-popover
-                    nzPopoverTrigger="click"
-                    [nzPopoverContent]="profileContentTemplate"
-                    nzPopoverPlacement="right"
-                    [nzPopoverMouseEnterDelay]="0.5"
-                    (mouseenter)="showMeetingDetail()"
-                    >
+                    " nz-popover nzPopoverTrigger="click" [nzPopoverContent]="profileContentTemplate"
+                    nzPopoverPlacement="right" [nzPopoverMouseEnterDelay]="0.5" (mouseenter)="showMeetingDetail()">
                     <div class="name font-semibold text-sm">
                       Phân tích thực trạng công ty cho dự án
                     </div>
@@ -291,68 +262,65 @@
                       </div>
                     </div>
                   </div>
-                  <div *ngIf="inRequest" class="flex flex-col py-2 h-full w-full">
-                    <button class="text-left mb-2" nz-button nzType="primary" [nzSize]="'small'">Chấp nhận
+                  <div *ngIf="inRequest" [class.my-2]="i != 0" class="flex justify-between px-2 h-full">
+                    <button class="text-left mb-2 mr-1" nz-button nzType="primary" [nzSize]="'small'">Chấp nhận
                     </button>
-                    <button class="text-left border-1 border-teal-400" nz-button nzType="default" [nzSize]="'small'">Từ chối
+                    <button class="text-left border-1 border-teal-400" nz-button nzType="default" [nzSize]="'small'">Từ
+                      chối
                     </button>
                   </div>
                 </div>
-                </ng-container>
-              </ng-template>
-              <ng-template #profileContentTemplate>
-                <div class="profile-popover w-56 h-fit">
-                  <app-meeting-detail [meetingDetail]="meetingDetail"></app-meeting-detail>
-                </div>
-              </ng-template>
+              </ng-container>
+            </ng-template>
+            <ng-template #profileContentTemplate>
+              <div class="profile-popover w-56 h-fit">
+                <app-meeting-detail [meetingDetail]="meetingDetail"></app-meeting-detail>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="flex-grow w-0">
           <div class="bg-white w-full flex flex-col h-full">
             <div class="w-full flex justify-between">
-              <span class="font-bold w-1/4">Thành viên</span>
-              <button [class.hidden]="isAddUser" class="text-left" nz-button nzType="primary" [nzSize]="'small'" (click)="SelectUsers()">
+              <span class="font-bold w-1/2">Thành viên</span>
+              <button [class.hidden]="isAddUser" class="text-left" nz-button nzType="primary" [nzSize]="'small'"
+                (click)="SelectUsers()">
                 <i nz-icon nzType="plus"></i>Thêm thành viên
               </button>
             </div>
             <div class="flex w-full justify-between max-h-28" [class.hidden]="!isAddUser">
               <!-- Xóa điều kiện users tồn tại (dùng lúc test) Thành viên được chọn và các option (chưa được chọn)-->
-              <nz-select class="w-full overflow-y-auto overflow-x-hidden" nzMode="multiple" nzPlaceHolder="Nhấn vào để chọn" [(ngModel)]="listOfSelectedValue" nzMaxTagCount="100">
-                <nz-option
-                *ngFor="let user of users"
-                [nzLabel]="user.username"
-                [nzValue]="user.id" [nzHide]="isSelected(user.id)">
-                </nz-option>
+              <nz-select class="w-full" nzMode="multiple"
+                nzPlaceHolder="Nhấn vào để chọn" [(ngModel)]="listOfSelectedValue" nzMaxTagCount="100">
+                <div *ngFor="let userPage of users">
+                  <nz-option class="w-full overflow-y-auto overflow-x-hidden" *ngFor="let user of userPage" [nzLabel]="user.fullname" [nzValue]="user.email"
+                    [nzHide]="isSelected(user.email)">
+                  </nz-option>
+                </div>
               </nz-select>
-              <button class="text-left" nz-button nzType="primary" [nzSize]="'small'" (click)="AddUsers()">Thêm
+              <button class="text-left h-full" nz-button nzType="primary" [nzSize]="'small'" (click)="AddUser()" style="max-height: 36px;">Thêm
               </button>
-              </div>
+            </div>
             <div class="w-full flex-col flex-grow h-0 mb-2">
               <div class="w-full h-full flex overflow-y-auto overflow-x-hidden mt-1 mr-2">
-                  <!-- Danh sách thành viên hiện tại -->
-                <div class="w-1/2 mr-2 h-full">
+                <!-- Danh sách thành viên hiện tại -->
+                <div class="w-full mr-2 h-full">
                   <ng-container *ngTemplateOutlet="
                       usertpl;
-                      context: { userData: menus[currentTeamGroupSelected].children[currentTeamSelected]['users'], pos: 'left' }
-                    ">
-                  </ng-container>
-                </div>
-                <div class="w-1/2 h-full">
-                  <ng-container *ngTemplateOutlet="
-                      usertpl;
-                      context: { userData: menus[currentTeamGroupSelected].children[currentTeamSelected]['users'], pos: 'right' }
+                      context: { userData: usersTest }
                     ">
                   </ng-container>
                 </div>
               </div>
-              <ng-template #usertpl let-userData="userData" let-pos="pos">
-                <ng-container *ngFor="let user of userData; even as isEven">
-                  <div *ngIf="(pos == 'left' && isEven) || (pos == 'right' && !isEven)" class="bg-blueGray-50 mt-3 cursor-pointer hover:bg-blueGray-100 py-2">
+              <ng-template #usertpl let-userData="userData">
+                <ng-container *ngFor="let user of userData">
+                  <div
+                    class="bg-blueGray-50 mt-3 cursor-pointer hover:bg-blueGray-100 py-2">
                     <div class="usertag flex items-center">
                       <nz-avatar class="mr-2" nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
                       <div class="flex w-full justify-start">
                         <div class="w-2/3">
-                          <span class="text-black font-extrabold text-base">{{ user.username }}</span>
+                          <span class="text-black font-extrabold text-base">{{ user.fullname }}</span>
                         </div>
                         <!-- <div class="hover: text-black">
                           {{ user.role }}
@@ -364,9 +332,8 @@
                 </ng-container>
               </ng-template>
             </div>
-            <nz-pagination [nzPageSize]="meetingPageSize" [nzPageIndex]="1" [nzTotal]="
-            menus[currentTeamGroupSelected].children[currentTeamSelected].memCount
-          " [nzItemRender]="renderItemTemplate"></nz-pagination>    
+            <nz-pagination [nzPageSize]="10" [nzPageIndex]="1" [nzTotal]="usersTest.length > 0 ? usersTest.length : 1" [nzItemRender]="renderItemTemplate"></nz-pagination>
+            <!-- <nz-pagination [nzPageSize]="10" [nzPageIndex]="1" [nzTotal]="curTeamSelected.users.length > 0 ? curTeamSelected.users.length : 1" [nzItemRender]="renderItemTemplate"></nz-pagination> -->
           </div>
         </div>
       </div>
@@ -376,8 +343,9 @@
 <!-- task in team:
 -modal meeting ok
 -modal add meeting ok
--modal add team
--modal request room
--modal edit team
--modal hide team
+-modal add team ok
+-modal request room: new template scrollable
+-modal edit team ok
+-modal hide team ok
+-message
 +status team -->

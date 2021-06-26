@@ -17,26 +17,28 @@
           </div>
         </div>
         <div class="w-full flex justify-center p-5">
-          <form nz-form nzLayout="vertical" [formGroup]="loginForm" class="w-96 h-fit">
+          <form nz-form nzLayout="vertical" [formGroup]="loginForm" class="w-96 h-fit" autocomplete="off">
             <!---- Email ----->
             <div class="block">
               <nz-form-label class="">Email</nz-form-label>
               <nz-form-item>
                 <nz-form-control nzErrorTip="">
-                  <input formControlName="email" nz-input placeholder="Nhập email đăng nhập" />
+                  <input formControlName="email" nz-input placeholder="Nhập email đăng nhập" (ngModelChange)="ValidateEmail()"/>
+                  <span class="text-red-400 font-semibold text-xs" [class.hidden]="!isEmail">Hmm, Đây trông không giống một địa chỉ email</span>
+                  <span class="text-red-400 font-semibold text-xs" [class.hidden]="!acountNotExist">Tài khoản không tồn tại</span>
                 </nz-form-control>
               </nz-form-item>
             </div>
-
             <!---- password ----->
             <div class="block">
               <nz-form-label class="">Mật khẩu</nz-form-label>
               <nz-form-item>
                 <nz-form-control nzErrorTip="">
                   <nz-input-group [nzSuffix]="suffixTemplate">
-                    <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="Nhập mật khẩu"
-                      formControlName="password" />
+                    <input class="pass" [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="Nhập mật khẩu"
+                      formControlName="password" (ngModelChange)="ValidateEmail()"/>
                   </nz-input-group>
+                  <span class="text-red-400 font-semibold text-xs"> {{checkPasswordMessage}} </span>
                   <ng-template #suffixTemplate>
                     <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
                       (click)="passwordVisible = !passwordVisible"></i>
@@ -48,7 +50,7 @@
               <label class="" nz-checkbox formControlName="stayLogin" (ngModelChange)="StayLogin()">Nhớ mật khẩu</label>
               <a class="text-red-400 hover:text-red-600 font-bold" href="/forget-password">Quên mật khẩu?</a>
             </div>
-            <button nz-button nzType="primary" class="w-full" (click)="Login()">Đăng nhập</button>
+            <button nz-button [disabled]="(isEmail || loginForm.value.password == '') && (!onInit)" nzType="primary" class="w-full" (click)="Login()">Đăng nhập</button>
           </form>
         </div>
       </div>

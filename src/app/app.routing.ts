@@ -1,4 +1,3 @@
-import { ResetPasswordModule } from './modules/reset-password/reset-password.module';
 import { LoginGuard } from './core/guards/login.guard';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NgModule } from '@angular/core';
@@ -55,6 +54,7 @@ const routes: Routes = [
   },
   {
     path: 'change-password',
+    canActivate: [AuthGuard],
     loadChildren: () => import('@modules/change-password/change-password.module').then(m => m.ChangePasswordModule),
     data: { title: 'Thay đổi mật khẩu' }
   }

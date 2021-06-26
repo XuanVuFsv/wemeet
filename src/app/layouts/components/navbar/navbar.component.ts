@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
   weekHourShow: number[] = [0, 24];
   getNotifications: boolean = true;
   timeBeforeSendNoti: number = 30;
-  username: string = '';
+  fullname: string = '';
   role: string = '';
   visibleNotification = false;
   listNoti = [
@@ -59,7 +59,7 @@ export class NavbarComponent implements OnInit {
       console.log(err);
       return EMPTY;
     })).subscribe(result => {
-      this.username = this.authService.getCurrentUser().data.user.fullname;
+      this.fullname = this.authService.getCurrentUser().data.user.fullname;
       this.role = this.authService.getCurrentUser().data.roles;
     })
   }

@@ -1,3 +1,4 @@
+import { TeamService } from './../../core/services/team.service';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -14,12 +15,16 @@ export class ForgetPasswordComponent implements OnInit {
 
   logo = '../../assets/images/logo/logo.png';
   picture = '../../assets/images/picture.jpg';
-  getPasswordSuccess: boolean = false;
-  domain: string = '';
 
   forgetPasswordForm!: FormGroup;
+  onInit: boolean = true;
+  isSubmitForm: boolean = false;
+  getPasswordSuccess: boolean = false;
+  isEmail: boolean = false;
+  acountNotExist: boolean = false;
+  domain: string = '';
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private teamService: TeamService, private router: Router) { }
 
   ngOnInit(): void {
     this.domain = window.location.origin.slice(7) + '/reset-password';
@@ -34,14 +39,36 @@ export class ForgetPasswordComponent implements OnInit {
     });
   }
 
+  ValidateEmail() {
+    this.onInit = false;
+    this.isEmail = !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.forgetPasswordForm.value.email) && this.forgetPasswordForm.value.email.includes('.'));
+    this.acountNotExist = false;
+  };
+
   ForgetPassword(): void {
-    this.forgetPasswordForm.value.domain = this.domain;
-    this.authService.forgetPassword(this.forgetPasswordForm.value).pipe(catchError(err => {
-      console.log(err);
-      return EMPTY;
-    })).subscribe(result => {
-      this.getPasswordSuccess = true;
-    })
+    this.isSubmitForm = true;
+    this.onInit = false;
+    this.ValidateEmail();
+    if (this.isEmail)
+    {
+      return;
+    }
+      this.teamService.getUserByEmail(this.forgetPasswordForm.value.email).subscribe(result => {
+        if (result.body == null) {
+          this.acountNotExist = true;
+          return;
+        }
+        else {
+          this.isEmail = false;
+          this.forgetPasswordForm.value.domain = this.domain;
+          this.authService.forgetPassword(this.forgetPasswordForm.value).pipe(catchError(err => {
+            console.log(err);
+            return EMPTY;
+          })).subscribe(result => {
+            this.getPasswordSuccess = true;
+          })
+        }
+      });
   }
 
 }
