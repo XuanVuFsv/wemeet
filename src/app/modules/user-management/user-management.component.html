@@ -4,20 +4,26 @@
       <i nz-icon nzType="check" nzTheme="outline"></i>
       Duyệt cuộc họp
     </ng-template>
-    <app-meeting></app-meeting>
+    <div class="pt-5 pr-5">
+      <app-meeting></app-meeting>
+    </div>
   </nz-tab>
   <nz-tab [nzTitle]="user">
     <ng-template #user>
       <i nz-icon nzType="user" nzTheme="outline"></i>
       Quản lý người dùng
     </ng-template>
-    <app-user></app-user>
+    <div class="pt-5 pr-5">
+      <app-user></app-user>
+    </div>
   </nz-tab>
   <nz-tab [nzTitle]="room">
     <ng-template #room>
       <i nz-icon nzType="edit" nzTheme="outline"></i>
       Quản lý phòng họp
     </ng-template>
-    <app-room></app-room>
+    <div class="pt-5 pr-5">
+      <app-room></app-room>
+    </div>
   </nz-tab>
 </nz-tabset>

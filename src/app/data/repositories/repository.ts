@@ -10,7 +10,7 @@ export type HttpQuery = {
   [key: string]: any;
   filter?: { [key: string]: any };
   page?: { size: number; number: number };
-  sort?: string;
+  sort?: { sort: string };
   includes?: string;
 };
 

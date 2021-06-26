@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.username = this.authService.getCurrentUser().user.email;
+    this.username = this.authService.getCurrentUser()?.user?.email;
   }
   changeHourStart(hourStart: any) {}
 
