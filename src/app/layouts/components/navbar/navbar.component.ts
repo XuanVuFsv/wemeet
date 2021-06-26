@@ -1,5 +1,8 @@
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from './../../../core/services/auth.service';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +18,8 @@ export class NavbarComponent implements OnInit {
   weekHourShow: number[] = [0, 24];
   getNotifications: boolean = true;
   timeBeforeSendNoti: number = 30;
-  username: string = '';
+  fullname: string = '';
+  role: string = '';
   visibleNotification = false;
   listNoti = [
     {
@@ -48,10 +52,16 @@ export class NavbarComponent implements OnInit {
     }
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.username = this.authService.getCurrentUser().user.email;
+    this.authService.fetchAuthenticatedUser().pipe(catchError(err => {
+      console.log(err);
+      return EMPTY;
+    })).subscribe(result => {
+      this.fullname = this.authService.getCurrentUser().data.user.fullname;
+      this.role = this.authService.getCurrentUser().data.roles;
+    })
   }
   changeHourStart(hourStart: any) {}
 
@@ -61,6 +71,9 @@ export class NavbarComponent implements OnInit {
     console.log(this.timeBeforeSendNoti);
   }
 
+  Logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');}
   showNotificationList() {
     if (this.visibleNotification) {
       setTimeout(() => {

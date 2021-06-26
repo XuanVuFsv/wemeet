@@ -36,9 +36,27 @@ const routes: Routes = [
   },
   {
     path: '',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('@modules/home/home.module').then(m => m.HomeModule),
     data: { title: 'Trang chủ' }
+  },
+  {
+    path: 'reset-password',
+    canActivate: [LoginGuard],
+    loadChildren: () => import('@modules/reset-password/reset-password.module').then(m => m.ResetPasswordModule),
+    data: { title: 'Đặt lại mật khẩu' }
+  },
+  {
+    path: 'forget-password',
+    canActivate: [LoginGuard],
+    loadChildren: () => import('@modules/forget-password/forget-password.module').then(m => m.ForgetPasswordModule),
+    data: { title: 'Quên mật khẩu' }
+  },
+  {
+    path: 'change-password',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('@modules/change-password/change-password.module').then(m => m.ChangePasswordModule),
+    data: { title: 'Thay đổi mật khẩu' }
   }
 ];
 

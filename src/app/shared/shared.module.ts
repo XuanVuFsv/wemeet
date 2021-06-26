@@ -28,6 +28,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -88,6 +90,8 @@ const MODULES: any[] = [
   NzCheckboxModule,
   NzTabsModule,
   NzPaginationModule,
+  NzMessageModule,
+  NzProgressModule,
   NzInputNumberModule,
   NzSliderModule,
   NzSwitchModule,
