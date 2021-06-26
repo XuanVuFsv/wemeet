@@ -59,7 +59,7 @@ export class LoginGuard implements CanActivate, CanLoad, CanActivateChild {
     return this.authService.isAuthenticated.pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/');
           return false;
         }
         return true;
