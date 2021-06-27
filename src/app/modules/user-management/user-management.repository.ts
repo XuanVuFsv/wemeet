@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Repository as BaseRepository } from '@data/repositories/repository';
 
 export interface IUserManagement {
-  id: string;
+  email: string;
 }
 
 @Injectable({ providedIn: 'root' })

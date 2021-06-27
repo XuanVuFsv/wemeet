@@ -8,9 +8,10 @@ import { SharedModule } from '@app/shared/shared.module';
 import { UserManagementRoutingModule } from './user-management.routing';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { UserEditComponent } from './modals/user-edit/user-edit.component';
 
 @NgModule({
-  declarations: [UserManagementComponent],
+  declarations: [UserManagementComponent, UserEditComponent],
   imports: [
     CommonModule,
     SharedModule,

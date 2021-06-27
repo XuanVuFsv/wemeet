@@ -4,7 +4,14 @@ import { FormBuilder } from '@angular/forms';
 import { Repository } from '@app/data/repositories/repository';
 import { Table } from '@app/shared/utilities/ui/table';
 import { UserRepository, IUser } from './user.repository';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { catchError } from 'rxjs/operators';
+import { MessageService } from '@app/shared/services/message.service';
+import { UserEditComponent } from '../../modals/user-edit/user-edit.component';
+import { EMPTY } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -51,19 +58,15 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
   constructor(
     private userRepository: UserRepository,
     private fb: FormBuilder,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private modalService: NzModalService,
+    private messageService: MessageService
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.initForm();
-    this.apiService
-      .get('/users?page[size]=20&page[number]=1&sort[sort]=-created_at')
-      .pipe()
-      .subscribe(resp => {
-        console.log(resp);
-      });
   }
 
   ngAfterViewInit(): void {
@@ -80,6 +83,129 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
   keywordFilterChange() {
     this.filterFormValue.team = this.filterForm.value.team;
     this.filterChange(this.filterFormValue, true);
+  }
+
+  showModalEditSupplier(data: any = null, id: string = '') {
+    const modalCreate: NzModalRef = this.modalService.create({
+      nzTitle: data ? 'Chỉnh sửa người dùng' : 'Tạo mới người dùng',
+      nzContent: UserEditComponent,
+      nzMaskClosable: false,
+      nzClosable: true,
+      nzWidth: '500px',
+      nzBodyStyle: {
+        maxHeight: '60vh',
+        paddingTop: '14px',
+        paddingBottom: '14px',
+        overflow: 'auto'
+      },
+      nzClassName: 'modal-not-submit',
+      nzStyle: { paddingBottom: '0' },
+      nzCentered: true,
+      nzComponentParams: {
+        dataEdit: data
+      },
+      nzFooter: [
+        {
+          label: 'Đóng',
+          type: 'default',
+          disabled: instance => {
+            return instance.isLoading;
+          },
+          onClick: () => modalCreate.destroy()
+        },
+        {
+          label: data ? 'Lưu thay đổi' : 'Tạo',
+          type: 'primary',
+          disabled: instance => {
+            return instance.isLoading;
+          },
+          loading: instance => {
+            return instance.isLoading;
+          },
+          onClick: () => {
+            if (modalCreate.componentInstance.formIsValid()) {
+              let dataEdit = JSON.parse(
+                JSON.stringify(modalCreate.componentInstance.registerForm.value)
+              );
+
+              this.submitUser(dataEdit, modalCreate, id);
+            }
+          }
+        }
+      ]
+    });
+  }
+
+  editUser(id: any = null) {
+    console.log(id);
+
+    this.userRepository
+      .find(id, this.defaultQueryParams)
+      // .pipe(
+      //   untilDestroyed(this),
+      //   catchError(err => {
+      //     // this.messageService.showErrorMessage(err, 'supplier');
+      //     return EMPTY;
+      //   })
+      // )
+      .subscribe((resp: any) => {
+        console.log(resp);
+
+        // this.showModalEditSupplier(resp, id);
+      });
+  }
+
+  createUser() {
+    this.showModalEditSupplier();
+  }
+
+  submitUser(httpBody: any, modalCreate: NzModalRef, idEdit: string) {
+    let config = modalCreate.getConfig();
+    config.nzClassName = 'modal-submit';
+    modalCreate.updateConfig(config);
+    modalCreate.componentInstance.isLoading = true;
+    httpBody.ward_id = httpBody.ward_id.id;
+    httpBody.district_id = httpBody.district_id.id;
+    httpBody.province_id = httpBody.province_id.id;
+
+    let fetchApi = idEdit
+      ? this.userRepository.update(idEdit, httpBody)
+      : this.userRepository.create(httpBody);
+    fetchApi
+      .pipe(
+        untilDestroyed(this),
+        catchError(err => {
+          modalCreate.componentInstance.isLoading = false;
+          let config = modalCreate.getConfig();
+          config.nzClassName = 'modal-not-submit';
+          modalCreate.updateConfig(config);
+          // this.messageService.showErrorMessage(err, 'supplier');
+          return EMPTY;
+        })
+      )
+      .subscribe(resp => {
+        this.messageService.onHttpSuccess(
+          idEdit ? 'Chỉnh sửa thành công' : 'Tạo mới người dùng thành công'
+        );
+        this.filterChange(this.filterFormValue, idEdit ? false : true);
+        this.modalService.closeAll();
+      });
+  }
+
+  submitDelete(idDelete: string) {
+    this.userRepository
+      .delete(idDelete)
+      .pipe(
+        untilDestroyed(this),
+        catchError(err => {
+          // this.messageService.showErrorMessage(err, 'supplier');
+          return EMPTY;
+        })
+      )
+      .subscribe(resp => {
+        this.filterChange(this.filterFormValue, false);
+        this.messageService.onHttpSuccess('Xoá người dùng thành công');
+      });
   }
 
   getTextName(fullName: string) {

@@ -1,0 +1,33 @@
+<section id="app-edit-supplier">
+  <form nz-form nzLayout="vertical" [formGroup]="registerForm" class="w-full" (ngSubmit)="create()">
+    <!---- name ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Họ tên</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập họ tên">
+          <input formControlName="fullname" nz-input placeholder="Nhập họ tên" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!---- name ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Nickname</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập nickname">
+          <input formControlName="nickname" nz-input placeholder="Nhập nickname" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!---- name ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Chức vụ / vai trò</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập chức vụ / vai trò">
+          <input formControlName="position" nz-input placeholder="Nhập chức vụ / vai trò" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <button class="hidden"></button>
+  </form>
+</section>

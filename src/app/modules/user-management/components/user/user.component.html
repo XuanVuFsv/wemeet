@@ -117,7 +117,7 @@
                     nzType="primary"
                     nzSize="small"
                     class="w-full mb-3"
-                    (click)="editSupplier(supplier?.id)"
+                    (click)="editUser(user?.email)"
                   >
                     Chỉnh sửa
                   </button>
@@ -127,7 +127,7 @@
                     nzSize="small"
                     nz-popconfirm
                     nzPopconfirmTitle="Bạn có muốn xoá người dùng này?"
-                    (nzOnConfirm)="submitDelete(supplier?.id)"
+                    (nzOnConfirm)="submitDelete(user?.email)"
                     nzPopconfirmPlacement="left"
                     nzCancelText="Huỷ bỏ"
                     nzOkText="Xoá"
