@@ -59,6 +59,7 @@ export class ForgetPasswordComponent implements OnInit {
           return;
         }
         else {
+          if (result.body.data.is_first_login) this.router.navigateByUrl('/');
           this.isEmail = false;
           this.forgetPasswordForm.value.domain = this.domain;
           this.authService.forgetPassword(this.forgetPasswordForm.value).pipe(catchError(err => {

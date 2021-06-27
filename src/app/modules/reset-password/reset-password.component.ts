@@ -50,6 +50,7 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.token = this.router.url.slice(22);
+    if (this.token.length < 235) this.router.navigateByUrl('/login');
   }
 
   initForm() {

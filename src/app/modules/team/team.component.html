@@ -23,20 +23,20 @@
               <ng-container *ngFor="let team of teams; let first = first">
                   <li [nzPaddingLeft]="24" class="bg-blueGray-100 cursor-pointer hover:bg-blueGray-200 py-1"
                     [class.mt-2]="!first" [class.bg-blueGray-300]="curTeamId == team.id">
-                    <div class="teamtag flex items-center" (click)="LoadTeamInfor(team.id)">
+                    <div class="teamtag flex items-center" (click)="LoadTeamInfor(team.id, false)">
                       <nz-avatar class="mr-4" nzIcon="team" nzSize="large" [nzSrc]="team.avatar"></nz-avatar>
                       <div>
                         <div>
                           <span class="text-black font-extrabold text-base">{{ team.name }}</span>
                         </div>
-                        <div class="hover: text-black"> {{curTeamSelected.users.length}} thành viên</div>
+                        <div class="hover: text-black"> {{team.users.length + 1}} thành viên</div>
                       </div>
                     </div>
                   </li>
               </ng-container>
             </ng-template>
           </nz-tabset>
-          <button nz-button nzType="primary" class="h-fit" nz-popover nzPopoverTitle="Tạo nhóm"
+          <button nz-button nzType="primary" class="h-fit" [class.hidden]="role != 'LEAD'" nz-popover nzPopoverTitle="Tạo nhóm"
             [(nzPopoverVisible)]="showAddTeamModal" nzPopoverTrigger="click" [nzPopoverContent]="addTeamTpl"
             [nzPopoverMouseEnterDelay]="0.5">Tạo nhóm</button>
           <ng-template #addTeamTpl>
@@ -49,6 +49,7 @@
                     <nz-form-control nzErrorTip="Vui lòng nhập tên nhóm">
                       <input formControlName="name" nz-input placeholder="Nhập tên nhóm" />
                     </nz-form-control>
+                    <div class="text-red-400 text-xs" [class.hidden]="!addTeamForm.value.name == ''">Không được để trống</div>
                   </nz-form-item>
                 </div>
                 <!---- Mô tả nhóm ----->
@@ -65,7 +66,7 @@
                   </nz-form-item>
                 </div>
               </form>
-              <button nz-button nzType="primary" [nzSize]="'small'" (click)="CreateTeam()" class="w-full">
+              <button nz-button nzType="primary" [nzSize]="'small'" (click)="CreateTeam()" class="w-full" [disabled]="addTeamForm.value.name == ''">
                 <span>Tạo</span>
               </button>
             </div>
@@ -91,7 +92,7 @@
             </div>
           </div>
           <div class="flex gap-5">
-            <button [class.hidden]="role != 'admin'" nz-button nzType="primary" nz-popover
+            <button [class.hidden]="id != curLeaderId" nz-button nzType="primary" nz-popover
               nzPopoverTitle="Chỉnh sửa nhóm" [(nzPopoverVisible)]="showEditTeamModal" nzPopoverTrigger="click"
               [nzPopoverContent]="editTeamTpl" [nzPopoverMouseEnterDelay]="0.5">Chỉnh sửa</button>
             <ng-template #editTeamTpl>
@@ -123,7 +124,7 @@
                 <span>Lưu</span>
               </button>
             </ng-template>
-            <button class="border-1 border-teal-400" [class.hidden]="role != 'admin'" nz-button nzType="default"
+            <button class="border-1 border-teal-400" [class.hidden]="id != curLeaderId" nz-button nzType="default"
               nz-popconfirm nzPopconfirmTitle="Xác nhận ngưng hoạt động nhóm này?" nzPopconfirmPlacement="bottom"
               (nzOnConfirm)="DisableTeam()">
               Xóa nhóm
@@ -292,13 +293,13 @@
               <!-- Xóa điều kiện users tồn tại (dùng lúc test) Thành viên được chọn và các option (chưa được chọn)-->
               <nz-select class="w-full" nzMode="multiple"
                 nzPlaceHolder="Nhấn vào để chọn" [(ngModel)]="listOfSelectedValue" nzMaxTagCount="100">
-                <div *ngFor="let userPage of users">
-                  <nz-option class="w-full overflow-y-auto overflow-x-hidden" *ngFor="let user of userPage" [nzLabel]="user.fullname" [nzValue]="user.email"
-                    [nzHide]="isSelected(user.email)">
+                <div *ngFor="let user of users">
+                  <nz-option class="w-full overflow-y-auto overflow-x-hidden" [nzLabel]="user.fullname" [nzValue]="user.id"
+                    [nzHide]="isSelected(user.id)">
                   </nz-option>
                 </div>
               </nz-select>
-              <button class="text-left h-full" nz-button nzType="primary" [nzSize]="'small'" (click)="AddUser()" style="max-height: 36px;">Thêm
+              <button class="text-left h-full" nz-button nzType="primary" [nzSize]="'small'" (click)="AddUserToTeam()" style="max-height: 36px;">Thêm
               </button>
             </div>
             <div class="w-full flex-col flex-grow h-0 mb-2">
@@ -307,33 +308,34 @@
                 <div class="w-full mr-2 h-full">
                   <ng-container *ngTemplateOutlet="
                       usertpl;
-                      context: { userData: usersTest }
+                      context: { userData: curTeamSelected.users }
                     ">
                   </ng-container>
                 </div>
               </div>
               <ng-template #usertpl let-userData="userData">
-                <ng-container *ngFor="let user of userData">
+                <ng-container *ngFor="let user of userData; let index as i">
                   <div
-                    class="bg-blueGray-50 mt-3 cursor-pointer hover:bg-blueGray-100 py-2">
+                    class="bg-blueGray-50 mb-3 cursor-pointer hover:bg-blueGray-100 py-2" (mouseenter) ="SelectMember(user.id, true) "  (mouseleave) ="SelectMember('', false)">
                     <div class="usertag flex items-center">
                       <nz-avatar class="mr-2" nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
-                      <div class="flex w-full justify-start">
-                        <div class="w-2/3">
-                          <span class="text-black font-extrabold text-base">{{ user.fullname }}</span>
+                      <div class="flex w-full justify-between">
+                        <div class="w-3/4 mt-2">
+                          <span class="text-black font-extrabold text-base">{{ user.fullname }}
+                            <i nz-icon [class.hidden]="user.id != curLeaderId" [nzType]="'crown'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#ffcc00'"></i>
+                          </span>
                         </div>
+                        <button [class.hidden]="user.id != curMemberId && !onSelectMember" nz-button class= "py-2 border-1 border-teal-400" nzType="default" [nzSize]="size">Xóa</button>
                         <!-- <div class="hover: text-black">
                           {{ user.role }}
                         </div> -->
-                        <i nz-icon [nzType]="'crown'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#ffcc00'"></i>
                       </div>
                     </div>
                   </div>
                 </ng-container>
               </ng-template>
             </div>
-            <nz-pagination [nzPageSize]="10" [nzPageIndex]="1" [nzTotal]="usersTest.length > 0 ? usersTest.length : 1" [nzItemRender]="renderItemTemplate"></nz-pagination>
-            <!-- <nz-pagination [nzPageSize]="10" [nzPageIndex]="1" [nzTotal]="curTeamSelected.users.length > 0 ? curTeamSelected.users.length : 1" [nzItemRender]="renderItemTemplate"></nz-pagination> -->
+            <nz-pagination [nzPageSize]="10" [nzPageIndex]="1" [nzTotal]="curTeamSelected.users.length > 0 ? curTeamSelected.users.length : 1" [nzItemRender]="renderItemTemplate"></nz-pagination>
           </div>
         </div>
       </div>
@@ -349,3 +351,10 @@
 -modal hide team ok
 -message
 +status team -->
+
+<!-- API:
+Edit Team
+Add user to team
+Remove user from team
+meeting
+delete Team -->

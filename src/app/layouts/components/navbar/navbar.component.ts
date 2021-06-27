@@ -60,7 +60,7 @@ export class NavbarComponent implements OnInit {
       return EMPTY;
     })).subscribe(result => {
       this.fullname = this.authService.getCurrentUser().data.user.fullname;
-      this.role = this.authService.getCurrentUser().data.roles;
+      this.role = this.authService.getCurrentUser().data.user.role;
     })
   }
   changeHourStart(hourStart: any) {}

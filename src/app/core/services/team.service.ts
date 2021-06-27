@@ -13,42 +13,43 @@ export class TeamService {
     private apiService: ApiService
   ) {}
 
-  getAllUser(pageNumber, pageSize, filter: string, sort: string = 'created_at') {
-    let params = new HttpParams().set('pageNumber', pageNumber);
-    params.append('pageSize', pageSize);
-    params.append('filter', filter);
-    params.append('sort', sort);
+  getAllUser(pageNumber = 1, pageSize = 10, filter:string = '', sort: string = 'created_at') {
+    // let params = new HttpParams().set('pageNumber', pageNumber);
+    // params.append('pageSize', pageSize);
+    // params.append('filter', filter);
+    // params.append('sort[]', sort);
+    let params = new HttpParams().set('sort[]', sort);
 
     return this.apiService.get('/users', {
         params: params
       }).pipe();
   }
 
-  addUser(body: any) {
-    return this.apiService.post('/users/create-user', body).pipe();
-  }
+  // createUser(body: any) {
+  //   return this.apiService.post('/users/create-user', body).pipe();
+  // }
 
-  removeUser(body: any) {
-    return this.apiService.post('/users/create-user', body).pipe();
-  }
+  // removeUser(body: any) {
+  //   return this.apiService.post('/users/create-user', body).pipe();
+  // }
 
   getUserByEmail(email: string) {
-    return this.apiService.get('/users/' + email).pipe();
+    return this.apiService.get('/users/get-by-email/' + email).pipe();
   }
 
-  editUser(body: any) {
-    return this.apiService.put('/users', body).pipe();
-  }
+  // editUser(body: any) {
+  //   return this.apiService.put('/users', body).pipe();
+  // }
 
-  getAllTeam(pageNumber, pageSize, filter: string, sort: string = 'created_at') {
-    let params = new HttpParams().set('pageNumber', pageNumber);
-    params.append('pageSize', pageSize);
-    params.append('filter', filter);
-    params.append('sort', sort);
-
-    return this.apiService.get('/team', {
-        params: params
-      }).pipe();
+  getAllTeam(pageNumber, pageSize, filterField: string, filterValue: string, sort: string = 'created_at') {
+    // let params = new HttpParams().set('page[number]', pageNumber);
+    // params.append('page[size]', pageSize);
+    // // if (filter != null) params.append('filterField[' + filter + ']', filterValue);
+    // console.log(params);
+    // return this.apiService.get('/team', {
+    //     params: params
+    //   }).pipe();
+    return this.apiService.get('/team'+'?page[number]='+pageNumber+'&page[size]='+pageSize).pipe();
   }
 
   getTeam(id: string) {
@@ -63,5 +64,12 @@ export class TeamService {
     return this.apiService.put('/team', body).pipe();
   }
 
+  addUserToTeam(body: any) {
+    return this.apiService.post('/team/add-user', body).pipe();
+  }
+
+  removeUserFromTeam(body: any) {
+    return this.apiService.put('/team/remove-user', body).pipe();
+  }
 
 }

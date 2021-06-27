@@ -1,3 +1,4 @@
+import { AuthService } from '@core/services/auth.service';
 import { ITeam } from './team.repository';
 import { IUser } from './team.repository';
 import { catchError } from 'rxjs/operators';
@@ -17,18 +18,22 @@ import { EMPTY } from 'rxjs';
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss']})
 export class TeamComponent implements OnInit {
+  role: string = '';
+  id: string = '';
+
   isAddUser: boolean = false;
   showEditTeamModal: boolean = false;
   showAddTeamModal: boolean = false;
   showRequestRoomModal: boolean = false;
+  onSelectMember: boolean = false;
 
   colorList = ['red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
   currentTeamGroup = 0;
   currentTeamGroupSelected = 0;
   currentTeamSelected = 0;
-  curTeamId: string = '1';
+  curTeamId: string = '';
+  curMemberId: string = '';
   
-  role = 'admin';
   meetingPageSize = 20;
   userPageSize = 20;
   currentTotalMeeting = 0;
@@ -50,20 +55,23 @@ export class TeamComponent implements OnInit {
   users: IUser[][] = new Array();
   curTeamSelected: ITeam;
   usersTest: IUser[] = new Array(20);
+  curLeaderId: string = '';
 
   meetingDetail : any;
   listOfSelectedValue: string[] = [];
   addTeamForm!: FormGroup;
   editTeamForm!: FormGroup;
 
-  constructor(private nzMessageService: NzMessageService, private modalService: NzModalService, private formBuilder: FormBuilder, private teamService: TeamService) { }
+  constructor(private nzMessageService: NzMessageService, private modalService: NzModalService, private formBuilder: FormBuilder,private authService: AuthService, private teamService: TeamService) { }
 
   ngOnInit(): void {
     this.initAddTeamForm();
     this.initEdiTeamForm();
 
     this.UpdateTeams();
-
+    this.UpdateListUser();
+    this.role = this.authService.getCurrentUser().data.user.role;
+    this.id = this.authService.getCurrentUser().data.user.id;
     for (let i = 0; i < 20; i++)
     {
       this.usersTest[i] = {
@@ -81,7 +89,8 @@ export class TeamComponent implements OnInit {
   initAddTeamForm() {
     this.addTeamForm = this.formBuilder.group({
       name: [''],
-      description: ['']
+      description: [''],
+      l_id: this.authService.getCurrentUser().data.user.id
     });
   }
 
@@ -98,7 +107,7 @@ export class TeamComponent implements OnInit {
   }
 
   isSelected(value: string): boolean {
-    return this.listOfSelectedValue.indexOf(value) != -1 || this.curTeamSelected.users.map(user => user.email).indexOf(value) != -1;
+    return this.listOfSelectedValue.indexOf(value) != -1 || this.curTeamSelected.users.map(user => user.id).indexOf(value) != -1;
   }
   
   GetDateByTeam(date: string): any {  
@@ -111,14 +120,21 @@ export class TeamComponent implements OnInit {
     return 'bg-'+ color + '-' + valColor;
   }
 
-  LoadTeamInfor(id: string): void {
-    if (this.curTeamId == id) return;
+  SelectMember(id: string, onSelectMember: boolean) {
+    this.curMemberId = id;
+    this.onSelectMember = onSelectMember;
+  }
+
+  LoadTeamInfor(id: string, isRequired: boolean): void {
+    if (this.curTeamId == id && !isRequired) return;
     this.curTeamId = id;
     this.teamService.getTeam(id).pipe(catchError(err => {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
       this.curTeamSelected = result.body.data;
+      this.curLeaderId = result.body.data.leader.id;
+      this.curTeamSelected.users.unshift(result.body.data.leader);
       this.curTeamSelected.created_at = this.curTeamSelected.created_at.slice(0, 16);
     });
     // this.currentTotalMeeting = this.menus[tab].children[index].totalMeeting;
@@ -166,70 +182,85 @@ export class TeamComponent implements OnInit {
 
   UpdateListUser(): void
   {
-    this.teamService.getAllUser(1, 10, '').pipe(catchError(err => {
+    // this.teamService.getAllUser().pipe(catchError(err => {
+    //   console.log(err)
+    //   return EMPTY;
+    // })).subscribe(result => {
+    //   this.users[0] = result.body.data;
+    //   let totalPage = result.body.pagination.total_page;
+    //   let pageSize = result.body.pagination.per_page;
+
+    //   if (totalPage > 1)
+    //   {
+    //     for (let i = 2; i <= totalPage; i++)
+    //     {
+    //       this.teamService.getAllUser(i, pageSize, '').pipe(catchError(err => {
+    //         console.log(err)
+    //         return EMPTY;
+    //       })).subscribe(result => {
+    //         this.users.push(result.body.data);
+    //       });
+    //       if (i == totalPage) console.log(this.users);
+    //     }
+    //   }
+    // })
+    this.teamService.getAllUser().pipe(catchError(err => {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
-      this.users[0] = result.body.data;
-      let totalPage = result.body.pagination.total_page;
-      let pageSize = result.body.pagination.per_page;
-
-      if (totalPage > 1)
-      {
-        for (let i = 2; i <= totalPage; i++)
-        {
-          this.teamService.getAllUser(i, pageSize, '').pipe(catchError(err => {
-            console.log(err)
-            return EMPTY;
-          })).subscribe(result => {
-            this.users.push(result.body.data);
-          });
-          if (i == totalPage) console.log(this.users);
-        }
-      }
+      this.users = result.body.data;
     })
   }
 
   SelectUsers(): void{
     this.isAddUser = !this.isAddUser;
+    this.show();
     this.UpdateListUser();
-  }
-
-  AddUser(): void{
-    this.isAddUser = !this.isAddUser;
-    this.listOfSelectedValue.length = 0;
-
   }
   
   UpdateTeams(): void
   {
-    this.teamService.getAllTeam(1, 10, '').pipe(catchError(err => {
+    // this.teamService.getAllTeam(1, 2, null, null, 'create_at').pipe(catchError(err => {
+    //   console.log(err)
+    //   return EMPTY;
+    // })).subscribe(result => {
+    //   console.log(result);  
+    //   this.teams = result.body.data;
+    //   this.curTeamSelected = this.teams[0];
+    //   this.LoadTeamInfor(this.teams[0].id);
+    //   this.curTeamId = this.teams[0].id;
+    //   for (let team of this.teams) team.created_at = team.created_at.slice(0, 16);
+
+    //   let totalPage = result.body.pagination.total_page;
+    //   let pageSize = result.body.pagination.per_page;
+
+    //   if (totalPage > 1)
+    //   {
+    //     for (let i = 2; i <= totalPage; i++)
+    //     {
+    //       this.teamService.getAllTeam(i, pageSize, null, '').pipe(catchError(err => {
+    //         console.log(err)
+    //         return EMPTY;
+    //       })).subscribe(result => {
+    //         for (let team of result.body.data)
+    //         {
+    //           team.created_at = team.created_at.slice(0, 16);
+    //           this.teams.push(team);
+    //         }
+    //       });
+    //     }
+    //   }
+    // })
+    this.teamService.getTeam('5').pipe(catchError(err => {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
-      this.teams = result.body.data;
+      console.log(result);  
+      this.teams[0] = result.body.data;
       this.curTeamSelected = this.teams[0];
+      this.LoadTeamInfor(this.teams[0].id, true);
+      this.curTeamId = this.teams[0].id;
       for (let team of this.teams) team.created_at = team.created_at.slice(0, 16);
-
-      let totalPage = result.body.pagination.total_page;
-      let pageSize = result.body.pagination.per_page;
-
-      if (totalPage > 1)
-      {
-        for (let i = 2; i <= totalPage; i++)
-        {
-          this.teamService.getAllTeam(i, pageSize, '').pipe(catchError(err => {
-            console.log(err)
-            return EMPTY;
-          })).subscribe(result => {
-            for (let team of result.body.data)
-            {
-              team.created_at = team.created_at.slice(0, 16);
-              this.teams.push(team);
-            }
-          });
-        }
-      }
     })
   }
 
@@ -267,13 +298,46 @@ export class TeamComponent implements OnInit {
       })).subscribe(result => {
         console.log(result);
         this.UpdateTeams();
-        this.LoadTeamInfor(result.body.data.id);
+        this.LoadTeamInfor(this.curTeamId, true);
       })
       this.showEditTeamModal = false;
   }
 
   DisableTeam(): void {
     this.nzMessageService.success('Nhóm đã ngưng hoạt động');
+  }
+
+  AddUserToTeam(): void {
+    this.isAddUser = !this.isAddUser;
+    this.show();
+
+    let newUsers: string[] = new Array();
+    newUsers = this.curTeamSelected.users.filter((user, index) => index != 0).map(user => user.id);
+    console.log(newUsers);
+
+    for (let newId of this.listOfSelectedValue)
+    {
+      newUsers.push(newId);
+    }
+    console.log(newUsers);
+
+    this.teamService.addUserToTeam({
+      "team_id": this.curTeamId,
+      "user_ids": newUsers
+    }).pipe(catchError(err => {
+      console.log(err)
+      return EMPTY;
+    })).subscribe(result => {
+      console.log(result);
+      // this.UpdateTeams();
+      // this.LoadTeamInfor(this.curTeamId, true);
+    })
+
+    this.listOfSelectedValue.length = 0;
+  }
+
+  RemoveUserFromTeam(): void {
+    
   }
 
   ShowRequestRoomModal(): void {
