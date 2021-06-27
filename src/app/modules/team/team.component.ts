@@ -25,7 +25,7 @@ export class TeamComponent implements OnInit {
   showEditTeamModal: boolean = false;
   showAddTeamModal: boolean = false;
   showRequestRoomModal: boolean = false;
-  onSelectMember: boolean = false;
+  onHoverMember: boolean = false;
 
   colorList = ['red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
   currentTeamGroup = 0;
@@ -35,7 +35,10 @@ export class TeamComponent implements OnInit {
   curMemberId: string = '';
   
   meetingPageSize = 20;
-  userPageSize = 20;
+
+  memberPageSize = 10;
+  curMemberPage = 1;
+
   currentTotalMeeting = 0;
 
   meetingData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -52,26 +55,29 @@ export class TeamComponent implements OnInit {
   ];
 
   teams: ITeam[] = new Array();
-  users: IUser[][] = new Array();
+  users: IUser[] = new Array();
   curTeamSelected: ITeam;
   usersTest: IUser[] = new Array(20);
+  curMemberList: IUser[] = new Array();
   curLeaderId: string = '';
 
   meetingDetail : any;
   listOfSelectedValue: string[] = [];
   addTeamForm!: FormGroup;
   editTeamForm!: FormGroup;
+  searchForm!: FormGroup;
 
   constructor(private nzMessageService: NzMessageService, private modalService: NzModalService, private formBuilder: FormBuilder,private authService: AuthService, private teamService: TeamService) { }
 
   ngOnInit(): void {
+    this.role = this.authService.getCurrentUser().data.user.role;
+    this.id = this.authService.getCurrentUser().data.user.id;
     this.initAddTeamForm();
     this.initEdiTeamForm();
+    this.initSearchForm();
 
     this.UpdateTeams();
     this.UpdateListUser();
-    this.role = this.authService.getCurrentUser().data.user.role;
-    this.id = this.authService.getCurrentUser().data.user.id;
     for (let i = 0; i < 20; i++)
     {
       this.usersTest[i] = {
@@ -102,6 +108,12 @@ export class TeamComponent implements OnInit {
     });
   }
 
+  initSearchForm() {
+    this.searchForm = this.formBuilder.group({
+     context: ['']
+    });
+  }
+
   show(): void {
     console.log(this.listOfSelectedValue);
   }
@@ -120,21 +132,24 @@ export class TeamComponent implements OnInit {
     return 'bg-'+ color + '-' + valColor;
   }
 
-  SelectMember(id: string, onSelectMember: boolean) {
+  SelectMember(id: string, onHover: boolean) {
     this.curMemberId = id;
-    this.onSelectMember = onSelectMember;
+    this.onHoverMember = onHover;
   }
 
   LoadTeamInfor(id: string, isRequired: boolean): void {
+    console.log(id);
     if (this.curTeamId == id && !isRequired) return;
     this.curTeamId = id;
+    console.log(id);
     this.teamService.getTeam(id).pipe(catchError(err => {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
       this.curTeamSelected = result.body.data;
       this.curLeaderId = result.body.data.leader.id;
-      this.curTeamSelected.users.unshift(result.body.data.leader);
+      // this.curTeamSelected.users.unshift(result.body.data.leader);
+      this.UpdateListMember(1);
       this.curTeamSelected.created_at = this.curTeamSelected.created_at.slice(0, 16);
     });
     // this.currentTotalMeeting = this.menus[tab].children[index].totalMeeting;
@@ -217,51 +232,45 @@ export class TeamComponent implements OnInit {
     this.show();
     this.UpdateListUser();
   }
+
+  SearchTeam() {
+    // console.log(this.searchForm.value.context);
+  }
   
   UpdateTeams(): void
   {
-    // this.teamService.getAllTeam(1, 2, null, null, 'create_at').pipe(catchError(err => {
-    //   console.log(err)
-    //   return EMPTY;
-    // })).subscribe(result => {
-    //   console.log(result);  
-    //   this.teams = result.body.data;
-    //   this.curTeamSelected = this.teams[0];
-    //   this.LoadTeamInfor(this.teams[0].id);
-    //   this.curTeamId = this.teams[0].id;
-    //   for (let team of this.teams) team.created_at = team.created_at.slice(0, 16);
-
-    //   let totalPage = result.body.pagination.total_page;
-    //   let pageSize = result.body.pagination.per_page;
-
-    //   if (totalPage > 1)
-    //   {
-    //     for (let i = 2; i <= totalPage; i++)
-    //     {
-    //       this.teamService.getAllTeam(i, pageSize, null, '').pipe(catchError(err => {
-    //         console.log(err)
-    //         return EMPTY;
-    //       })).subscribe(result => {
-    //         for (let team of result.body.data)
-    //         {
-    //           team.created_at = team.created_at.slice(0, 16);
-    //           this.teams.push(team);
-    //         }
-    //       });
-    //     }
-    //   }
-    // })
-    this.teamService.getTeam('5').pipe(catchError(err => {
+    this.teamService.getUserById(this.id).pipe(catchError(err => {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
-      console.log(result);  
-      this.teams[0] = result.body.data;
-      this.curTeamSelected = this.teams[0];
-      this.LoadTeamInfor(this.teams[0].id, true);
-      this.curTeamId = this.teams[0].id;
+      console.log(result);
+      this.teams = result.body.data.teams;
+      if (this.curTeamId == '')
+      {
+        this.curTeamSelected = this.teams[0];
+        this.LoadTeamInfor(this.teams[0].id, true);
+        this.curTeamId = this.teams[0].id;
+      }
+      else
+      {
+        this.LoadTeamInfor(this.curTeamId, true);
+      }
       for (let team of this.teams) team.created_at = team.created_at.slice(0, 16);
     })
+  }
+
+  UpdateListMember(pageIndex: any): void {
+    this.curMemberPage = pageIndex;
+    let startIndex = this.memberPageSize * (pageIndex - 1);
+    this.curMemberList.length = 0;
+    for (let index = startIndex; index < startIndex + this.memberPageSize; index++)
+    {
+      if (index < this.curTeamSelected.users.length)
+      {
+      this.curMemberList.push(this.curTeamSelected.users[index]);
+      }
+    }
+    console.log(this.curMemberList);
   }
 
   CreateTeam(): void {
@@ -308,11 +317,12 @@ export class TeamComponent implements OnInit {
   }
 
   AddUserToTeam(): void {
+    if (this.listOfSelectedValue.length == 0) return;
     this.isAddUser = !this.isAddUser;
     this.show();
 
     let newUsers: string[] = new Array();
-    newUsers = this.curTeamSelected.users.filter((user, index) => index != 0).map(user => user.id);
+    newUsers = this.curTeamSelected.users.map(user => user.id);
     console.log(newUsers);
 
     for (let newId of this.listOfSelectedValue)
@@ -329,15 +339,30 @@ export class TeamComponent implements OnInit {
       return EMPTY;
     })).subscribe(result => {
       console.log(result);
-      // this.UpdateTeams();
-      // this.LoadTeamInfor(this.curTeamId, true);
+      this.UpdateTeams();
+      this.LoadTeamInfor(this.curTeamId, true);
     })
 
     this.listOfSelectedValue.length = 0;
   }
 
-  RemoveUserFromTeam(): void {
-    
+  RemoveUserFromTeam(id: string): void {
+    // console.log(id);
+    let newUsers: string[] = new Array();
+    newUsers[0] = id;
+    // console.log(newUsers);
+
+    this.teamService.removeUserFromTeam({
+      "team_id": this.curTeamId,
+      "user_ids": newUsers
+    }).pipe(catchError(err => {
+      console.log(err)
+      return EMPTY;
+    })).subscribe(result => {
+      console.log(result);
+      this.UpdateTeams();
+      this.LoadTeamInfor(this.curTeamId, true);
+    })
   }
 
   ShowRequestRoomModal(): void {

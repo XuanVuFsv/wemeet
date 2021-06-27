@@ -5,6 +5,7 @@ export interface ITeam {
   id: string;
   name: string;
   avatar: string;
+  leader: any;
   description: string;
   created_at: string;
   users: IUser[]
