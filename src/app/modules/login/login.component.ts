@@ -12,7 +12,6 @@ import { EMPTY } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   logo = '../../assets/images/logo/logo.png';
   picture = '../../assets/images/picture.jpg';
   google = '../../assets/images/google.png';
@@ -29,7 +28,12 @@ export class LoginComponent implements OnInit {
   loginSuccess: boolean = false;
   isUseDefaultPassword: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private teamSerive: TeamService, private router: Router) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private teamSerive: TeamService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -54,16 +58,25 @@ export class LoginComponent implements OnInit {
 
   ValidateEmail() {
     this.onInit = false;
-    this.isEmail = !(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.loginForm.value.email) && this.loginForm.value.email.includes('.'));
+    this.isEmail = !(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        this.loginForm.value.email
+      ) && this.loginForm.value.email.includes('.')
+    );
     this.checkPasswordMessage = '';
     this.acountNotExist = false;
-  };
+  }
 
   Login(): void {
     this.onInit = false;
     this.ValidateEmail();
-      if (this.isEmail)
-      {
+    if (this.isEmail) {
+      return;
+    }
+    this.teamSerive.getUserByEmail(this.loginForm.value.email).subscribe(result => {
+      if (result.body == null) {
+        this.acountNotExist = true;
+        this.checkPasswordMessage = '';
         return;
       }
       this.teamSerive.getUserByEmail(this.loginForm.value.email).pipe(catchError(err => {
@@ -89,19 +102,15 @@ export class LoginComponent implements OnInit {
             result.body != null ? this.loginSuccess = true : this.loginSuccess = false;
             if (result.body.data.user.is_first_login) {
               this.router.navigateByUrl('/change-password');
-            }
-            else {
+            } else {
               this.checkPasswordMessage = '';
               this.router.navigateByUrl('/');
             }
             return;
-          })
-        }
-      });
+          });
+      }
+    });
     // }
-  }
-
-  StayLogin(): void {
-    console.log(this.stayLogin);
-  }
+  })
+}
 }

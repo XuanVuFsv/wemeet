@@ -128,22 +128,24 @@ export abstract class Table<T = any> implements TableInterface, AfterViewInit {
           map((resp: any) => {
             if (!this.hasPagination) {
               return {
-                data: resp.data
+                data: resp?.data
               };
             }
             return {
-              data: resp.data,
+              data: resp?.data,
               ...resp.pagination
             };
           })
         )
         .subscribe(resp => {
+          console.log(resp);
+
           this.isLoading = false;
           this.rows = [...resp.data];
-          this.pageIndex = resp.currentPage;
-          this.pageSize = resp.perPage;
+          this.pageIndex = resp.current_page;
+          this.pageSize = resp.per_page;
           this.total = resp.total;
-          this.totalPages = resp.totalPages;
+          this.totalPages = resp.total_page;
         });
     }
   }
@@ -183,13 +185,13 @@ export abstract class Table<T = any> implements TableInterface, AfterViewInit {
     let httpQuery = {
       page: { size: pageSize, number: pageNumber },
       filter: { ...this.clearNull(filter) },
-      sort: this.sort
+      sort: { sort: this.sort }
     };
 
     httpQuery = Object.assign(httpQuery, this.defaultQueryParams);
 
     if (sort) {
-      httpQuery.sort = sort;
+      httpQuery.sort = { sort: this.sort };
     }
     if (!this.hasPagination) {
       // @ts-ignore

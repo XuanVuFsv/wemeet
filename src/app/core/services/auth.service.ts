@@ -80,10 +80,9 @@ export class AuthService {
       switchMap(_ => this.fetchAuthenticatedUser())
     );
   }
-  
+
   resetPassword(body: any) {
-    return this.apiService.post('/auth/reset-password', body
-    ).pipe();
+    return this.apiService.post('/auth/reset-password', body).pipe();
   }
 
   changePassword(body: any) {

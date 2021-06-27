@@ -1,0 +1,175 @@
+<section id="app-user-manager">
+  <div class="flex items-center mb-4">
+    <form
+      nz-form
+      [formGroup]="filterForm"
+      class="form-filter flex items-center w-full flex-nowrap gap-x-4"
+      nzLayout="horizontal"
+      (keyup.enter)="keywordFilterChange()"
+    >
+      <div class="w-1/2">
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+          <input
+            formControlName="keyword"
+            type="text"
+            nz-input
+            placeholder="Nhập tên thành viên cần tìm..."
+          />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <i
+            nz-icon
+            nzType="search"
+            nzTheme="outline"
+            (click)="keywordFilterChange()"
+            [nzTooltipMouseEnterDelay]="0.8"
+            nz-tooltip
+            nzTooltipTitle="Tìm kiếm"
+          ></i>
+        </ng-template>
+      </div>
+      <div class="w-1/2">
+        <nz-select
+          nzPlaceHolder="Lọc theo team"
+          [nzOptionHeightPx]="36"
+          formControlName="team"
+          id="select_"
+          class="w-full"
+        >
+          <nz-option
+            *ngFor="let team of listTeam"
+            [nzValue]="team.value"
+            [nzLabel]="team.label"
+          ></nz-option>
+        </nz-select>
+      </div>
+    </form>
+  </div>
+
+  <nz-table
+    [nzData]="rows"
+    [nzTotal]="total"
+    [nzLoading]="isLoading"
+    [nzShowPagination]="false"
+    (nzQueryParams)="sortChange($event)"
+    nzBordered
+    [nzScroll]="{ y: '300px' }"
+    nzSize="small"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="300px">Họ tên</th>
+        <th nzWidth="150px">Nick name</th>
+        <th>Chức vụ / vai trò</th>
+        <th nzWidth="150px">Quyền</th>
+        <th nzWidth="250px">Team</th>
+        <th nzColumnKey="created_at" nzWidth="150px" [nzSortFn]="true">Ngày tham gia</th>
+        <th nzWidth="150px">Trạng thái</th>
+        <th nzWidth="80px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of rows; let i = index">
+        <td>
+          <nz-avatar [nzText]="getTextName(user?.fullname)" class="mr-1"></nz-avatar>
+          {{ user?.fullname }}
+        </td>
+        <td>
+          {{ user?.nickname }}
+        </td>
+        <td>
+          {{ user?.position }}
+        </td>
+        <td>
+          {{ user?.role }}
+        </td>
+        <td>
+          {{ user?.team }}
+        </td>
+        <td>
+          {{ user?.created_at | dateFormat: 'DD/MM/YYYY' }}
+        </td>
+        <td>
+          <nz-badge
+            [nzStatus]="nzStatusList[user?.status]"
+            [nzText]="nzStatusName[user?.status]"
+          ></nz-badge>
+        </td>
+        <td>
+          <div class="flex items-center justify-center">
+            <div
+              class="flex flex-col h-5 w-3 cursor-pointer hover-fast hover:text-red-800 text-center"
+              nz-popover
+              nzPopoverTrigger="click"
+              [nzPopoverContent]="actionTemplate"
+              nzPopoverPlacement="left"
+              nzPopoverOverlayClassName="action"
+            >
+              <span class="flex items-center h-1/3 text-lg">•</span>
+              <span class="flex items-center h-1/3 text-lg">•</span>
+              <span class="flex items-center h-1/3 text-lg">•</span>
+            </div>
+            <ng-template #actionTemplate>
+              <div class="profile-popover w-20 h-20 flex items-center">
+                <div class="w-full">
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzSize="small"
+                    class="w-full mb-3"
+                    (click)="editUser(user?.email)"
+                  >
+                    Chỉnh sửa
+                  </button>
+                  <button
+                    nz-button
+                    nzType="default"
+                    nzSize="small"
+                    nz-popconfirm
+                    nzPopconfirmTitle="Bạn có muốn xoá người dùng này?"
+                    (nzOnConfirm)="submitDelete(user?.email)"
+                    nzPopconfirmPlacement="left"
+                    nzCancelText="Huỷ bỏ"
+                    nzOkText="Xoá"
+                    class="w-full"
+                  >
+                    Xoá
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div class="custom-pagination-nz flex w-full content-center justify-center mt-4">
+    <div class="flex">
+      <button
+        *ngIf="total"
+        class="ant-pagination-item-link pagination-btn-first flex items-center"
+        [class.pagination-btn-disabled]="pageIndex === 1"
+        [disabled]="pageIndex === 1"
+        (click)="gotoFirstPage()"
+      >
+        <i nz-icon nzType="double-left" nzTheme="outline"></i>
+      </button>
+      <nz-pagination
+        #tableTempRef
+        [nzPageIndex]="pageIndex"
+        [nzPageSize]="pageSize"
+        [nzTotal]="total"
+      ></nz-pagination>
+      <button
+        *ngIf="total"
+        class="ant-pagination-item-link pagination-btn-end flex items-center"
+        [class.pagination-btn-disabled]="pageIndex === totalPages"
+        [disabled]="pageIndex === totalPages"
+        (click)="gotoEndPage()"
+      >
+        <i nz-icon nzType="double-right" nzTheme="outline"></i>
+      </button>
+    </div>
+  </div>
+</section>

@@ -73,7 +73,8 @@ export class NavbarComponent implements OnInit {
 
   Logout() {
     this.authService.logout();
-    this.router.navigateByUrl('/login');}
+    this.router.navigateByUrl('/login');
+  }
   showNotificationList() {
     if (this.visibleNotification) {
       setTimeout(() => {

@@ -1,3 +1,29 @@
-<section id="app-user-management">
-  <p>user-management works!</p>
-</section>
+<nz-tabset [nzTabPosition]="nzTabPosition">
+  <nz-tab [nzTitle]="meeting">
+    <ng-template #meeting>
+      <i nz-icon nzType="check" nzTheme="outline"></i>
+      Duyệt cuộc họp
+    </ng-template>
+    <div class="pt-5 pr-5">
+      <app-meeting></app-meeting>
+    </div>
+  </nz-tab>
+  <nz-tab [nzTitle]="user">
+    <ng-template #user>
+      <i nz-icon nzType="user" nzTheme="outline"></i>
+      Quản lý người dùng
+    </ng-template>
+    <div class="pt-5 pr-5">
+      <app-user></app-user>
+    </div>
+  </nz-tab>
+  <nz-tab [nzTitle]="room">
+    <ng-template #room>
+      <i nz-icon nzType="edit" nzTheme="outline"></i>
+      Quản lý phòng họp
+    </ng-template>
+    <div class="pt-5 pr-5">
+      <app-room></app-room>
+    </div>
+  </nz-tab>
+</nz-tabset>

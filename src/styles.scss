@@ -143,3 +143,15 @@ a:hover {
   align-items: center;
   justify-content: center;
 }
+
+.modal-submit {
+  .ant-modal-close {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .ant-modal-footer .ant-btn {
+    display: inline-flex;
+    align-items: center;
+  }
+}
