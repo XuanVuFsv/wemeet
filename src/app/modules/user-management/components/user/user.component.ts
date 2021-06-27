@@ -8,7 +8,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError } from 'rxjs/operators';
 import { MessageService } from '@app/shared/services/message.service';
-import { UserEditComponent } from '../../modals/user-edit/user-edit.component';
+import { UserEditComponent } from './modals/user-edit/user-edit.component';
 import { EMPTY } from 'rxjs';
 
 @UntilDestroy()
@@ -19,8 +19,10 @@ import { EMPTY } from 'rxjs';
 })
 export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit {
   filterFormValue = {
-    keyword: '',
-    team: ''
+    fullname: '',
+    team: '',
+    role: '',
+    is_active: ''
   };
   repository(): Repository {
     return this.userRepository;
@@ -55,6 +57,32 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
     }
   ];
 
+  listRole = [
+    {
+      value: 'STAFF',
+      label: 'Nhân viên'
+    },
+    {
+      value: 'LEAD',
+      label: 'Trưởng nhóm'
+    },
+    {
+      value: 'ADMIN',
+      label: 'Admin - Quản trị'
+    }
+  ];
+
+  listStatus = [
+    {
+      value: true,
+      label: 'Đang hoạt động'
+    },
+    {
+      value: false,
+      label: 'Khoá'
+    }
+  ];
+
   constructor(
     private userRepository: UserRepository,
     private fb: FormBuilder,
@@ -75,13 +103,20 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
 
   private initForm(): void {
     this.filterForm = this.fb.group({
-      keyword: '',
-      team: ''
+      fullname: '',
+      team: '',
+      role: '',
+      is_active: ''
     });
   }
 
-  keywordFilterChange() {
-    this.filterFormValue.team = this.filterForm.value.team;
+  fullnameFilterChange() {
+    this.filterFormValue.fullname = this.filterForm.value.fullname;
+    this.filterChange(this.filterFormValue, true);
+  }
+
+  roleFilterChange(): void {
+    this.filterFormValue.role = this.filterForm.value.role;
     this.filterChange(this.filterFormValue, true);
   }
 
@@ -141,17 +176,17 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
 
     this.userRepository
       .find(id, this.defaultQueryParams)
-      // .pipe(
-      //   untilDestroyed(this),
-      //   catchError(err => {
-      //     // this.messageService.showErrorMessage(err, 'supplier');
-      //     return EMPTY;
-      //   })
-      // )
+      .pipe(
+        untilDestroyed(this),
+        catchError(err => {
+          // this.messageService.showErrorMessage(err, 'supplier');
+          return EMPTY;
+        })
+      )
       .subscribe((resp: any) => {
         console.log(resp);
 
-        // this.showModalEditSupplier(resp, id);
+        this.showModalEditSupplier(resp, id);
       });
   }
 
@@ -164,9 +199,12 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
     config.nzClassName = 'modal-submit';
     modalCreate.updateConfig(config);
     modalCreate.componentInstance.isLoading = true;
-    httpBody.ward_id = httpBody.ward_id.id;
-    httpBody.district_id = httpBody.district_id.id;
-    httpBody.province_id = httpBody.province_id.id;
+    if (idEdit) {
+      delete httpBody.email;
+    } else {
+      delete httpBody.is_active;
+    }
+    console.log(httpBody);
 
     let fetchApi = idEdit
       ? this.userRepository.update(idEdit, httpBody)

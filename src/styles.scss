@@ -88,12 +88,13 @@ a:hover {
 .custom-pagination-nz {
   .pagination-btn-first,
   .pagination-btn-end {
-    display: block;
-    width: 32px;
-    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
     padding: 0;
     font-size: 12px;
-    text-align: center;
     background-color: #fff;
     border: 1px solid #d9d9d9;
     border-radius: 2px;
@@ -107,8 +108,7 @@ a:hover {
     user-select: none;
 
     &:hover {
-      color: #1890ff;
-      border: 1px solid #1890ff;
+      @apply text-teal-500 border-teal-500;
     }
   }
 

@@ -10,25 +10,16 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
-
-
+import { BuildingComponent } from './building/building.component';
+import { BuildingEditComponent } from './building/modals/building-edit/building-edit.component';
+import { SharedModule } from '@app/shared/shared.module';
+import { BuildingDetailComponent } from './building/modals/building-detail/building-detail.component';
+import { MeetingRoomComponent } from './meeting-room/meeting-room.component';
+import { MeetingRoomEditComponent } from './meeting-room/modals/meeting-room-edit/meeting-room-edit.component';
 
 @NgModule({
-  declarations: [RoomComponent],
-  imports: [
-    CommonModule,
-    NzInputModule,
-    NzGridModule,
-    NzSelectModule,
-    NzButtonModule,
-    NzIconModule,
-    NzTableModule,
-    NzDropDownModule,
-    NewMeetingRoomModule,
-    NewBuildingModule
-  ],
-  exports: [
-    RoomComponent
-  ]
+  declarations: [RoomComponent, BuildingComponent, BuildingEditComponent, BuildingDetailComponent, MeetingRoomComponent, MeetingRoomEditComponent],
+  imports: [CommonModule, SharedModule],
+  exports: [RoomComponent]
 })
-export class RoomModule { }
+export class RoomModule {}
