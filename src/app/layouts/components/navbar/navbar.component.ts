@@ -55,18 +55,13 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService
-      .fetchAuthenticatedUser()
-      .pipe(
-        catchError(err => {
-          console.log(err);
-          return EMPTY;
-        })
-      )
-      .subscribe(result => {
-        this.fullname = this.authService.getCurrentUser()?.data?.user?.fullname;
-        this.role = this.authService.getCurrentUser()?.data?.roles;
-      });
+    this.authService.fetchAuthenticatedUser().pipe(catchError(err => {
+      console.log(err);
+      return EMPTY;
+    })).subscribe(result => {
+      this.fullname = this.authService.getCurrentUser().data.user.fullname;
+      this.role = this.authService.getCurrentUser().data.user.role;
+    })
   }
   changeHourStart(hourStart: any) {}
 

@@ -31,6 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'team',
+    canActivate: [AuthGuard],
     loadChildren: () => import('@modules/team/team.module').then(m => m.TeamModule),
     data: { title: 'Team' }
   },

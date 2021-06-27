@@ -19,12 +19,14 @@ export class LoginComponent implements OnInit {
   apple = '../../assets/images/apple.png';
 
   loginForm!: FormGroup;
+  stayLogin: boolean = true;
   onInit: boolean = true;
   passwordVisible: boolean = false;
   isEmail: boolean = false;
   acountNotExist: boolean = false;
   checkPasswordMessage: string = '';
-  loginSucces: boolean = false;
+  loginSuccess: boolean = false;
+  isUseDefaultPassword: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +37,16 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.authService.fetchAuthenticatedUser().pipe(catchError(err => {
+      console.log(err);
+      return EMPTY;
+    })).subscribe(result => {
+      console.log(result);
+      if (this.authService.getCurrentUser().data.user.is_first_login)
+      {
+        this.isUseDefaultPassword = true;
+      }
+    })
   }
 
   initForm() {
@@ -66,23 +78,28 @@ export class LoginComponent implements OnInit {
         this.acountNotExist = true;
         this.checkPasswordMessage = '';
         return;
-      } else {
-        setTimeout(() => {
-          if (!this.loginSucces && !this.acountNotExist) {
-            this.checkPasswordMessage = 'Mật khẩu không chính xác';
-            this.acountNotExist = false;
-          }
-        }, 1500);
-        this.authService
-          .login(this.loginForm.value)
-          .pipe(
-            catchError(err => {
-              console.log(err);
-              return EMPTY;
-            })
-          )
-          .subscribe(result => {
-            result.body != null ? (this.loginSucces = true) : (this.loginSucces = false);
+      }
+      this.teamSerive.getUserByEmail(this.loginForm.value.email).pipe(catchError(err => {
+        return EMPTY;
+      })).subscribe(result => {
+        if (result.body.data == null) {
+          this.acountNotExist = true;
+          this.checkPasswordMessage = '';
+          return;
+        }
+        else {  
+          setTimeout(() => {
+            if (!this.loginSuccess && !this.acountNotExist)
+            {
+              this.checkPasswordMessage = 'Mật khẩu không chính xác';
+              this.acountNotExist = false;
+            }
+          }, 2000)
+          this.authService.login(this.loginForm.value).pipe(catchError(err => {
+            console.log(err);
+            return EMPTY;
+          })).subscribe(result => {
+            result.body != null ? this.loginSuccess = true : this.loginSuccess = false;
             if (result.body.data.user.is_first_login) {
               this.router.navigateByUrl('/change-password');
             } else {
@@ -94,9 +111,6 @@ export class LoginComponent implements OnInit {
       }
     });
     // }
-  }
-
-  StayLogin(): void {
-    console.log(this.loginForm.controls.stayLogin.value);
-  }
+  })
+}
 }
