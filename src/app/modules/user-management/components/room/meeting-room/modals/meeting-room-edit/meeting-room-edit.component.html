@@ -1,0 +1,59 @@
+<section id="app-meeting-room-edit">
+  <form nz-form nzLayout="vertical" [formGroup]="registerForm" class="w-full" (ngSubmit)="create()">
+    <!---- name ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Tên phòng họp</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập tên phòng họp">
+          <input formControlName="name" nz-input placeholder="Nhập tên phòng họp" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <!---- supplier ----->
+    <div class="block">
+      <nz-form-label class="">Toà nhà / văn phòng</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng chọn toà nhà / văn phòng">
+          <nz-select
+            [nzMaxTagPlaceholder]="tagPlaceHolderSupplier"
+            [nzOptionHeightPx]="36"
+            [nzOptionOverflowSize]="5"
+            [nzMaxTagCount]="4"
+            [compareWith]="compareFn"
+            nzPlaceHolder="Chọn toà nhà / văn phòng"
+            formControlName="building"
+            nzShowSearch
+            nzServerSearch
+            (nzOnSearch)="onSearch($event)"
+            (nzScrollToBottom)="loadMoreOptionSupplier()"
+          >
+            <nz-option
+              *ngFor="let building of listBuilding"
+              [nzLabel]="building.name"
+              [nzValue]="building"
+            ></nz-option>
+            <nz-option *ngIf="isLoadingSelect" nzDisabled nzCustomContent>
+              <div class="flex items-center">
+                <i nz-icon nzType="loading" class="loading-icon mr-2"></i> Đang lấy danh sách toà
+                nhà / văn phòng...
+              </div>
+            </nz-option>
+          </nz-select>
+          <ng-template #tagPlaceHolderSupplier let-selectedList>
+            và {{ selectedList.length }} toà nhà / văn phòng khác
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <!---- name ----->
+    <div class="block">
+      <nz-form-label nzRequired class="">Sức chứa</nz-form-label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Vui lòng nhập sức chứa">
+          <input type="number" formControlName="capacity" nz-input placeholder="Nhập sức chứa" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+</section>

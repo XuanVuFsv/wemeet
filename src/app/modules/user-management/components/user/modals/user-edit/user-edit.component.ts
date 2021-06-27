@@ -14,15 +14,21 @@ export class UserEditComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    console.log(this.dataEdit);
+    this.initForm();
   }
 
   initForm() {
     this.registerForm = this.formBuilder.group(
       {
+        email: [this.dataEdit?.email ?? '', [Validators.required]],
         fullname: [this.dataEdit?.fullname ?? '', [Validators.required]],
         nickname: [this.dataEdit?.nickname ?? '', [Validators.required]],
-        position: [this.dataEdit?.position ?? '', [Validators.required]]
+        position: [this.dataEdit?.position ?? '', [Validators.required]],
+        role: [
+          this.dataEdit?.role ?? '',
+          { updateOn: 'change', validators: [Validators.required] }
+        ],
+        is_active: [this.dataEdit?.is_active ?? true, [Validators.required]]
       },
       {
         updateOn: 'blur'

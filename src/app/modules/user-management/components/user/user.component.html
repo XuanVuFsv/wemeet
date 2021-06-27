@@ -3,17 +3,17 @@
     <form
       nz-form
       [formGroup]="filterForm"
-      class="form-filter flex items-center w-full flex-nowrap gap-x-4"
+      class="form-filter flex items-center w-full flex-nowrap gap-x-4 flex-grow"
       nzLayout="horizontal"
-      (keyup.enter)="keywordFilterChange()"
+      (keyup.enter)="fullnameFilterChange()"
     >
-      <div class="w-1/2">
+      <div class="w-1/4">
         <nz-input-group [nzSuffix]="suffixIconSearch">
           <input
-            formControlName="keyword"
+            formControlName="fullname"
             type="text"
             nz-input
-            placeholder="Nhập tên thành viên cần tìm..."
+            placeholder="Nhập tên / email người dùng cần tìm..."
           />
         </nz-input-group>
         <ng-template #suffixIconSearch>
@@ -28,7 +28,7 @@
           ></i>
         </ng-template>
       </div>
-      <div class="w-1/2">
+      <div class="w-1/4">
         <nz-select
           nzPlaceHolder="Lọc theo team"
           [nzOptionHeightPx]="36"
@@ -43,7 +43,47 @@
           ></nz-option>
         </nz-select>
       </div>
+      <div>
+        <nz-select
+          nzPlaceHolder="Lọc theo quyền"
+          [nzOptionHeightPx]="36"
+          formControlName="role"
+          id="select_"
+          class="w-full"
+          (ngModelChange)="roleFilterChange()"
+        >
+          <nz-option
+            *ngFor="let role of listRole"
+            [nzValue]="role.value"
+            [nzLabel]="role.label"
+          ></nz-option>
+        </nz-select>
+      </div>
+      <div>
+        <nz-select
+          nzPlaceHolder="Lọc trạng thái"
+          [nzOptionHeightPx]="36"
+          formControlName="is_active"
+          id="select_"
+          class="w-full"
+        >
+          <nz-option
+            *ngFor="let status of listStatus"
+            [nzValue]="status.value"
+            [nzLabel]="status.label"
+          ></nz-option>
+        </nz-select>
+      </div>
     </form>
+
+    <button
+      (click)="createUser()"
+      nz-button
+      nzType="primary"
+      class="flex items-center justify-center w-fit ml-4"
+    >
+      <i nz-icon nzType="plus" nzTheme="outline" class="mr-1"></i>Thêm mới
+    </button>
   </div>
 
   <nz-table
@@ -53,13 +93,14 @@
     [nzShowPagination]="false"
     (nzQueryParams)="sortChange($event)"
     nzBordered
-    [nzScroll]="{ y: '300px' }"
+    [nzScroll]="{ y: '700px' }"
     nzSize="small"
   >
     <thead>
       <tr>
-        <th nzWidth="300px">Họ tên</th>
+        <th nzWidth="200px">Họ tên</th>
         <th nzWidth="150px">Nick name</th>
+        <th nzWidth="150px">Email</th>
         <th>Chức vụ / vai trò</th>
         <th nzWidth="150px">Quyền</th>
         <th nzWidth="250px">Team</th>
@@ -78,22 +119,23 @@
           {{ user?.nickname }}
         </td>
         <td>
+          {{ user?.email }}
+        </td>
+        <td>
           {{ user?.position }}
         </td>
         <td>
           {{ user?.role }}
         </td>
         <td>
-          {{ user?.team }}
+          <p *ngFor="let team of user?.teams">{{ team.name }}</p>
         </td>
         <td>
           {{ user?.created_at | dateFormat: 'DD/MM/YYYY' }}
         </td>
         <td>
-          <nz-badge
-            [nzStatus]="nzStatusList[user?.status]"
-            [nzText]="nzStatusName[user?.status]"
-          ></nz-badge>
+          <nz-badge *ngIf="user?.is_active" nzStatus="success" nzText="đang hoạt động"></nz-badge>
+          <nz-badge *ngIf="!user?.is_active" nzStatus="error" nzText="khoá"></nz-badge>
         </td>
         <td>
           <div class="flex items-center justify-center">
@@ -117,7 +159,7 @@
                     nzType="primary"
                     nzSize="small"
                     class="w-full mb-3"
-                    (click)="editUser(user?.email)"
+                    (click)="editUser(user?.id)"
                   >
                     Chỉnh sửa
                   </button>
@@ -127,7 +169,7 @@
                     nzSize="small"
                     nz-popconfirm
                     nzPopconfirmTitle="Bạn có muốn xoá người dùng này?"
-                    (nzOnConfirm)="submitDelete(user?.email)"
+                    (nzOnConfirm)="submitDelete(user?.id)"
                     nzPopconfirmPlacement="left"
                     nzCancelText="Huỷ bỏ"
                     nzOkText="Xoá"
