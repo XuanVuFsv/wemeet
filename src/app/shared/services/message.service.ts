@@ -20,8 +20,6 @@ export class MessageService {
   }
 
   showErrorMessage(err: any): void {
-    console.log(err);
-
     switch (err.error.status) {
       case 422:
         const listError: number[] = err.error.error.code;

@@ -7,36 +7,28 @@ import { FormBuilder, FormControl } from '@angular/forms';
   styleUrls: ['./new-building.component.scss']
 })
 export class NewBuildingComponent implements OnInit {
-
   @Input() isVisible: boolean;
   @Output() modalEvent = new EventEmitter<string>();
   public newBuildingForm: any;
 
-  constructor(
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.newBuildingForm = this.formBuilder.group({
       buildingName: new FormControl(null),
-      address: new FormControl(null),
+      address: new FormControl(null)
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public onCreate(): void {
     const req = {
       ...this.newBuildingForm.value
     };
-    console.log(req);
-    
   }
 
   public onCancel(): void {
     this.modalEvent.emit('true');
   }
 
-  public onDelete(): void {
-
-  }
+  public onDelete(): void {}
 }

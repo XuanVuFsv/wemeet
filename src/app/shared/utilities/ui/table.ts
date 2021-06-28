@@ -72,8 +72,6 @@ export abstract class Table<T = any> implements TableInterface, AfterViewInit {
 
   // @ts-ignore
   sortChange(params?: NzTableQueryParams = { sort: [] }): Observable<any> {
-    console.log(params);
-
     const { sort } = params;
     const currentSort = sort.find(item => item.value !== null);
     let sortField = (currentSort && currentSort.key) || null;
@@ -140,8 +138,6 @@ export abstract class Table<T = any> implements TableInterface, AfterViewInit {
           })
         )
         .subscribe(resp => {
-          console.log(resp);
-
           this.isLoading = false;
           this.rows = [...resp.data];
           this.pageIndex = resp.current_page;

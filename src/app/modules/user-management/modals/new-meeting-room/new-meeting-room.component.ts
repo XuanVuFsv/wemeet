@@ -11,9 +11,7 @@ export class NewMeetingRoomComponent implements OnInit {
   @Output() modalEvent = new EventEmitter<string>();
   public newRoomForm: any;
 
-  constructor(
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.newRoomForm = this.formBuilder.group({
       roomName: new FormControl(null),
       building: new FormControl(null),
@@ -21,23 +19,17 @@ export class NewMeetingRoomComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public createRoom(): void {
     const req = {
       ...this.newRoomForm.value
     };
-    console.log(req);
-    
   }
 
   public handleCancel(): void {
     this.modalEvent.emit('true');
   }
 
-  public deleteRoom(): void {
-
-  }
-
+  public deleteRoom(): void {}
 }

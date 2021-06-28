@@ -57,7 +57,6 @@ export class TodoComponent<ITodo> implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.updateEditCache();
-    console.log(this.editCache);
   }
 
   createForm(): void {
@@ -113,9 +112,6 @@ export class TodoComponent<ITodo> implements OnInit {
   // }
 
   startEdit(id: string): void {
-    console.log(this.editCache);
-    console.log(id);
-
     this.editCache[id].edit = true;
   }
 

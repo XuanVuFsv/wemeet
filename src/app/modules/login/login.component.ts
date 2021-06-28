@@ -37,16 +37,18 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.authService.fetchAuthenticatedUser().pipe(catchError(err => {
-      console.log(err);
-      return EMPTY;
-    })).subscribe(result => {
-      console.log(result);
-      if (this.authService.getCurrentUser().data.user.is_first_login)
-      {
-        this.isUseDefaultPassword = true;
-      }
-    })
+    this.authService
+      .fetchAuthenticatedUser()
+      .pipe(
+        catchError(err => {
+          return EMPTY;
+        })
+      )
+      .subscribe(result => {
+        if (this.authService.getCurrentUser().data.user.is_first_login) {
+          this.isUseDefaultPassword = true;
+        }
+      });
   }
 
   initForm() {
@@ -79,38 +81,45 @@ export class LoginComponent implements OnInit {
         this.checkPasswordMessage = '';
         return;
       }
-      this.teamSerive.getUserByEmail(this.loginForm.value.email).pipe(catchError(err => {
-        return EMPTY;
-      })).subscribe(result => {
-        if (result.body.data == null) {
-          this.acountNotExist = true;
-          this.checkPasswordMessage = '';
-          return;
-        }
-        else {  
-          setTimeout(() => {
-            if (!this.loginSuccess && !this.acountNotExist)
-            {
-              this.checkPasswordMessage = 'Mật khẩu không chính xác';
-              this.acountNotExist = false;
-            }
-          }, 2000)
-          this.authService.login(this.loginForm.value).pipe(catchError(err => {
-            console.log(err);
+      this.teamSerive
+        .getUserByEmail(this.loginForm.value.email)
+        .pipe(
+          catchError(err => {
             return EMPTY;
-          })).subscribe(result => {
-            result.body != null ? this.loginSuccess = true : this.loginSuccess = false;
-            if (result.body.data.user.is_first_login) {
-              this.router.navigateByUrl('/change-password');
-            } else {
-              this.checkPasswordMessage = '';
-              this.router.navigateByUrl('/');
-            }
+          })
+        )
+        .subscribe(result => {
+          if (result.body.data == null) {
+            this.acountNotExist = true;
+            this.checkPasswordMessage = '';
             return;
-          });
-      }
+          } else {
+            setTimeout(() => {
+              if (!this.loginSuccess && !this.acountNotExist) {
+                this.checkPasswordMessage = 'Mật khẩu không chính xác';
+                this.acountNotExist = false;
+              }
+            }, 2000);
+            this.authService
+              .login(this.loginForm.value)
+              .pipe(
+                catchError(err => {
+                  return EMPTY;
+                })
+              )
+              .subscribe(result => {
+                result.body != null ? (this.loginSuccess = true) : (this.loginSuccess = false);
+                if (result.body.data.user.is_first_login) {
+                  this.router.navigateByUrl('/change-password');
+                } else {
+                  this.checkPasswordMessage = '';
+                  this.router.navigateByUrl('/');
+                }
+                return;
+              });
+          }
+        });
+      // }
     });
-    // }
-  })
-}
+  }
 }
