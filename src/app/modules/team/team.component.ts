@@ -138,10 +138,10 @@ export class TeamComponent implements OnInit {
   }
 
   LoadTeamInfor(id: string, isRequired: boolean): void {
-    console.log(id);
+    // console.log(id);
     if (this.curTeamId == id && !isRequired) return;
     this.curTeamId = id;
-    console.log(id);
+    // console.log(id);
     this.teamService.getTeam(id).pipe(catchError(err => {
       console.log(err)
       return EMPTY;
@@ -243,7 +243,7 @@ export class TeamComponent implements OnInit {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
-      console.log(result);
+      // console.log(result);
       this.teams = result.body.data.teams;
       if (this.curTeamId == '')
       {
@@ -270,7 +270,7 @@ export class TeamComponent implements OnInit {
       this.curMemberList.push(this.curTeamSelected.users[index]);
       }
     }
-    console.log(this.curMemberList);
+    // console.log(this.curMemberList);
   }
 
   CreateTeam(): void {
@@ -305,7 +305,7 @@ export class TeamComponent implements OnInit {
         console.log(err)
         return EMPTY;
       })).subscribe(result => {
-        console.log(result);
+        // console.log(result);
         this.UpdateTeams();
         this.LoadTeamInfor(this.curTeamId, true);
       })
@@ -323,13 +323,13 @@ export class TeamComponent implements OnInit {
 
     let newUsers: string[] = new Array();
     newUsers = this.curTeamSelected.users.map(user => user.id);
-    console.log(newUsers);
+    // console.log(newUsers);
 
     for (let newId of this.listOfSelectedValue)
     {
       newUsers.push(newId);
     }
-    console.log(newUsers);
+    // console.log(newUsers);
 
     this.teamService.addUserToTeam({
       "team_id": this.curTeamId,
@@ -338,7 +338,7 @@ export class TeamComponent implements OnInit {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
-      console.log(result);
+      // console.log(result);
       this.UpdateTeams();
       this.LoadTeamInfor(this.curTeamId, true);
     })
@@ -359,7 +359,7 @@ export class TeamComponent implements OnInit {
       console.log(err)
       return EMPTY;
     })).subscribe(result => {
-      console.log(result);
+      // console.log(result);
       this.UpdateTeams();
       this.LoadTeamInfor(this.curTeamId, true);
     })
