@@ -37,6 +37,10 @@ export class TeamService {
     return this.apiService.get('/users/get-by-email/' + email).pipe();
   }
 
+  getUserById(id: string) {
+    return this.apiService.get('/users/' + id).pipe();
+  }
+
   // editUser(body: any) {
   //   return this.apiService.put('/users', body).pipe();
   // }
@@ -45,11 +49,10 @@ export class TeamService {
     // let params = new HttpParams().set('page[number]', pageNumber);
     // params.append('page[size]', pageSize);
     // // if (filter != null) params.append('filterField[' + filter + ']', filterValue);
-    // console.log(params);
     // return this.apiService.get('/team', {
     //     params: params
     //   }).pipe();
-    return this.apiService.get('/team'+'?page[number]='+pageNumber+'&page[size]='+pageSize).pipe();
+    return this.apiService.get('/team').pipe();
   }
 
   getTeam(id: string) {
@@ -69,7 +72,7 @@ export class TeamService {
   }
 
   removeUserFromTeam(body: any) {
-    return this.apiService.put('/team/remove-user', body).pipe();
+    return this.apiService.post('/team/remove-user', body).pipe();
   }
 
 }

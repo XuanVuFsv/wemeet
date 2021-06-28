@@ -2,9 +2,17 @@
   <div class="flex h-full pb-5">
     <div class="w-96 pt-5 px-5">
       <div class="bg-white rounded py-4 px-2 flex flex-col h-full">
-        <nz-input-group nzSearch class="px-2">
-          <input type="text" nz-input placeholder="Nhập tên nhóm cần tìm kiếm" />
-        </nz-input-group>
+        <form nz-form nzLayout="vertical" [formGroup]="searchForm" class="w-full">
+          <div class="block">
+            <nz-form-item>
+              <nz-form-control>
+                <nz-input-group nzSearch class="px-2">
+                  <input (ngModelChange)="SearchTeam()" type="text" formControlName="context" nz-input placeholder="Nhập tên nhóm cần tìm kiếm" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </form>
         <div class="flex-grow h-0 flex flex-col">
           <nz-tabset [nzSelectedIndex]="currentTeamGroup" class="mb-4 h-0 flex-grow">
             <nz-tab nzTitle="Nhóm của tôi" (nzClick)="ChangeTeamGroup(0)">
@@ -21,7 +29,7 @@
             </nz-tab>
             <ng-template #teamTpl let-teams="teams" let-tab="tab">
               <ng-container *ngFor="let team of teams; let first = first">
-                  <li [nzPaddingLeft]="24" class="bg-blueGray-100 cursor-pointer hover:bg-blueGray-200 py-1"
+                  <li [class.hidden]="(team.leader.id != id && tab == 0) || (team.leader.id == id && tab == 1) || !team.name.includes(searchForm.value.context)" [nzPaddingLeft]="24" class="bg-blueGray-100 cursor-pointer hover:bg-blueGray-200 py-1"
                     [class.mt-2]="!first" [class.bg-blueGray-300]="curTeamId == team.id">
                     <div class="teamtag flex items-center" (click)="LoadTeamInfor(team.id, false)">
                       <nz-avatar class="mr-4" nzIcon="team" nzSize="large" [nzSrc]="team.avatar"></nz-avatar>
@@ -29,7 +37,7 @@
                         <div>
                           <span class="text-black font-extrabold text-base">{{ team.name }}</span>
                         </div>
-                        <div class="hover: text-black"> {{team.users.length + 1}} thành viên</div>
+                        <div class="hover: text-black"> {{team.users.length}} thành viên</div>
                       </div>
                     </div>
                   </li>
@@ -305,19 +313,19 @@
             <div class="w-full flex-col flex-grow h-0 mb-2">
               <div class="w-full h-full flex overflow-y-auto overflow-x-hidden mt-1 mr-2">
                 <!-- Danh sách thành viên hiện tại -->
-                <div class="w-full mr-2 h-full">
+                <ul class="w-full mr-2 h-full">
                   <ng-container *ngTemplateOutlet="
                       usertpl;
-                      context: { userData: curTeamSelected.users }
+                      context: { userData: curMemberList }
                     ">
                   </ng-container>
-                </div>
+                </ul>
               </div>
               <ng-template #usertpl let-userData="userData">
-                <ng-container *ngFor="let user of userData; let index as i">
-                  <div
-                    class="bg-blueGray-50 mb-3 cursor-pointer hover:bg-blueGray-100 py-2" (mouseenter) ="SelectMember(user.id, true) "  (mouseleave) ="SelectMember('', false)">
-                    <div class="usertag flex items-center">
+                <ng-container *ngFor="let user of userData; index as i">
+                  <li
+                    class="bg-blueGray-50 mb-3 cursor-pointer hover:bg-blueGray-100 py-2">
+                    <div class="usertag flex items-center" (mouseenter)="SelectMember(user.id, true)" (mouseleave)="SelectMember(user.id, false)">
                       <nz-avatar class="mr-2" nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
                       <div class="flex w-full justify-between">
                         <div class="w-3/4 mt-2">
@@ -325,17 +333,17 @@
                             <i nz-icon [class.hidden]="user.id != curLeaderId" [nzType]="'crown'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#ffcc00'"></i>
                           </span>
                         </div>
-                        <button [class.hidden]="user.id != curMemberId && !onSelectMember" nz-button class= "py-2 border-1 border-teal-400" nzType="default" [nzSize]="size">Xóa</button>
+                        <button class="w-fit h-fit" [class.hidden] = "curMemberId != user.id || !onHoverMember || user.id == curLeaderId || curLeaderId != id" nz-button class= "border-1 border-teal-400" nzType="default" [nzSize]="'small'" (click)="RemoveUserFromTeam(user.id)">Xóa</button>
                         <!-- <div class="hover: text-black">
                           {{ user.role }}
                         </div> -->
                       </div>
                     </div>
-                  </div>
+                  </li>
                 </ng-container>
               </ng-template>
             </div>
-            <nz-pagination [nzPageSize]="10" [nzPageIndex]="1" [nzTotal]="curTeamSelected.users.length > 0 ? curTeamSelected.users.length : 1" [nzItemRender]="renderItemTemplate"></nz-pagination>
+            <nz-pagination (nzPageIndexChange)="UpdateListMember($event)" [nzPageSize]="memberPageSize" [nzPageIndex]="1" [nzTotal]="curTeamSelected.users.length > 0 ? curTeamSelected.users.length : 1" [nzItemRender]="renderItemTemplate"></nz-pagination>
           </div>
         </div>
       </div>
@@ -353,8 +361,11 @@
 +status team -->
 
 <!-- API:
-Edit Team
-Add user to team
-Remove user from team
-meeting
-delete Team -->
+meeting pe
+delete Team pe
+request pe
+tab ok
+search
+pagination:
+meeting pe
+member ok-->
