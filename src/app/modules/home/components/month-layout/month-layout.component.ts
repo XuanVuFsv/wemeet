@@ -281,8 +281,6 @@ export class MonthLayoutComponent implements OnInit, OnChanges {
       let firstDay = new Date(this.monthSelect.getFullYear(), this.monthSelect.getMonth(), 1);
       let firstDayOfWeek = dayjs(firstDay).day();
       let countDay = 0;
-      console.log(daysInMonth);
-      console.log(firstDayOfWeek);
 
       for (let weekOfMonth = 0; weekOfMonth < 6; weekOfMonth++) {
         let weekData = {
@@ -314,7 +312,6 @@ export class MonthLayoutComponent implements OnInit, OnChanges {
           break;
         }
       }
-      console.log(this.monthData);
     }
   }
 

@@ -172,8 +172,6 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
   }
 
   editUser(id: any = null) {
-    console.log(id);
-
     this.userRepository
       .find(id, this.defaultQueryParams)
       .pipe(
@@ -184,8 +182,6 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
         })
       )
       .subscribe((resp: any) => {
-        console.log(resp);
-
         this.showModalEditSupplier(resp, id);
       });
   }
@@ -204,7 +200,6 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
     } else {
       delete httpBody.is_active;
     }
-    console.log(httpBody);
 
     let fetchApi = idEdit
       ? this.userRepository.update(idEdit, httpBody)

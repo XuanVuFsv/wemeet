@@ -92,7 +92,6 @@ export class MeetingRoomEditComponent implements OnInit {
         }));
         this.beforeSearchValue = search;
         this.listBuilding = this.listBuilding.concat(listResp);
-        console.log(this.listBuilding);
       });
   }
 

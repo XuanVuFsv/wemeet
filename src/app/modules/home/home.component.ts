@@ -171,7 +171,6 @@ export class HomeComponent implements OnInit {
 
   log() {
     this.visibleCalendar = false;
-    console.log(this.monthSelect);
     this.setDatetimeTextViewMonth(this.monthSelect);
   }
 }
