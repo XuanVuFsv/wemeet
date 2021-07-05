@@ -1,0 +1,57 @@
+<section id="app-preview-report h-full">
+    <div #htmlData id="htmlData" class="canvas_div_pdf mx-32">
+        <div class="w-full flex justify-between">
+            <div class="w-48">
+                <img class="w-40 cursor-pointer outline-none" [src]="logo" />
+            </div>
+        </div>
+        <nz-table #usersTable id="usersTable" class="" [nzOuterBordered]="true" [nzData]="users" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th class="font-bold" nzWidth="200px"><strong>Họ tên</strong></th>
+                    <th class="font-bold" nzWidth="125px"><strong>Nick name</strong></th>
+                    <th class="font-bold" nzWidth="225"><strong>Email</strong></th>
+                    <th class="font-bold" nzWidth="150px"><strong>Chức vụ / vai trò</strong></th>
+                    <th class="font-bold" nzWidth="75px"><strong>Quyền</strong></th>
+                    <th class="font-bold" nzWidth="200px"><strong>Team</strong></th>
+                    <th class="font-bold" nzWidth="100px"><strong>Ngày tham gia</strong></th>
+                    <th class="font-bold" nzWidth="150px"><strong>Trạng thái</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>
+                        {{ user?.fullname }}
+                    </td>
+                    <td>
+                        {{ user?.nickname }}
+                    </td>
+                    <td>
+                        {{ user?.email }}
+                    </td>
+                    <td>
+                        {{ user?.position }}
+                    </td>
+                    <td>
+                        {{ user?.role }}
+                    </td>
+                    <td>
+                        <span *ngFor="let team of user?.teams; last as l">{{ team.name }}<span [class.hidden]="l">,
+                            </span></span>
+                    </td>
+                    <td>
+                        {{ user?.created_at | dateFormat: 'DD/MM/YYYY' }}
+                    </td>
+                    <td>
+                        <div *ngIf="user?.is_active">Đang hoạt động</div>
+                        <div *ngIf="!user?.is_active">Khóa</div>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <app-report [allowDownload]="false"></app-report>
+    </div>
+    <button nz-button nzType="primary" [nzSize]="'small'" (click)="openPDF()">
+        <span>Tải xuống PDF</span>
+    </button>
+</section>

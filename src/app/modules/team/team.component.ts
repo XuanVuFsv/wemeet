@@ -23,6 +23,7 @@ export class TeamComponent implements OnInit {
   id: string = '';
 
   isAddUser: boolean = false;
+  isSearchMember: boolean = false;
   showEditTeamModal: boolean = false;
   showAddTeamModal: boolean = false;
   showRequestRoomModal: boolean = false;
@@ -67,6 +68,7 @@ export class TeamComponent implements OnInit {
   addTeamForm!: FormGroup;
   editTeamForm!: FormGroup;
   searchForm!: FormGroup;
+  searchMemberForm!: FormGroup;
 
   constructor(
     private nzMessageService: NzMessageService,
@@ -82,6 +84,7 @@ export class TeamComponent implements OnInit {
     this.initAddTeamForm();
     this.initEdiTeamForm();
     this.initSearchForm();
+    this.initSearchMemberForm();
 
     this.UpdateTeams();
     this.UpdateListUser();
@@ -116,6 +119,12 @@ export class TeamComponent implements OnInit {
 
   initSearchForm() {
     this.searchForm = this.formBuilder.group({
+      context: ['']
+    });
+  }
+
+  initSearchMemberForm() {
+    this.searchMemberForm = this.formBuilder.group({
       context: ['']
     });
   }
@@ -237,7 +246,7 @@ export class TeamComponent implements OnInit {
   }
 
   SelectUsers(): void {
-    this.isAddUser = !this.isAddUser;
+    this.isAddUser = true;
     this.show();
     this.UpdateListUser();
   }
@@ -275,6 +284,7 @@ export class TeamComponent implements OnInit {
       if (index < this.curTeamSelected.users.length) {
         this.curMemberList.push(this.curTeamSelected.users[index]);
       }
+      console.log(this.curMemberList);
     }
   }
 
@@ -323,8 +333,8 @@ export class TeamComponent implements OnInit {
   }
 
   AddUserToTeam(): void {
+    this.isAddUser = false;
     if (this.listOfSelectedValue.length == 0) return;
-    this.isAddUser = !this.isAddUser;
     this.show();
 
     let newUsers: string[] = new Array();

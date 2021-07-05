@@ -59,6 +59,10 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
 
   listRole = [
     {
+      value: null,
+      label: 'Quyền'
+    },
+    {
       value: 'STAFF',
       label: 'Nhân viên'
     },
@@ -73,6 +77,10 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
   ];
 
   listStatus = [
+    {
+      value: null,
+      label: 'Trạng thái'
+    },
     {
       value: true,
       label: 'Đang hoạt động'
@@ -117,6 +125,11 @@ export class UserComponent<IUser> extends Table implements OnInit, AfterViewInit
 
   roleFilterChange(): void {
     this.filterFormValue.role = this.filterForm.value.role;
+    this.filterChange(this.filterFormValue, true);
+  }
+
+  statusFilterChange(): void {
+    this.filterFormValue.is_active = this.filterForm.value.is_active;
     this.filterChange(this.filterFormValue, true);
   }
 

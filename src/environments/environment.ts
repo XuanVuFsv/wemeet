@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://34.64.246.89',
+  apiUrl: 'http://128.199.161.0',
   storageImage: 'https://storage-image.ducduy.repl.co/film/'
 };
 

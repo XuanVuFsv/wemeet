@@ -294,7 +294,26 @@
               <span class="font-bold w-1/2">Thành viên</span>
               <button [class.hidden]="isAddUser" class="text-left" nz-button nzType="primary" [nzSize]="'small'"
                 (click)="SelectUsers()">
-                <i nz-icon nzType="plus"></i>Thêm thành viên
+                <i nz-icon nzType="plus"></i>Thêm
+              </button>
+              <button [class.hidden]="isSearchMember" class="text-left ml-1" nz-button nzType="primary" [nzSize]="'small'"
+              (click)="isSearchMember=true">
+              <i nz-icon nzType="search"></i>Tìm
+            </button>
+            </div>
+            <div class="flex w-full justify-between max-h-28" [class.hidden]="!isSearchMember">
+              <form nz-form nzLayout="vertical" [formGroup]="searchMemberForm" class="w-full">
+                <div class="block">
+                  <nz-form-item>
+                    <nz-form-control>
+                      <nz-input-group nzSearch class="">
+                        <input type="text" formControlName="context" nz-input placeholder="Nhập tên cần tìm" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </form>
+              <button [class.hidden]="!isSearchMember" class="text-left h-full border-1 border-teal-400" nz-button nzType="default" [nzSize]="'small'" (click)="isSearchMember=false" style="max-height: 36px;">Đóng
               </button>
             </div>
             <div class="flex w-full justify-between max-h-28" [class.hidden]="!isAddUser">
@@ -307,7 +326,7 @@
                   </nz-option>
                 </div>
               </nz-select>
-              <button class="text-left h-full" nz-button nzType="primary" [nzSize]="'small'" (click)="AddUserToTeam()" style="max-height: 36px;">Thêm
+              <button [class.hidden]="!isAddUser" class="text-left h-full" nz-button nzType="primary" [nzSize]="'small'" (click)="AddUserToTeam()" style="max-height: 36px;">Thêm
               </button>
             </div>
             <div class="w-full flex-col flex-grow h-0 mb-2">
@@ -323,7 +342,7 @@
               </div>
               <ng-template #usertpl let-userData="userData">
                 <ng-container *ngFor="let user of userData; index as i">
-                  <li
+                  <li [class.hidden]="!user.fullname.includes(searchMemberForm.value.context)"
                     class="bg-blueGray-50 mb-3 cursor-pointer hover:bg-blueGray-100 py-2">
                     <div class="usertag flex items-center" (mouseenter)="SelectMember(user.id, true)" (mouseleave)="SelectMember(user.id, false)">
                       <nz-avatar class="mr-2" nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>

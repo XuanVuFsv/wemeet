@@ -19,7 +19,7 @@
         [routerLink]="['/user-management']"
       >
         <i nz-icon nzType="user" nzTheme="outline" class="mr-2"></i>
-        <div class="text-sm">nhân viên</div>
+        <div class="text-sm">Quản trị</div>
       </a>
       <a
         class="
@@ -53,7 +53,7 @@
         [routerLink]="['/team']"
       >
         <i nz-icon nzType="team" nzTheme="outline" class="mr-2"></i>
-        <div class="text-sm">team</div>
+        <div class="text-sm">Nhóm</div>
       </a>
     </div>
     <div class="w-64 flex items-center justify-end">
@@ -137,7 +137,7 @@
           <div class="flex-grow h-0">
             <div class="font-semibold text-trueGray-800">Cài đặt</div>
             <div class="text-trueGray-500 flex items-center w-full py-1">
-              <span class="w-fit">lịch tuần hiển thị từ: </span>
+              <span class="w-fit">Lịch tuần hiển thị từ: </span>
               <nz-slider
                 class="flex-grow w-0 ml-6"
                 nzRange
@@ -148,7 +148,7 @@
               ></nz-slider>
             </div>
             <div class="text-trueGray-500 flex items-center w-full py-1">
-              <span class="w-fit">nhận thông báo trước cuộc họp: </span>
+              <span class="w-fit">Nhận thông báo trước cuộc họp: </span>
               <nz-switch
                 [(ngModel)]="getNotifications"
                 nzSize="small"
@@ -156,7 +156,7 @@
               ></nz-switch>
             </div>
             <div *ngIf="getNotifications" class="text-trueGray-500 flex items-center w-full py-1">
-              <span class="flex-grow w-0">nhận thông báo trước: </span>
+              <span class="flex-grow w-0">Nhận thông báo trước: </span>
               <nz-input-number
                 class="flex w-24 justify-end"
                 [(ngModel)]="timeBeforeSendNoti"

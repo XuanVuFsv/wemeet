@@ -35,6 +35,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
+import { AccumulationChartModule, PieSeriesService, AccumulationDataLabelService, AccumulationLegendService, AccumulationTooltipService } from '@syncfusion/ej2-angular-charts';
+
 import * as dayjs from 'dayjs';
 import * as updateLocale from 'dayjs/plugin/updateLocale';
 import 'dayjs/locale/vi';
@@ -95,6 +97,8 @@ const MODULES: any[] = [
   NzInputNumberModule,
   NzSliderModule,
   NzSwitchModule,
+
+  AccumulationChartModule,
   DataModule.forRoot({ url: environment.apiUrl })
 ];
 
@@ -129,7 +133,8 @@ vi_VN.DatePicker.lang['rangeWeekPlaceholder'] = 'khoảng tuần';
       useValue: {
         firstDayOfWeek: 1 // week starts on Monday (Sunday is 0)
       }
-    }
+    },
+    PieSeriesService, AccumulationDataLabelService, AccumulationLegendService, AccumulationTooltipService
   ]
 })
 export class SharedModule {}

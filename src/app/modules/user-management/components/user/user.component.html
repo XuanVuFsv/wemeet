@@ -66,6 +66,7 @@
           formControlName="is_active"
           id="select_"
           class="w-full"
+          (ngModelChange)="statusFilterChange()"
         >
           <nz-option
             *ngFor="let status of listStatus"
@@ -93,24 +94,25 @@
     [nzShowPagination]="false"
     (nzQueryParams)="sortChange($event)"
     nzBordered
-    [nzScroll]="{ y: '700px' }"
+    [nzScroll]="{ y: '500px' }"
     nzSize="small"
   >
-    <thead>
-      <tr>
-        <th nzWidth="200px">Họ tên</th>
-        <th nzWidth="150px">Nick name</th>
-        <th nzWidth="150px">Email</th>
-        <th>Chức vụ / vai trò</th>
-        <th nzWidth="150px">Quyền</th>
-        <th nzWidth="250px">Team</th>
-        <th nzColumnKey="created_at" nzWidth="150px" [nzSortFn]="true">Ngày tham gia</th>
-        <th nzWidth="150px">Trạng thái</th>
-        <th nzWidth="80px"></th>
-      </tr>
-    </thead>
+  <thead >
+    <tr>
+      <th class="font-bold" nzWidth="200px"><strong>Họ tên</strong></th>
+      <th class="font-bold" nzWidth="125px"><strong>Nick name</strong></th>
+      <th class="font-bold" nzWidth="225"><strong>Email</strong></th>
+      <th class="font-bold" nzWidth="150px"><strong>Chức vụ / vai trò</strong></th>
+      <th class="font-bold" nzWidth="75px"><strong>Quyền</strong></th>
+      <th class="font-bold" nzWidth="200px"><strong>Team</strong></th>
+      <th class="font-bold" nzColumnKey="created_at" nzWidth="100px" [nzSortFn]="true"><strong>Ngày tham gia</strong></th>
+      <th class="font-bold" nzWidth="150px"><strong>Trạng thái</strong></th>
+      <th class="font-bold" nzWidth="50px"><strong></strong></th>
+    </tr>
+  </thead>
+  <!-- <tbody> -->
     <tbody>
-      <tr *ngFor="let user of rows; let i = index">
+      <tr *ngFor="let user of rows; let i = index" >
         <td>
           <nz-avatar [nzText]="getTextName(user?.fullname)" class="mr-1"></nz-avatar>
           {{ user?.fullname }}
@@ -128,7 +130,7 @@
           {{ user?.role }}
         </td>
         <td>
-          <p *ngFor="let team of user?.teams">{{ team.name }}</p>
+          <span *ngFor="let team of user?.teams; last as l">{{ team.name }}<span [class.hidden]="l">, </span></span>
         </td>
         <td>
           {{ user?.created_at | dateFormat: 'DD/MM/YYYY' }}
@@ -215,3 +217,4 @@
     </div>
   </div>
 </section>
+<!-- Delete User -->

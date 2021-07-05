@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: () => import('@modules/todo/todo.module').then(m => m.TodoModule)
   },
   {
+    path: 'preview-report',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('@modules/preview-report/preview-report.module').then(m => m.PreviewReportModule)
+  },
+  {
     path: 'login',
     canActivate: [LoginGuard],
     loadChildren: () => import('@modules/login/login.module').then(m => m.LoginModule),
