@@ -75,4 +75,12 @@ export class TeamService {
     return this.apiService.post('/team/remove-user', body).pipe();
   }
 
+  getAllBuilding() {
+    return this.apiService.get('/building').pipe();
+  }
+
+  getAllRoom() {
+    return this.apiService.get('/room').pipe();
+  }
+
 }

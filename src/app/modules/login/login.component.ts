@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
                 this.checkPasswordMessage = 'Mật khẩu không chính xác';
                 this.acountNotExist = false;
               }
-            }, 2000);
+            }, 5000);
             this.authService
               .login(this.loginForm.value)
               .pipe(

@@ -1,11 +1,18 @@
 <section id="app-preview-report h-full">
     <div #htmlData id="htmlData" class="canvas_div_pdf mx-32">
+        <button class="mb-5 mr-2" [class.hidden]="disable" nz-button nzType="primary" [nzSize]="'small'" (click)="getPDF()">
+            <span>In báo cáo</span>
+        </button>
+        <button class="mb-5" [class.hidden]="disable" nz-button nzType="primary" [nzSize]="'small'" (click)="Back()">
+            <span>Trở về trang thống kê</span>
+        </button>
         <div class="w-full flex justify-between">
             <div class="w-48">
                 <img class="w-40 cursor-pointer outline-none" [src]="logo" />
             </div>
         </div>
-        <nz-table #usersTable id="usersTable" class="" [nzOuterBordered]="true" [nzData]="users" [nzShowPagination]="false">
+        <nz-table #usersTable id="usersTable" [class.hidden]="disableUser" class="" [nzOuterBordered]="true" [nzData]="users"
+            [nzShowPagination]="false">
             <thead>
                 <tr>
                     <th class="font-bold" nzWidth="200px"><strong>Họ tên</strong></th>
@@ -49,9 +56,79 @@
                 </tr>
             </tbody>
         </nz-table>
-        <app-report [allowDownload]="false"></app-report>
+        <button class="mt-2 mr-2" [class.hidden]="btnu" nz-button nzType="primary" [nzSize]="'small'" (click)="disableUser=!disableUser">
+            <div *ngIf="disableUser">Chọn Danh sách nhân viên</div>
+            <div *ngIf="!disableUser">Bỏ chọn Danh sách nhân viên</div>
+        </button>
+        <nz-table #buildingTable class="my-16" [nzOuterBordered]="true" [class.hidden]="disableBuilding" [nzData]="building" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th class="font-bold" nzWidth="200px"><strong>Tên tòa nhà / Văn phòng</strong></th>
+                    <th class="font-bold" nzWidth="125px"><strong>Địa chỉ</strong></th>
+                    <th class="font-bold" nzWidth="225"><strong>Ngày tạo</strong></th>
+                    <th class="font-bold" nzWidth="150px"><strong>Số phòng họp</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let office of building">
+                    <td>
+                        {{ office?.name }}
+                    </td>
+                    <td>
+                        {{ office?.address }}
+                    </td>
+                    <td>
+                        {{ office?.created_at | dateFormat: 'DD/MM/YYYY' }}
+                    </td>
+                    <td>
+                        {{ office?.room_number }}
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <button class="mt-2 mr-2" [class.hidden]="btnb" nz-button nzType="primary" [nzSize]="'small'" (click)="disableBuilding=!disableBuilding">
+            <div *ngIf="disableBuilding">Chọn Danh sách phòng họp</div>
+            <div *ngIf="!disableBuilding">Bỏ chọn Danh sách phòng họp</div>
+        </button>
+        <nz-table #roomTable class="my-16" [class.hidden]="disableRoom" [nzOuterBordered]="true" [nzData]="room" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th class="font-bold" nzWidth="200px"><strong>Tên phòng họp</strong></th>
+                    <th class="font-bold" nzWidth="125px"><strong>Tên tòa nhà / Văn phòng</strong></th>
+                    <th class="font-bold" nzWidth="225"><strong>Sức chứa</strong></th>
+                    <th class="font-bold" nzWidth="225"><strong>Ngày tạo</strong></th>
+                    <th class="font-bold" nzWidth="150px"><strong>Trạng thái</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let office of room">
+                    <td>
+                        {{ office?.name }}
+                    </td>
+                    <td>
+                        {{ office?.building.name }}
+                    </td>
+                    <td>
+                        {{ office?.capacity }}
+                    </td>
+                    <td>
+                        {{ office?.created_at | dateFormat: 'DD/MM/YYYY' }}
+                    </td>
+                    <td>
+                        <div *ngIf="office?.status">Đang hoạt động</div>
+                        <div *ngIf="!office?.status">Khóa</div>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <button class="mt-2 mr-2" [class.hidden]="btnr" nz-button nzType="primary" [nzSize]="'small'" (click)="disableRoom=!disableRoom">
+            <div *ngIf="disableRoom">Chọn Danh sách văn phòng</div>
+            <div *ngIf="!disableRoom">Bỏ chọn Danh sách văn phòng</div>
+        </button>
+        <app-report [class.hidden]="disableChart" [allowDownload]="false"></app-report>
+        <button class="mt-2" [class.hidden]="btnc" nz-button nzType="primary" [nzSize]="'small'" (click)="disableChart=!disableChart">
+            <div *ngIf="disableChart">Chọn các biểu đồ</div>
+            <div *ngIf="!disableChart">Bỏ chọn các biểu đồ</div>
+        </button>
     </div>
-    <button nz-button nzType="primary" [nzSize]="'small'" (click)="openPDF()">
-        <span>Tải xuống PDF</span>
-    </button>
 </section>

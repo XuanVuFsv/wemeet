@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { catchError, filter } from 'rxjs/operators';
 import { TeamService } from './../../core/services/team.service';
 import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
@@ -33,7 +34,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   @ViewChild('roleChart') roleChart: any;  
 
 
-  constructor(private teamService: TeamService) {
+  constructor(private teamService: TeamService, private route: Router) {
     this.chartTitle = "Biểu đồ cuộc họp theo nhãn";
     this.data = [
       { name: 'Quan trọng', value: 37, text: "37%"},
@@ -173,5 +174,9 @@ export class ReportComponent implements OnInit, AfterViewInit {
         
         PDF.save('angular-demo.pdf');
     });     
+    }
+
+    GotoPreview() {
+      this.route.navigateByUrl('/preview-report');
     }
 }

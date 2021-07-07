@@ -17,6 +17,7 @@
           mr-6
         "
         [routerLink]="['/user-management']"
+        [class.hidden] = "role != 'ADMIN'"
       >
         <i nz-icon nzType="user" nzTheme="outline" class="mr-2"></i>
         <div class="text-sm">Quản trị</div>
@@ -34,6 +35,7 @@
           mr-6
         "
         [routerLink]="['/report']"
+        [class.hidden] = "role != 'ADMIN'"
       >
         <i nz-icon nzType="pie-chart" nzTheme="outline" class="mr-2"></i>
         <div class="text-sm">thống kê</div>

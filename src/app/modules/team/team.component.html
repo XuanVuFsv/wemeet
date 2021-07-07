@@ -149,9 +149,8 @@
           </div>
           <div class="w-2/6 pl-7">
             <div class="flex flex-col"></div>
-            <p><span class="font-bold text-base">Số cuộc họp: </span>{{ currentTotalMeeting }}</p>
-            <a class="underline text-teal-400 hover:underline hover:text-teal-600" (click)="ShowRequestRoomModal()">Có 2
-              yêu cầu xin nhường phòng họp</a>
+            <p><span class="font-bold text-base">Số cuộc họp: </span>{{ meetingData.length }}</p>
+            <a class="underline text-teal-400 hover:underline hover:text-teal-600" (click)="ShowRequestRoomModal()">Yêu cầu xin nhường phòng họp</a>
 
             <nz-modal [(nzVisible)]="showRequestRoomModal" nzTitle="Yêu cầu nhường phòng họp" nzCentered
               [nzFooter]="null" (nzOnCancel)="handleCancelRequestRoom()">
@@ -292,7 +291,7 @@
           <div class="bg-white w-full flex flex-col h-full">
             <div class="w-full flex justify-between">
               <span class="font-bold w-1/2">Thành viên</span>
-              <button [class.hidden]="isAddUser" class="text-left" nz-button nzType="primary" [nzSize]="'small'"
+              <button [class.hidden]="isAddUser || id != curLeaderId" class="text-left" nz-button nzType="primary" [nzSize]="'small'"
                 (click)="SelectUsers()">
                 <i nz-icon nzType="plus"></i>Thêm
               </button>
@@ -321,7 +320,7 @@
               <nz-select class="w-full" nzMode="multiple"
                 nzPlaceHolder="Nhấn vào để chọn" [(ngModel)]="listOfSelectedValue" nzMaxTagCount="100">
                 <div *ngFor="let user of users">
-                  <nz-option class="w-full overflow-y-auto overflow-x-hidden" [nzLabel]="user.fullname" [nzValue]="user.id"
+                  <nz-option class="w-full overflow-y-auto overflow-x-hidden" [nzLabel]="user.fullname + ' #' + user.id" [nzValue]="user.id"
                     [nzHide]="isSelected(user.id)">
                   </nz-option>
                 </div>
@@ -348,7 +347,7 @@
                       <nz-avatar class="mr-2" nzIcon="user" [nzSrc]="user.avatar"></nz-avatar>
                       <div class="flex w-full justify-between">
                         <div class="w-3/4 mt-2">
-                          <span class="text-black font-extrabold text-base">{{ user.fullname }}
+                          <span class="text-black font-extrabold text-base">{{ user.fullname }} #{{ user.id }}
                             <i nz-icon [class.hidden]="user.id != curLeaderId" [nzType]="'crown'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#ffcc00'"></i>
                           </span>
                         </div>

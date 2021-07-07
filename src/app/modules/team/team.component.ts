@@ -43,7 +43,7 @@ export class TeamComponent implements OnInit {
 
   currentTotalMeeting = 0;
 
-  meetingData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  meetingData = [1, 2, 3, 4, 5, 6, 7];
   members = [
     '../../assets/images/avatar/avatar1.png',
     '../../assets/images/avatar/avatar2.png',
@@ -284,7 +284,7 @@ export class TeamComponent implements OnInit {
       if (index < this.curTeamSelected.users.length) {
         this.curMemberList.push(this.curTeamSelected.users[index]);
       }
-      console.log(this.curMemberList);
+      // console.log(this.curMemberList);
     }
   }
 
